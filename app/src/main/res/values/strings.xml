@@ -27,6 +27,8 @@
     <string name="send_data">Enviar</string>
     <string name="cerveza">nulo</string>
     <string name="delete">Delete</string>
+    <string name="create_title">Create Category</string>
+    <string name="money">bg_monery</string>
 
 
 </resources>

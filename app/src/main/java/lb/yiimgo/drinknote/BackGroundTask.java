@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,6 +27,8 @@ public class BackGroundTask extends AsyncTask<String,Category,String> {
     CategoryAdapter categoryAdapter;
     Activity activity;
     ListView listView;
+
+
     public BackGroundTask(Context ctx){
         this.ctx = ctx;
         activity = (Activity) ctx;

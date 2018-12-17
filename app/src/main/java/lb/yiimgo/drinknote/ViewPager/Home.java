@@ -77,21 +77,8 @@ public class Home extends AppCompatActivity {
             case R.id.action_category:
                 Intent viewCreateCategory=new Intent(this,CreateCategory.class);
                 startActivity(viewCreateCategory);
-                finish();
                 return true;
-           /* case R.id.action_settings:
-                Toast.makeText(this, "Home Settings Click", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.action_with_icon:
-                Intent withicon=new Intent(this,TabWithIconActivity.class);
-                startActivity(withicon);
-                finish();
-                return true;
-            case R.id.action_customtab:
-                Intent custom_tab=new Intent(this, CustomTabActivity.class);
-                startActivity(custom_tab);
-                finish();
-                return true;*/
+
             default:
                 return super.onOptionsItemSelected(item);
         }

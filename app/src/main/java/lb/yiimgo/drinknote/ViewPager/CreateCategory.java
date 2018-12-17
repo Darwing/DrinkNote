@@ -5,7 +5,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
+
 import android.view.View;
+
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -23,11 +25,16 @@ public class CreateCategory extends AppCompatActivity implements AdapterView.OnI
     private EditText name,amount;
     private Spinner category;
     private Spinner spinner;
+    private String categorySelected;
+
     private static final String[] paths = {"Cerveza", "Wisky", "Romo"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_create_category);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         spinner = (Spinner)findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(CreateCategory.this,
                 android.R.layout.simple_spinner_item,paths);
@@ -60,12 +67,11 @@ public class CreateCategory extends AppCompatActivity implements AdapterView.OnI
 
         values.put(Utility.FIELD_NAME, name.getText().toString());
         values.put(Utility.FIELD_AMOUNT, amount.getText().toString());
-        values.put(Utility.FIELD_CATEGORY, "Cerveza");
+        values.put(Utility.FIELD_CATEGORY, categorySelected);
 
+         db.insert(Utility.TABLE_CATEGORY,Utility.FIELD_ID,values);
 
-        Long idResult = db.insert(Utility.TABLE_CATEGORY,Utility.FIELD_ID,values);
-
-        Toast.makeText(getApplicationContext(),"id result: "+ idResult,Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getApplicationContext(),"id result: "+ idResult,Toast.LENGTH_SHORT).show();
         db.close();
     }
 
@@ -73,13 +79,13 @@ public class CreateCategory extends AppCompatActivity implements AdapterView.OnI
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
         switch (position) {
             case 0:
-                // Whatever you want to happen when the first item gets selected
+                categorySelected = "Cerveza";
                 break;
             case 1:
-                // Whatever you want to happen when the second item gets selected
+                categorySelected = "Wisky";
                 break;
             case 2:
-                // Whatever you want to happen when the thrid item gets selected
+                categorySelected = "Romo";
                 break;
 
         }

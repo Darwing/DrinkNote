@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,6 +64,8 @@ public class CategoryAdapter extends ArrayAdapter {
             LayoutInflater layoutInflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = layoutInflater.inflate(R.layout.fragment_category_row,parent,false);
             categoryHolder = new CategoryHolder();
+
+            categoryHolder.im_typeDrink = (ImageView) row.findViewById(R.id.typeDrink);
             categoryHolder.tx_id = (TextView) row.findViewById(R.id.t_id);
             categoryHolder.tx_name = (TextView) row.findViewById(R.id.t_name);
             categoryHolder.tx_amount = (TextView) row.findViewById(R.id.t_amount);
@@ -73,7 +76,9 @@ public class CategoryAdapter extends ArrayAdapter {
         {
             categoryHolder = (CategoryHolder) row.getTag();
         }
+
         Category category = (Category) getItem(position);
+        categoryHolder.im_typeDrink.setImageResource( DrinkType(category.getCategory().toString()));
         categoryHolder.tx_id.setText(category.getId().toString());
         categoryHolder.tx_name.setText(category.getName().toString());
         categoryHolder.tx_amount.setText(category.getAmount().toString());
@@ -82,7 +87,24 @@ public class CategoryAdapter extends ArrayAdapter {
 
         return row;
     }
+    private int DrinkType(String cat)
+    {
+        int result = 0;
+        switch (cat)
+        {
+            case "Cerveza" :
+                result = R.drawable.bg_presidente_light;
+                break;
+            case "Wisky" :
+                result = R.drawable.bg_wisky;
+                break;
+            case "Romo" :
+                result = R.drawable.bg_romo;
+                break;
+        }
 
+        return result;
+    }
     private void deleteCategory(final int position, View row,final Category c)
     {
 
@@ -100,7 +122,7 @@ public class CategoryAdapter extends ArrayAdapter {
         final SQLiteDatabase db = conn.getWritableDatabase();
 
         AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
-        builder1.setMessage("Are your sure to delete this items?");
+        builder1.setMessage("Are your sure delete this item?");
         builder1.setCancelable(true);
 
         builder1.setPositiveButton(
@@ -130,6 +152,7 @@ public class CategoryAdapter extends ArrayAdapter {
     static class CategoryHolder
     {
         TextView tx_id,tx_name,tx_amount,tx_category;
+        ImageView im_typeDrink;
 
     }
 }
