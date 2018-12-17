@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="20dp"
+    android:orientation="vertical"
+    tools:context="lb.yiimgo.drinknote.ViewPager.CreateCategory">
+
+    <Spinner
+        android:id="@+id/spinner"
+        style="@android:style/Widget.Holo.Light.Spinner"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="20dp" />
+
+    <EditText
+        android:id="@+id/store_name"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/border"
+        android:hint="@string/store_name"
+        android:padding="5dp"
+        android:inputType="textCapWords"
+        android:singleLine="true" />
+
+    <EditText
+        android:id="@+id/amount"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/border"
+        android:ems="10"
+        android:hint="@string/cost"
+        android:inputType="numberDecimal"
+        android:padding="5dp" />
+
+    <Button
+        android:id="@+id/send_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/send_data" />
+</LinearLayout>
