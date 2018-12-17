@@ -1,7 +1,10 @@
 package lb.yiimgo.drinknote;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
@@ -82,21 +85,47 @@ public class CategoryAdapter extends ArrayAdapter {
 
     private void deleteCategory(final int position, View row,final Category c)
     {
-        ConecctionSQLiteHelper conn = new ConecctionSQLiteHelper(getContext(), "db_drinknote",null,1);
-        final SQLiteDatabase db = conn.getWritableDatabase();
+
         button = (ImageButton) row.findViewById(R.id.delete);
 
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {
-                String[] param = {c.getId().toString()};
-                db.delete(Utility.TABLE_CATEGORY,Utility.FIELD_ID +"=?",param);
-                list.remove(position);
-                notifyDataSetChanged();
-                db.close();
-               // Toast.makeText(getContext(),c.getId().toString(),Toast.LENGTH_LONG).show();
+                AlertDialog(position,c.getId().toString());
             }
         });
+    }
+    public void AlertDialog(final int position,final String field_id){
+        ConecctionSQLiteHelper conn = new ConecctionSQLiteHelper(getContext(), "db_drinknote",null,1);
+        final SQLiteDatabase db = conn.getWritableDatabase();
+
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+        builder1.setMessage("Are your sure to delete this items?");
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        String[] param = {field_id};
+                        db.delete(Utility.TABLE_CATEGORY,Utility.FIELD_ID +"=?",param);
+                        list.remove(position);
+                        notifyDataSetChanged();
+                        db.close();
+
+                    }
+                });
+
+        builder1.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
     static class CategoryHolder
     {
