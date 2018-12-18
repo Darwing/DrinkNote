@@ -6,4 +6,7 @@
 
     <color name="colorTextPrimary">#FFFFFF</color>
     <color name="colorTextDisable">#66FFFFFF</color>
+
+    <color name="bgRowsGreen">#5FBA7D</color>
+    <color name="bgRowsRed">#e54747</color>
 </resources>

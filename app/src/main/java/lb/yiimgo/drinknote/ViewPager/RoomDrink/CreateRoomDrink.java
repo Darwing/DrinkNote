@@ -17,14 +17,11 @@ import lb.yiimgo.drinknote.R;
 import lb.yiimgo.drinknote.Utility.Utility;
 
 
-public class CreateRoomDrink extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class CreateRoomDrink extends AppCompatActivity  {
 
     private EditText name;
-    private Spinner spinner;
-    private String roomSelected;
+    private EditText roomNumber;
 
-    private static final String[] paths = {"Room I", "Room II", "Room III","Room IV","Room V","Room VI",
-    "Room VII","Room VIII","Room IX","Room X","Room XII"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,19 +29,8 @@ public class CreateRoomDrink extends AppCompatActivity implements AdapterView.On
         setContentView(R.layout.fragment_create_rooms);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        spinner = (Spinner)findViewById(R.id.spinner_room);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(CreateRoomDrink.this,
-                android.R.layout.simple_spinner_item,paths);
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setSelection(0);
-
-        spinner.setOnItemSelectedListener(this);
-
         name = (EditText) findViewById(R.id.room_name);
-
+        roomNumber = (EditText) findViewById(R.id.numberRoom);
 
         final Button button = findViewById(R.id.send_data_room);
         button.setOnClickListener(new View.OnClickListener() {
@@ -63,59 +49,11 @@ public class CreateRoomDrink extends AppCompatActivity implements AdapterView.On
         ContentValues values = new ContentValues();
 
         values.put(Utility.FIELD_NAME_ROOM , name.getText().toString());
-        values.put(Utility.FIELD_ROOM_DRINK_UBICATION, roomSelected);
+        values.put(Utility.FIELD_ROOM_DRINK_UBICATION, roomNumber.getText().toString());
 
-        Long idResult =db.insert(Utility.TABLE_ROOM_DRINK,Utility.FIELD_ID_ROOM,values);
+         db.insert(Utility.TABLE_ROOM_DRINK,Utility.FIELD_ID_ROOM,values);
         //Toast.makeText(getApplicationContext(),"id result: "+ idResult, Toast.LENGTH_SHORT).show();
         db.close();
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-        switch (position) {
-            case 0:
-                roomSelected = "Room I";
-                break;
-            case 1:
-                roomSelected = "Room II";
-                break;
-            case 2:
-                roomSelected = "Room III";
-                break;
-            case 3:
-                roomSelected = "Room IV";
-                break;
-            case 4:
-                roomSelected = "Room V";
-                break;
-            case 5:
-                roomSelected = "Room VI";
-                break;
-            case 6:
-                roomSelected = "Room VII";
-                break;
-            case 7:
-                roomSelected = "Room VIII";
-                break;
-            case 8:
-                roomSelected = "Room IX";
-                break;
-            case 9:
-                roomSelected = "Room X";
-                break;
-            case 10:
-                roomSelected = "Room XI";
-                break;
-            case 11:
-                roomSelected = "Room XII";
-                break;
-
-
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
 }

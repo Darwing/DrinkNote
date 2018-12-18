@@ -6,12 +6,16 @@
     android:orientation="vertical"
     tools:context="lb.yiimgo.drinknote.ViewPager.RoomDrink.CreateRoomDrink">
 
-    <Spinner
-        android:id="@+id/spinner_room"
-        style="@android:style/Widget.Holo.Light.Spinner"
+    <EditText
+        android:id="@+id/numberRoom"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginBottom="20dp" />
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/border"
+        android:padding="5dp"
+        android:inputType="number"
+        android:hint="@string/room_number"/>
 
     <EditText
         android:id="@+id/room_name"
@@ -19,7 +23,7 @@
         android:layout_height="40dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/border"
-        android:hint="@string/store_toom_name"
+        android:hint="@string/store_room_name"
         android:padding="5dp"
         android:inputType="textCapWords"
         android:singleLine="true" />

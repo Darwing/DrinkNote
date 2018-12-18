@@ -6,7 +6,7 @@
     <string name="tab3">CONTACTS</string>
 
     <string name="action_status">Status</string>
-    <string name="create">Create</string>
+
     <string name="id_number">00000</string>
     <string name="store_name">Store Name</string>
     <string name="cost">00.0</string>
@@ -18,7 +18,15 @@
     <string name="money">bg_monery</string>
     <string name="drinkers">drinkers</string>
     <string name="create_room_title">Create Room</string>
-    <string name="store_toom_name">Customer Name</string>
+    <string name="store_room_name">Customer Name</string>
+    <string name="room_number">Room Number</string>
+    <string name="room_status">status</string>
+    <string name="ubication">Ubication</string>
+    <string name="cutomer_name">Customer Name</string>
+    <string name="room_name">Room - </string>
+    <string name="id_number_row">000 - </string>
+    <string name="create_category">New Category</string>
+    <string name="create_room">New Room</string>
 
 
 </resources>

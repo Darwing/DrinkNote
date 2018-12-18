@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
-import lb.yiimgo.drinknote.Entity.Category;
 import lb.yiimgo.drinknote.Entity.ConecctionSQLiteHelper;
 import lb.yiimgo.drinknote.Entity.RoomDrinks;
 import lb.yiimgo.drinknote.R;
@@ -29,7 +29,7 @@ public class RoomDrinkAdapter extends ArrayAdapter {
 
     List list = new ArrayList();
     ImageButton button;
-    LinearLayout buttonAddDrink;
+    LinearLayout buttonAddDrink,layoutRoom;
 
     public RoomDrinkAdapter(@NonNull Context context, int resource) {
         super(context, resource);
@@ -58,6 +58,8 @@ public class RoomDrinkAdapter extends ArrayAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         View row = convertView;
         RoomDrinkHolder roomHolder;
+
+
         if (row == null)
         {
             LayoutInflater layoutInflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -67,20 +69,28 @@ public class RoomDrinkAdapter extends ArrayAdapter {
             roomHolder.tx_id = (TextView) row.findViewById(R.id.t_id);
             roomHolder.tx_name = (TextView) row.findViewById(R.id.t_name);
             roomHolder.tx_ubication = (TextView) row.findViewById(R.id.t_ubication);
-
+            roomHolder.tx_status = (TextView) row.findViewById(R.id.t_status);
             row.setTag(roomHolder);
         }else
         {
             roomHolder = (RoomDrinkHolder) row.getTag();
         }
+        layoutRoom = (LinearLayout) row.findViewById(R.id.layout_room_row);
+        RoomDrinks roomDrinks = (RoomDrinks) getItem(position);
 
-        RoomDrinks category = (RoomDrinks) getItem(position);
+        if(roomDrinks.getStatus() == 0)
+        {
+            layoutRoom.setBackgroundResource(R.color.bgRowsGreen);
+            roomHolder.tx_status.setText("Disponible");
+        }else{
+            layoutRoom.setBackgroundResource(R.color.bgRowsRed);
+            roomHolder.tx_status.setText("No Disponible");
+        }
+        roomHolder.tx_id.setText(roomDrinks.getIdRoom().toString());
+        roomHolder.tx_name.setText(roomDrinks.getNameRoom().toString());
+        roomHolder.tx_ubication.setText(roomDrinks.getRoomUbication().toString());
 
-        roomHolder.tx_id.setText(category.getIdRoom().toString());
-        roomHolder.tx_name.setText(category.getNameRoom().toString());
-        roomHolder.tx_ubication.setText(category.getRoomUbication().toString());
-
-        deleteDrinkRow(position,row,category,"delete");
+        deleteDrinkRow(position,row,roomDrinks,"delete");
        // addDinrk(position,row,category,"add");
         return row;
     }
@@ -151,7 +161,6 @@ public class RoomDrinkAdapter extends ArrayAdapter {
     }
     static class RoomDrinkHolder
     {
-        TextView tx_id,tx_name,tx_ubication;
-        int tx_status;
+        TextView tx_id,tx_name,tx_ubication,tx_status;
     }
 }
