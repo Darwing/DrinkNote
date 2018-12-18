@@ -21,7 +21,9 @@ public class ConecctionSQLiteHelper extends SQLiteOpenHelper
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         db.execSQL(Utility.CREATE_TABLE_CATEGORY);
+        db.execSQL(Utility.CREATE_TABLE_ROOM_DRINK);
     }
     public Cursor getCategoryInfo(SQLiteDatabase db)
     {
@@ -33,9 +35,26 @@ public class ConecctionSQLiteHelper extends SQLiteOpenHelper
 
         return cursor;
     }
+    public Cursor getRoomInfo(SQLiteDatabase db)
+    {
+        String[] room = {Utility.FIELD_ID_ROOM,Utility.FIELD_NAME_ROOM,Utility.FIELD_ROOM_DRINK_UBICATION,Utility.FIELD_ROOM_DRINK_STATUS };
+
+        Cursor cursorRoom = db.query(Utility.TABLE_ROOM_DRINK,room,null,null,
+                null,null,null);
+
+        return cursorRoom;
+    }
+/*    public void saveRoomDrink(SQLiteDatabase db)
+    {
+        String[] room = {Utility.FIELD_ID,Utility.FIELD_NAME,Utility.FIELD_AMOUNT,
+                Utility.FIELD_CATEGORY,Utility.FIELD_DATE_TIME};
+
+         db.insert(Utility.TABLE_ROOM_DRINK,Utility.FIELD_ID,room);
+    }*/
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS Category");
+        db.execSQL("DROP TABLE IF EXISTS RoomDrink");
         onCreate(db);
     }
 }

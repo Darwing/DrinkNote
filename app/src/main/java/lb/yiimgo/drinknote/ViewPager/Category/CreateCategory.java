@@ -1,4 +1,4 @@
-package lb.yiimgo.drinknote.ViewPager;
+package lb.yiimgo.drinknote.ViewPager.Category;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import lb.yiimgo.drinknote.Entity.ConecctionSQLiteHelper;
 import lb.yiimgo.drinknote.R;

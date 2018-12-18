@@ -16,9 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="lb.yiimgo.drinknote.ViewPager.CreateCategory"
+        <activity android:name="lb.yiimgo.drinknote.ViewPager.Category.CreateCategory"
             android:label="@string/create_title"
-
+            android:parentActivityName=".ViewPager.Home"/>
+        <activity android:name="lb.yiimgo.drinknote.ViewPager.RoomDrink.CreateRoomDrink"
+            android:label="@string/create_room_title"
             android:parentActivityName=".ViewPager.Home"/>
     </application>
 

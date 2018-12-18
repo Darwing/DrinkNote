@@ -1,20 +1,17 @@
-package lb.yiimgo.drinknote;
+package lb.yiimgo.drinknote.ViewPager.Category;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +20,7 @@ import java.util.List;
 
 import lb.yiimgo.drinknote.Entity.Category;
 import lb.yiimgo.drinknote.Entity.ConecctionSQLiteHelper;
+import lb.yiimgo.drinknote.R;
 import lb.yiimgo.drinknote.Utility.Utility;
 
 /**
@@ -32,6 +30,8 @@ import lb.yiimgo.drinknote.Utility.Utility;
 public class CategoryAdapter extends ArrayAdapter {
     List list = new ArrayList();
     ImageButton button;
+    LinearLayout buttonAddDrink;
+
     public CategoryAdapter(@NonNull Context context, int resource) {
         super(context, resource);
     }
@@ -83,8 +83,8 @@ public class CategoryAdapter extends ArrayAdapter {
         categoryHolder.tx_name.setText(category.getName().toString());
         categoryHolder.tx_amount.setText(category.getAmount().toString());
         categoryHolder.tx_category.setText(category.getCategory().toString());
-        deleteCategory(position,row,category);
-
+        deleteCategory(position,row,category,"delete");
+        addDinrk(position,row,category,"add");
         return row;
     }
     private int DrinkType(String cat)
@@ -105,7 +105,7 @@ public class CategoryAdapter extends ArrayAdapter {
 
         return result;
     }
-    private void deleteCategory(final int position, View row,final Category c)
+    private void deleteCategory(final int position, View row,final Category c,final String method)
     {
 
         button = (ImageButton) row.findViewById(R.id.delete);
@@ -113,28 +113,48 @@ public class CategoryAdapter extends ArrayAdapter {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {
-                AlertDialog(position,c.getId().toString());
+                AlertDialog(position,c.getId().toString(),method);
             }
         });
     }
-    public void AlertDialog(final int position,final String field_id){
+
+    private void addDinrk(final int position, View row,final Category c,final String method)
+    {
+        buttonAddDrink = (LinearLayout) row.findViewById(R.id.layout_row);
+
+        buttonAddDrink.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)
+            {
+                AlertDialog(position,c.getId().toString(),method);
+            }
+        });
+    }
+    public void AlertDialog(final int position,final String field_id,final String method){
         ConecctionSQLiteHelper conn = new ConecctionSQLiteHelper(getContext(), "db_drinknote",null,1);
         final SQLiteDatabase db = conn.getWritableDatabase();
 
         AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
-        builder1.setMessage("Are your sure delete this item?");
+        builder1.setMessage("Are your sure "+method+" this item?");
         builder1.setCancelable(true);
 
         builder1.setPositiveButton(
                 "Yes",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        String[] param = {field_id};
-                        db.delete(Utility.TABLE_CATEGORY,Utility.FIELD_ID +"=?",param);
-                        list.remove(position);
-                        notifyDataSetChanged();
-                        db.close();
 
+                        switch (method)
+                        {
+                            case  "delete" :
+                                String[] param = {field_id};
+                                db.delete(Utility.TABLE_CATEGORY,Utility.FIELD_ID +"=?",param);
+                                list.remove(position);
+                                notifyDataSetChanged();
+                                db.close();
+                            break;
+                            case  "add" :
+                                Toast.makeText(getContext(),"Se agrego " + String.valueOf(position),Toast.LENGTH_SHORT).show();
+                            break;
+                        }
                     }
                 });
 

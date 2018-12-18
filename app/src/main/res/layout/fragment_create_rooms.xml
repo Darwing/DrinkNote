@@ -2,42 +2,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:layout_margin="20dp"
     android:orientation="vertical"
-    tools:context="lb.yiimgo.drinknote.ViewPager.Category.CreateCategory">
+    tools:context="lb.yiimgo.drinknote.ViewPager.RoomDrink.CreateRoomDrink">
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/spinner_room"
         style="@android:style/Widget.Holo.Light.Spinner"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginBottom="20dp" />
 
     <EditText
-        android:id="@+id/store_name"
+        android:id="@+id/room_name"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/border"
-        android:hint="@string/store_name"
+        android:hint="@string/store_toom_name"
         android:padding="5dp"
         android:inputType="textCapWords"
         android:singleLine="true" />
 
-    <EditText
-        android:id="@+id/amount"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/border"
-        android:ems="10"
-        android:hint="@string/cost"
-        android:inputType="numberDecimal"
-        android:padding="5dp" />
-
     <Button
-        android:id="@+id/send_data"
+        android:id="@+id/send_data_room"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/send_data" />

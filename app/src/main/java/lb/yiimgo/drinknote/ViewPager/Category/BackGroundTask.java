@@ -1,20 +1,16 @@
-package lb.yiimgo.drinknote;
+package lb.yiimgo.drinknote.ViewPager.Category;
 
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.media.Image;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import lb.yiimgo.drinknote.Entity.Category;
 import lb.yiimgo.drinknote.Entity.ConecctionSQLiteHelper;
+import lb.yiimgo.drinknote.R;
 import lb.yiimgo.drinknote.Utility.Utility;
 
 
@@ -40,7 +36,7 @@ public class BackGroundTask extends AsyncTask<String,Category,String> {
         String method = params[0];
         ConecctionSQLiteHelper conn = new ConecctionSQLiteHelper(ctx, "db_drinknote",null,1);
         SQLiteDatabase db = conn.getWritableDatabase();
-        categoryAdapter = new CategoryAdapter(ctx,R.layout.fragment_category);
+        categoryAdapter = new CategoryAdapter(ctx, R.layout.fragment_category);
         listView = (ListView) activity.findViewById(R.id.display_category);
 
         if(method.equals("get_info"))

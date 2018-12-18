@@ -11,7 +11,10 @@ package lb.yiimgo.drinknote.ViewPager;
         import lb.yiimgo.drinknote.Fragment.HomeFragment;
         import lb.yiimgo.drinknote.Fragment.CategoryFragment;
        // import lb.yiimgo.drinknote.Fragment.ContactsFragment;
+        import lb.yiimgo.drinknote.Fragment.RoomDrinkFragment;
         import lb.yiimgo.drinknote.R;
+        import lb.yiimgo.drinknote.ViewPager.Category.CreateCategory;
+        import lb.yiimgo.drinknote.ViewPager.RoomDrink.CreateRoomDrink;
         import lb.yiimgo.drinknote.ViewPagerAdapter;
 
 public class Home extends AppCompatActivity {
@@ -25,8 +28,7 @@ public class Home extends AppCompatActivity {
     //Fragments
     HomeFragment homeFragment;
     CategoryFragment ctFragment;
-
-    //ContactsFragment contactsFragment;
+    RoomDrinkFragment rmFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +80,10 @@ public class Home extends AppCompatActivity {
                 Intent viewCreateCategory=new Intent(this,CreateCategory.class);
                 startActivity(viewCreateCategory);
                 return true;
-
+            case R.id.action_room:
+                Intent viewRoomDrink =new Intent(this,CreateRoomDrink.class);
+                startActivity(viewRoomDrink);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -87,14 +92,14 @@ public class Home extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager)
     {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        homeFragment=new HomeFragment();
-        ctFragment=new CategoryFragment();
-
+        homeFragment = new HomeFragment();
+        ctFragment = new CategoryFragment();
+        rmFragment = new RoomDrinkFragment();
         //contactsFragment=new ContactsFragment();
-        adapter.addFragment(homeFragment,"HOME");
-        adapter.addFragment(ctFragment,"CATEGORY");
+        adapter.addFragment(homeFragment,"DASHBOARD");
+        adapter.addFragment(ctFragment,"DRINK");
+        adapter.addFragment(rmFragment,"ROOMS");
 
-        //adapter.addFragment(contactsFragment,"CONTACTS");
         viewPager.setAdapter(adapter);
     }
 
