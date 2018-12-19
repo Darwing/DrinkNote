@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -70,9 +71,15 @@ public class BackGroundTask extends AsyncTask<String,Category,String> {
     @Override
     protected void onPostExecute(String result)
     {
+        Log.d("onProgressUpdate",String.valueOf(categoryAdapter));
         if(result.equals("get_info"))
         {
+            if(categoryAdapter == null)
+            {
+                Toast.makeText(ctx,"hubo un error",Toast.LENGTH_LONG).show();
+            }else{
             listView.setAdapter(categoryAdapter);
+            }
         }
         else
             {

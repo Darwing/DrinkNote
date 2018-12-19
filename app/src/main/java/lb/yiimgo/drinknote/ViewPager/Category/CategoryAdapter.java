@@ -28,7 +28,7 @@ import lb.yiimgo.drinknote.Utility.Utility;
  */
 
 public class CategoryAdapter extends ArrayAdapter {
-    List list = new ArrayList();
+    ArrayList list = new ArrayList();
     ImageButton button;
     LinearLayout buttonAddDrink;
 
