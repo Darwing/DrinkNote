@@ -1,9 +1,11 @@
 package lb.yiimgo.drinknote.ViewPager.RoomDrink;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,8 +23,8 @@ public class CreateRoomDrink extends AppCompatActivity  {
 
     private EditText name;
     private EditText roomNumber;
-
-
+    private ConecctionSQLiteHelper conn;
+    private SQLiteDatabase db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,19 +42,25 @@ public class CreateRoomDrink extends AppCompatActivity  {
         });
     }
 
-
-    private void regiterDrinkRoom()
-    {
-        ConecctionSQLiteHelper conn = new ConecctionSQLiteHelper(this, "db_drinknote",null,1);
-        SQLiteDatabase db = conn.getWritableDatabase();
-
+    private void regiterDrinkRoom() {
+        conn = new ConecctionSQLiteHelper(this, "db_drinknote", null, 1);
+        db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(Utility.FIELD_NAME_ROOM , name.getText().toString());
-        values.put(Utility.FIELD_ROOM_DRINK_UBICATION, roomNumber.getText().toString());
+        if (conn.getRoomById(db, roomNumber.getText().toString())) {
 
-         db.insert(Utility.TABLE_ROOM_DRINK,Utility.FIELD_ID_ROOM,values);
-        //Toast.makeText(getApplicationContext(),"id result: "+ idResult, Toast.LENGTH_SHORT).show();
+            values.put(Utility.FIELD_NAME_ROOM, name.getText().toString());
+            values.put(Utility.FIELD_ROOM_DRINK_UBICATION, roomNumber.getText().toString());
+
+            db.insert(Utility.TABLE_ROOM_DRINK, Utility.FIELD_ID_ROOM, values);
+
+            name.getText().clear();
+            roomNumber.getText().clear();
+        } else
+        {
+            Toast.makeText(getApplicationContext(),"This room already exists!", Toast.LENGTH_SHORT).show();
+        }
+
         db.close();
     }
 

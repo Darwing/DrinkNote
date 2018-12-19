@@ -2,6 +2,7 @@ package lb.yiimgo.drinknote.ViewPager.Category;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -24,7 +25,8 @@ public class BackGroundTask extends AsyncTask<String,Category,String> {
     CategoryAdapter categoryAdapter;
     Activity activity;
     ListView listView;
-
+    ConecctionSQLiteHelper conn;
+    SQLiteDatabase db;
 
     public BackGroundTask(Context ctx){
         this.ctx = ctx;
@@ -35,8 +37,8 @@ public class BackGroundTask extends AsyncTask<String,Category,String> {
     @Override
     protected String doInBackground(String... params) {
         String method = params[0];
-        ConecctionSQLiteHelper conn = new ConecctionSQLiteHelper(ctx, "db_drinknote",null,1);
-        SQLiteDatabase db = conn.getWritableDatabase();
+        conn = new ConecctionSQLiteHelper(ctx, "db_drinknote",null,1);
+        db = conn.getWritableDatabase();
         categoryAdapter = new CategoryAdapter(ctx, R.layout.fragment_category);
         listView = (ListView) activity.findViewById(R.id.display_category);
 
@@ -74,11 +76,11 @@ public class BackGroundTask extends AsyncTask<String,Category,String> {
         Log.d("onProgressUpdate",String.valueOf(categoryAdapter));
         if(result.equals("get_info"))
         {
-            if(categoryAdapter == null)
+            try{
+                listView.setAdapter(categoryAdapter);
+            }catch (Exception e)
             {
-                Toast.makeText(ctx,"hubo un error",Toast.LENGTH_LONG).show();
-            }else{
-            listView.setAdapter(categoryAdapter);
+                Toast.makeText(ctx,e.getMessage(),Toast.LENGTH_LONG).show();
             }
         }
         else

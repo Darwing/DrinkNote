@@ -8,10 +8,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import lb.yiimgo.drinknote.ViewPager.RoomDrink.BackGroundTask;
-
 import lb.yiimgo.drinknote.R;
+import lb.yiimgo.drinknote.ViewPager.RoomDrink.BackGroundTaskRoom;
 
 public class RoomDrinkFragment extends Fragment {
     View view;
@@ -30,7 +28,7 @@ public class RoomDrinkFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        BackGroundTask backGroundTask = new BackGroundTask(getContext());
+        BackGroundTaskRoom backGroundTask = new BackGroundTaskRoom(getContext());
         backGroundTask.execute("get_info_room");
         view = inflater.inflate(R.layout.fragment_room_drink, container, false);
 

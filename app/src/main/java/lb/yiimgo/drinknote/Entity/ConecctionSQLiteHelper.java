@@ -35,12 +35,24 @@ public class ConecctionSQLiteHelper extends SQLiteOpenHelper
 
         return cursor;
     }
+    public boolean getRoomById(SQLiteDatabase db,String id)
+    {
+        String[] room = {Utility.FIELD_ROOM_DRINK_UBICATION };
+
+        Cursor cursorRoom = db.query(Utility.TABLE_ROOM_DRINK,room,"RoomUbication = ?",
+                new String[]{ id },null,
+                null,null,null);
+        if(cursorRoom.getCount() == 0)
+            return true;
+        else
+            return false;
+    }
     public Cursor getRoomInfo(SQLiteDatabase db)
     {
         String[] room = {Utility.FIELD_ID_ROOM,Utility.FIELD_NAME_ROOM,Utility.FIELD_ROOM_DRINK_UBICATION,Utility.FIELD_ROOM_DRINK_STATUS };
 
         Cursor cursorRoom = db.query(Utility.TABLE_ROOM_DRINK,room,null,null,
-                null,null,null);
+                null,null,room[2]+" ASC");
 
         return cursorRoom;
     }

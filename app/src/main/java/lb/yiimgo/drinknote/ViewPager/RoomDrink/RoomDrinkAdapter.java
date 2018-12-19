@@ -53,7 +53,7 @@ public class RoomDrinkAdapter extends ArrayAdapter {
     {
         return list.get(position);
     }
-
+ 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View row = convertView;

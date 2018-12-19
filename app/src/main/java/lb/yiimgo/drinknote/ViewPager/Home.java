@@ -19,10 +19,7 @@ package lb.yiimgo.drinknote.ViewPager;
 
 public class Home extends AppCompatActivity {
 
-    //This is our tablayout
     private TabLayout tabLayout;
-
-    //This is our viewPager
     private ViewPager viewPager;
 
     //Fragments

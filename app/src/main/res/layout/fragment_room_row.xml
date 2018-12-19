@@ -24,15 +24,16 @@
         <LinearLayout
             android:layout_width="232dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/t_id"
                 style="@style/title_style"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:text="@string/id_number_row" />
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="5dp"
+                android:text="@string/id_number_row"
+                android:visibility="invisible" />
 
             <TextView
                 android:id="@+id/t_name"
@@ -52,7 +53,7 @@
                 style="@style/title_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
                 android:text="@string/room_name" />
 
             <TextView
