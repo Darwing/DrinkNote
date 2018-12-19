@@ -1,25 +1,45 @@
 package lb.yiimgo.drinknote.Fragment;
 
+import android.app.ProgressDialog;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+import lb.yiimgo.drinknote.Entity.ConecctionSQLiteHelper;
+import lb.yiimgo.drinknote.Entity.RoomDrinks;
 import lb.yiimgo.drinknote.R;
-import lb.yiimgo.drinknote.ViewPager.RoomDrink.BackGroundTaskRoom;
+import lb.yiimgo.drinknote.Utility.Utility;
+import lb.yiimgo.drinknote.ViewPager.RoomDrink.RoomDrinkAdapter;
 
-public class RoomDrinkFragment extends Fragment {
+public class RoomDrinkFragment extends Fragment implements Response.Listener<JSONObject>,Response.ErrorListener{
     View view;
-
-    public RoomDrinkFragment() {
-
-    }
+    RecyclerView recyclerRoom;
+    ArrayList<RoomDrinks> listDrinkRoom;
+    ProgressDialog progressDialog;
+    ConecctionSQLiteHelper conn;
+    SQLiteDatabase db;
+    RoomDrinks drinkRoom;
+    public RoomDrinkFragment() { }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
@@ -27,15 +47,66 @@ public class RoomDrinkFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        BackGroundTaskRoom backGroundTask = new BackGroundTaskRoom(getContext());
-        backGroundTask.execute("get_info_room");
+        progressDialog = new ProgressDialog(getContext());
+
         view = inflater.inflate(R.layout.fragment_room_drink, container, false);
+        listDrinkRoom = new ArrayList<>();
+        recyclerRoom = (RecyclerView) view.findViewById(R.id.display_room);
+        recyclerRoom.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerRoom.setHasFixedSize(true);
+        getData();
 
         return view;
     }
 
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        Toast.makeText(getContext(),"Error",Toast.LENGTH_SHORT).show();
+    }
 
+    public void getData()
+    {
+        drinkRoom = null;
+        conn = new ConecctionSQLiteHelper(this.getContext(), "db_drinknote",null,1);
+        db = conn.getWritableDatabase();
+
+        Cursor roomData = conn.getRoomInfo(db);
+
+        while (roomData.moveToNext()){
+            drinkRoom = new RoomDrinks();
+            drinkRoom.setIdRoom(roomData.getInt(roomData.getColumnIndex(Utility.FIELD_ID_ROOM)));
+            drinkRoom.setNameRoom(roomData.getString(roomData.getColumnIndex(Utility.FIELD_NAME_ROOM)));
+            drinkRoom.setRoomUbication(roomData.getString(roomData.getColumnIndex(Utility.FIELD_ROOM_DRINK_UBICATION)));
+            drinkRoom.setStatus(statusText(roomData.getInt(roomData.getColumnIndex(Utility.FIELD_ROOM_DRINK_STATUS))));
+
+            listDrinkRoom.add(drinkRoom);
+        }
+
+        RoomDrinkAdapter adapter = new RoomDrinkAdapter(listDrinkRoom);
+        recyclerRoom.setAdapter(adapter);
+
+        conn.close();
+
+    }
+
+    private String statusText(Integer status)
+    {
+        String r = "";
+        switch (status)
+        {
+            case 0 :
+                r = "Disponible";
+                break;
+            case 1 :
+                r = "No disponible";
+                break;
+        }
+        return r;
+    }
+    @Override
+    public void onResponse(JSONObject response) {
+
+    }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_room_fragment, menu);

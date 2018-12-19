@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,17 +28,16 @@ import lb.yiimgo.drinknote.Utility.Utility;
  * Created by Darwing on 16-Dec-18.
  */
 
-public class CategoryAdapter extends ArrayAdapter {
-    ArrayList list = new ArrayList();
-    ImageButton button;
-    LinearLayout buttonAddDrink;
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryHolder> {
 
-    public CategoryAdapter(@NonNull Context context, int resource) {
-        super(context, resource);
+    List<Category> listCategory;
+
+   public CategoryAdapter(List<Category> listCategory) {
+       this.listCategory = listCategory;
     }
 
 
-    public void add(Category object)
+  /*   public void add(Category object)
     {
         list.add(object);
         super.add(object);
@@ -128,8 +128,8 @@ public class CategoryAdapter extends ArrayAdapter {
                 AlertDialog(position,c.getId().toString(),method);
             }
         });
-    }
-    public void AlertDialog(final int position,final String field_id,final String method){
+    }*/
+/*    public void AlertDialog(final int position,final String field_id,final String method){
         ConecctionSQLiteHelper conn = new ConecctionSQLiteHelper(getContext(), "db_drinknote",null,1);
         final SQLiteDatabase db = conn.getWritableDatabase();
 
@@ -168,11 +168,63 @@ public class CategoryAdapter extends ArrayAdapter {
 
         AlertDialog alert11 = builder1.create();
         alert11.show();
+    }*/
+
+
+    @Override
+    public CategoryHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View layoutInflater = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_category_row,parent,false);
+        RecyclerView.LayoutParams layoutParams =new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutInflater.setLayoutParams(layoutParams);
+
+        return new CategoryHolder(layoutInflater);
     }
-    static class CategoryHolder
+    private int DrinkType(String cat)
+    {
+        int result = 0;
+        switch (cat)
+        {
+            case "Cerveza" :
+                result = R.drawable.bg_presidente_light;
+                break;
+            case "Wisky" :
+                result = R.drawable.bg_wisky;
+                break;
+            case "Romo" :
+                result = R.drawable.bg_romo;
+                break;
+        }
+
+        return result;
+    }
+    @Override
+    public void onBindViewHolder(CategoryHolder holder, int position)
+    {
+        holder.tx_id.setText(listCategory.get(position).getId().toString());
+        holder.tx_name.setText(listCategory.get(position).getName().toString());
+        holder.tx_amount.setText(listCategory.get(position).getAmount().toString());
+        holder.tx_category.setText(listCategory.get(position).getCategory().toString());
+        holder.im_typeDrink.setImageResource( DrinkType(listCategory.get(position).getCategory().toString()));
+    }
+
+    @Override
+    public int getItemCount() {
+        return listCategory.size();
+    }
+
+    public class CategoryHolder extends RecyclerView.ViewHolder
     {
         TextView tx_id,tx_name,tx_amount,tx_category;
         ImageView im_typeDrink;
 
+        public CategoryHolder(View itemView)
+        {   super(itemView);
+
+            tx_id = (TextView) itemView.findViewById(R.id.t_id);
+            tx_name = (TextView) itemView.findViewById(R.id.t_name);
+            tx_amount = (TextView) itemView.findViewById(R.id.t_amount);
+            tx_category = (TextView) itemView.findViewById(R.id.t_category);
+            im_typeDrink= (ImageView)itemView.findViewById(R.id.typeDrink);
+        }
     }
 }

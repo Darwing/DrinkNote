@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,27 +17,31 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
+
+import lb.yiimgo.drinknote.Entity.Category;
 import lb.yiimgo.drinknote.Entity.ConecctionSQLiteHelper;
 import lb.yiimgo.drinknote.Entity.RoomDrinks;
 import lb.yiimgo.drinknote.R;
 import lb.yiimgo.drinknote.Utility.Utility;
+import lb.yiimgo.drinknote.ViewPager.Category.CategoryAdapter;
 
 /**
  * Created by Darwing on 16-Dec-18.
  */
 
-public class RoomDrinkAdapter extends ArrayAdapter {
+public class RoomDrinkAdapter extends RecyclerView.Adapter<RoomDrinkAdapter.RoomHolder> {
 
-    List list = new ArrayList();
     ImageButton button;
     LinearLayout buttonAddDrink,layoutRoom;
 
-    public RoomDrinkAdapter(@NonNull Context context, int resource) {
-        super(context, resource);
+    List<RoomDrinks> listDrinkRoom;
+
+    public RoomDrinkAdapter(List<RoomDrinks> listDrinkRoom) {
+        this.listDrinkRoom = listDrinkRoom;
     }
 
 
-    public void add(RoomDrinks object)
+  /*  public void add(RoomDrinks object)
     {
         list.add(object);
         super.add(object);
@@ -158,9 +163,44 @@ public class RoomDrinkAdapter extends ArrayAdapter {
 
         AlertDialog alert11 = builder1.create();
         alert11.show();
+    }*/
+
+
+    @Override
+    public RoomDrinkAdapter.RoomHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View layoutInflater = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_room_row,parent,false);
+        RecyclerView.LayoutParams layoutParams =new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutInflater.setLayoutParams(layoutParams);
+
+        return new RoomDrinkAdapter.RoomHolder(layoutInflater);
     }
-    static class RoomDrinkHolder
+
+    @Override
+    public void onBindViewHolder(@NonNull RoomHolder holder, int position) {
+        holder.tx_id.setText(listDrinkRoom.get(position).getIdRoom().toString());
+        holder.tx_name.setText(listDrinkRoom.get(position).getNameRoom().toString());
+        holder.tx_ubication.setText(listDrinkRoom.get(position).getRoomUbication().toString());
+        holder.tx_status.setText(listDrinkRoom.get(position).getStatus().toString());
+        //holder.im_typeDrink.setImageResource( DrinkType(listCategory.get(position).getCategory().toString()));
+}
+
+
+    @Override
+    public int getItemCount() {
+        return listDrinkRoom.size();
+    }
+
+    public class RoomHolder extends RecyclerView.ViewHolder
     {
         TextView tx_id,tx_name,tx_ubication,tx_status;
+
+        public RoomHolder(View itemView) {
+            super(itemView);
+
+            tx_id = (TextView) itemView.findViewById(R.id.t_id);
+            tx_name = (TextView) itemView.findViewById(R.id.t_name);
+            tx_ubication = (TextView) itemView.findViewById(R.id.t_ubication);
+            tx_status = (TextView) itemView.findViewById(R.id.t_status);
+        }
     }
 }

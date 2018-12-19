@@ -92,9 +92,9 @@ public class Home extends AppCompatActivity {
         homeFragment = new HomeFragment();
         ctFragment = new CategoryFragment();
         rmFragment = new RoomDrinkFragment();
-        //contactsFragment=new ContactsFragment();
+
         adapter.addFragment(homeFragment,"DASHBOARD");
-        adapter.addFragment(ctFragment,"DRINK");
+        adapter.addFragment(ctFragment,"SERVICES");
         adapter.addFragment(rmFragment,"ROOMS");
 
         viewPager.setAdapter(adapter);

@@ -8,23 +8,7 @@ public class RoomDrinks {
     private Integer IdRoom;
     private String NameRoom;
     private String RoomUbication;
-    private int Status;
-
-    public RoomDrinks(Integer IdRoom, String NameRoom, String RoomUbication,int Status)
-    {
-        this.IdRoom = IdRoom;
-        this.NameRoom = NameRoom;
-        this.RoomUbication = RoomUbication;
-        this.Status = Status;
-    }
-
-    public int getStatus() {
-        return Status;
-    }
-
-    public void setStatus(int status) {
-        Status = status;
-    }
+    private String Status;
 
     public Integer getIdRoom() {
         return IdRoom;
@@ -46,7 +30,15 @@ public class RoomDrinks {
         return RoomUbication;
     }
 
-    public void setRoomUbication(String RoomUbication) {
-        RoomUbication = RoomUbication;
+    public void setRoomUbication(String roomUbication) {
+        RoomUbication = roomUbication;
+    }
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String status) {
+        Status = status;
     }
 }

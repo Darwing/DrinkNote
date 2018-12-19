@@ -10,13 +10,13 @@ public class Category {
     private Integer Amount;
     private String Category;
 
-public Category(Integer Id, String Name, Integer Amount,String Category)
+/*public Category(Integer Id, String Name, Integer Amount,String Category)
 {
     this.Id = Id;
     this.Name = Name;
     this.Amount = Amount;
     this.Category = Category;
-}
+}*/
 
     public Integer getId() {
         return Id;
