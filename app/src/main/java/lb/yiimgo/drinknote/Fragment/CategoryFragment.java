@@ -2,8 +2,6 @@ package lb.yiimgo.drinknote.Fragment;
 
 
 import android.app.ProgressDialog;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -28,9 +27,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import lb.yiimgo.drinknote.Entity.Category;
-import lb.yiimgo.drinknote.Entity.ConecctionSQLiteHelper;
-import lb.yiimgo.drinknote.Utility.Utility;
-
 import lb.yiimgo.drinknote.R;
 import lb.yiimgo.drinknote.ViewPager.Category.CategoryAdapter;
 
@@ -39,7 +35,7 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
     RecyclerView recyclerCategory;
     ArrayList<Category> listCategory;
     ProgressDialog progressDialog;
-
+    CategoryAdapter adapter;
     Category category = null;
     RequestQueue requestQueue;
     JsonObjectRequest jsonObjectRequest;
@@ -65,7 +61,6 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
 
         requestQueue = Volley.newRequestQueue(getContext());
         loadWebServices();
-
         return view;
     }
 
@@ -101,8 +96,10 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
             }
 
             progressDialog.hide();
-            CategoryAdapter adapter = new CategoryAdapter(listCategory);
+            adapter = new CategoryAdapter(listCategory);
+
             recyclerCategory.setAdapter(adapter);
+            addServicesRoom(adapter,recyclerCategory,listCategory);
     }
     public void loadWebServices()
     {
@@ -116,7 +113,30 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
 
     }
 
+    public void addServicesRoom(final CategoryAdapter adapters,final RecyclerView recy,final ArrayList<Category> c)
+    {
 
+        adapters.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(),"Seleccion "+
+                c.get(recy.getChildAdapterPosition(view))
+                        .getName(),Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    public void deleteServices(final CategoryAdapter adapters,final RecyclerView recy,final ArrayList<Category> c)
+    {
+
+        adapters.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(),"Seleccion "+
+                        c.get(recy.getChildAdapterPosition(view))
+                                .getName(),Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

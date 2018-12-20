@@ -31,9 +31,11 @@ import lb.yiimgo.drinknote.Utility.Utility;
  * Created by Darwing on 16-Dec-18.
  */
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryHolder> {
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryHolder>
+implements View.OnClickListener{
 
     List<Category> listCategory;
+    private View.OnClickListener listener;
 
    public CategoryAdapter(List<Category> listCategory) {
        this.listCategory = listCategory;
@@ -131,12 +133,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                 AlertDialog(position,c.getId().toString(),method);
             }
         });
-    }*/
-/*    public void AlertDialog(final int position,final String field_id,final String method){
-        ConecctionSQLiteHelper conn = new ConecctionSQLiteHelper(getContext(), "db_drinknote",null,1);
-        final SQLiteDatabase db = conn.getWritableDatabase();
+    }
+    public void AlertDialog(final int position,final ViewGroup parent, final String method){
 
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(parent.getContext());
         builder1.setMessage("Are your sure "+method+" this item?");
         builder1.setCancelable(true);
 
@@ -148,14 +148,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                         switch (method)
                         {
                             case  "delete" :
-                                String[] param = {field_id};
-                                db.delete(Utility.TABLE_CATEGORY,Utility.FIELD_ID +"=?",param);
-                                list.remove(position);
+
+                                listCategory.remove(position);
                                 notifyDataSetChanged();
-                                db.close();
+
                             break;
                             case  "add" :
-                                Toast.makeText(getContext(),"Se agrego " + String.valueOf(position),Toast.LENGTH_SHORT).show();
+                                Toast.makeText(parent.getContext(),"Se agrego " + String.valueOf(position),Toast.LENGTH_SHORT).show();
                             break;
                         }
                     }
@@ -171,8 +170,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         AlertDialog alert11 = builder1.create();
         alert11.show();
-    }*/
-
+    }
+*/
 
     @Override
     public CategoryHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -180,6 +179,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         RecyclerView.LayoutParams layoutParams =new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutInflater.setLayoutParams(layoutParams);
 
+        layoutInflater.setOnClickListener(this);
         return new CategoryHolder(layoutInflater);
     }
     private int DrinkType(String cat)
@@ -221,6 +221,18 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         return listCategory.size();
     }
 
+    public void setOnClickListener(View.OnClickListener listener)
+    {
+        this.listener=listener;
+    }
+    @Override
+    public void onClick(View view) {
+        if(listener != null)
+        {
+            listener.onClick(view);
+        }
+    }
+
     public class CategoryHolder extends RecyclerView.ViewHolder
     {
         TextView tx_id,tx_name,tx_amount,tx_category;
@@ -234,6 +246,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             tx_amount = (TextView) itemView.findViewById(R.id.t_amount);
             tx_category = (TextView) itemView.findViewById(R.id.t_category);
             im_typeDrink= (ImageView)itemView.findViewById(R.id.typeDrink);
+
         }
     }
 }
