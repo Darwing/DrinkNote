@@ -28,26 +28,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/id_number" />
-
         <TextView
-            android:id="@+id/t_category"
+            android:id="@+id/t_name"
             style="@style/title_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/category_label" />
+            android:text="@string/store_name" />
+
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/imageView"
+            <TextView
+                android:id="@+id/mony_type"
+                style="@style/body_style"
                 android:layout_width="wrap_content"
-                android:layout_height="22dp"
-                android:layout_marginEnd="5dp"
-                android:contentDescription="@string/money"
-                android:src="@drawable/bg_money" />
+                android:layout_height="wrap_content"
+                android:text="@string/cost" />
 
             <TextView
                 android:id="@+id/t_amount"
@@ -57,11 +56,11 @@
                 android:text="@string/cost" />
         </LinearLayout>
         <TextView
-            android:id="@+id/t_name"
+            android:id="@+id/t_category"
             style="@style/body_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/store_name" />
+            android:text="@string/category_label" />
 
     </LinearLayout>
 

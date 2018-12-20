@@ -15,8 +15,16 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import lb.yiimgo.drinknote.Entity.Category;
@@ -31,9 +39,10 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
     RecyclerView recyclerCategory;
     ArrayList<Category> listCategory;
     ProgressDialog progressDialog;
-    ConecctionSQLiteHelper conn;
-    SQLiteDatabase db;
-    Category category;
+
+    Category category = null;
+    RequestQueue requestQueue;
+    JsonObjectRequest jsonObjectRequest;
 
     public CategoryFragment() { }
 
@@ -47,52 +56,66 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("Cargando...");
-        progressDialog.show();
+
         view = inflater.inflate(R.layout.fragment_category, container, false);
         listCategory = new ArrayList<>();
         recyclerCategory = (RecyclerView) view.findViewById(R.id.idRecycler);
         recyclerCategory.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerCategory.setHasFixedSize(true);
-        getData();
+
+        requestQueue = Volley.newRequestQueue(getContext());
+        loadWebServices();
 
         return view;
     }
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        Toast.makeText(getContext(),"Error",Toast.LENGTH_SHORT).show();
-    }
-
-    public void getData()
-    {
-        category = null;
-        conn = new ConecctionSQLiteHelper(this.getContext(), "db_drinknote",null,1);
-        db = conn.getWritableDatabase();
-
-        Cursor categoryData = conn.getCategoryInfo(db);
-
-        while (categoryData.moveToNext()){
-            category = new Category();
-            category.setId(categoryData.getInt(categoryData.getColumnIndex(Utility.FIELD_ID)));
-            category.setName(categoryData.getString(categoryData.getColumnIndex(Utility.FIELD_NAME)));
-            category.setAmount(categoryData.getInt(categoryData.getColumnIndex(Utility.FIELD_AMOUNT)));
-            category.setCategory(categoryData.getString(categoryData.getColumnIndex(Utility.FIELD_CATEGORY)));
-
-            listCategory.add(category);
-        }
-
-        CategoryAdapter adapter = new CategoryAdapter(listCategory);
-        recyclerCategory.setAdapter(adapter);
+        Toast.makeText(getContext(),"Error " + error.toString(),Toast.LENGTH_LONG).show();
         progressDialog.hide();
-        conn.close();
-
     }
     @Override
     public void onResponse(JSONObject response) {
 
+
+        JSONArray json = response.optJSONArray("category");
+        try{
+            for(int i =0; i<json.length(); i++)
+            {
+                category = new Category();
+                JSONObject jsonObject = null;
+                jsonObject =json.getJSONObject(i);
+
+                category.setId(jsonObject.optInt("Id"));
+                category.setName(jsonObject.optString("Name"));
+                category.setAmount(jsonObject.optDouble("Amount"));
+                category.setCategory(jsonObject.optString("Category"));
+                category.setStatus(jsonObject.optString("Status"));
+
+                listCategory.add(category);
+
+            }
+            }catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
+
+            progressDialog.hide();
+            CategoryAdapter adapter = new CategoryAdapter(listCategory);
+            recyclerCategory.setAdapter(adapter);
     }
+    public void loadWebServices()
+    {
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Cargando...");
+        progressDialog.show();
+
+        String url = "http://rizikyasociados.com.do/wsDrinkNote/Main/getDataServices";
+        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
+        requestQueue.add(jsonObjectRequest);
+
+    }
+
 
 
     @Override

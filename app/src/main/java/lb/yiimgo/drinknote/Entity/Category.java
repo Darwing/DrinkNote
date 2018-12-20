@@ -4,19 +4,21 @@ package lb.yiimgo.drinknote.Entity;
  * Created by Darwing on 15-Dec-18.
  */
 
-public class Category {
+public class Category
+{
     private Integer Id;
     private String Name;
-    private Integer Amount;
+    private Double Amount;
     private String Category;
+    private String Status;
 
-/*public Category(Integer Id, String Name, Integer Amount,String Category)
-{
-    this.Id = Id;
-    this.Name = Name;
-    this.Amount = Amount;
-    this.Category = Category;
-}*/
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String status) {
+        Status = status;
+    }
 
     public Integer getId() {
         return Id;
@@ -34,11 +36,11 @@ public class Category {
         Name = name;
     }
 
-    public Integer getAmount() {
+    public Double getAmount() {
         return Amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Double amount) {
         Amount = amount;
     }
 

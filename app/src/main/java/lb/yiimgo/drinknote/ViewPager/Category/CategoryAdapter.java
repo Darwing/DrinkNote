@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import lb.yiimgo.drinknote.Entity.Category;
 import lb.yiimgo.drinknote.Entity.ConecctionSQLiteHelper;
@@ -190,21 +193,27 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             case "Wisky" :
                 result = R.drawable.bg_wisky;
                 break;
-            case "Romo" :
+            case "Ron" :
                 result = R.drawable.bg_romo;
                 break;
         }
 
         return result;
     }
+    private String getFormatedAmount(Double amount){
+        return NumberFormat.getNumberInstance(Locale.US).format(amount);
+    }
+
     @Override
     public void onBindViewHolder(CategoryHolder holder, int position)
     {
+
         holder.tx_id.setText(listCategory.get(position).getId().toString());
         holder.tx_name.setText(listCategory.get(position).getName().toString());
-        holder.tx_amount.setText(listCategory.get(position).getAmount().toString());
+        holder.tx_amount.setText(getFormatedAmount(listCategory.get(position).getAmount()));
         holder.tx_category.setText(listCategory.get(position).getCategory().toString());
         holder.im_typeDrink.setImageResource( DrinkType(listCategory.get(position).getCategory().toString()));
+
     }
 
     @Override

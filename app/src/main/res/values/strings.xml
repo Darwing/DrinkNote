@@ -9,7 +9,7 @@
 
     <string name="id_number">00000</string>
     <string name="store_name">Store Name</string>
-    <string name="cost">000</string>
+    <string name="cost">RD$ </string>
     <string name="category_label">Category Name</string>
     <string name="send_data">Enviar</string>
     <string name="cerveza">nulo</string>
