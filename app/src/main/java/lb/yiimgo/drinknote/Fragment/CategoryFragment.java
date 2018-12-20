@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
     Category category = null;
     RequestQueue requestQueue;
     JsonObjectRequest jsonObjectRequest;
+    ImageButton deleteCategory;
 
     public CategoryFragment() { }
 
@@ -96,10 +98,16 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
             }
 
             progressDialog.hide();
-            adapter = new CategoryAdapter(listCategory);
 
+            adapter = new CategoryAdapter(getActivity(), listCategory, new CategoryAdapter.ListAdapterListener() {
+            @Override
+            public void onClickAtOKButton(int p) {
+                Toast.makeText(getActivity(), "click ok button at " + listCategory.get(p).getId(), Toast.LENGTH_SHORT).show();
+            }
+        });
             recyclerCategory.setAdapter(adapter);
-            addServicesRoom(adapter,recyclerCategory,listCategory);
+
+            //addServicesRoom(adapter,recyclerCategory,listCategory);
     }
     public void loadWebServices()
     {
@@ -116,26 +124,14 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
     public void addServicesRoom(final CategoryAdapter adapters,final RecyclerView recy,final ArrayList<Category> c)
     {
 
-        adapters.setOnClickListener(new View.OnClickListener() {
+ /*       adapters.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getContext(),"Seleccion "+
                 c.get(recy.getChildAdapterPosition(view))
                         .getName(),Toast.LENGTH_SHORT).show();
             }
-        });
-    }
-    public void deleteServices(final CategoryAdapter adapters,final RecyclerView recy,final ArrayList<Category> c)
-    {
-
-        adapters.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(),"Seleccion "+
-                        c.get(recy.getChildAdapterPosition(view))
-                                .getName(),Toast.LENGTH_SHORT).show();
-            }
-        });
+        });*/
     }
 
     @Override

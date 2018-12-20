@@ -1,5 +1,6 @@
 package lb.yiimgo.drinknote.ViewPager.Category;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,13 +34,21 @@ import lb.yiimgo.drinknote.Utility.Utility;
  */
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryHolder>
-implements View.OnClickListener{
+    implements View.OnClickListener{
 
     List<Category> listCategory;
     private View.OnClickListener listener;
+    private Context mContext;
+    private ListAdapterListener mListener;
 
-   public CategoryAdapter(List<Category> listCategory) {
+    public interface ListAdapterListener { // create an interface
+        void onClickAtOKButton(int p); // create callback function
+    }
+    public CategoryAdapter(Context context,List<Category> listCategory, ListAdapterListener  mListener) {
        this.listCategory = listCategory;
+       this.mContext = context;
+       this.mListener = mListener;
+
     }
 
 
@@ -176,6 +186,7 @@ implements View.OnClickListener{
     @Override
     public CategoryHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View layoutInflater = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_category_row,parent,false);
+
         RecyclerView.LayoutParams layoutParams =new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutInflater.setLayoutParams(layoutParams);
 
@@ -205,7 +216,7 @@ implements View.OnClickListener{
     }
 
     @Override
-    public void onBindViewHolder(CategoryHolder holder, int position)
+    public void onBindViewHolder(CategoryHolder holder, final int position)
     {
 
         holder.tx_id.setText(listCategory.get(position).getId().toString());
@@ -213,6 +224,13 @@ implements View.OnClickListener{
         holder.tx_amount.setText(getFormatedAmount(listCategory.get(position).getAmount()));
         holder.tx_category.setText(listCategory.get(position).getCategory().toString());
         holder.im_typeDrink.setImageResource( DrinkType(listCategory.get(position).getCategory().toString()));
+        holder.deleteCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // use callback function in the place you want
+                mListener.onClickAtOKButton(position);
+            }
+        });
 
     }
 
@@ -230,6 +248,7 @@ implements View.OnClickListener{
         if(listener != null)
         {
             listener.onClick(view);
+
         }
     }
 
@@ -237,6 +256,7 @@ implements View.OnClickListener{
     {
         TextView tx_id,tx_name,tx_amount,tx_category;
         ImageView im_typeDrink;
+        ImageButton deleteCategory;
 
         public CategoryHolder(View itemView)
         {   super(itemView);
@@ -246,6 +266,7 @@ implements View.OnClickListener{
             tx_amount = (TextView) itemView.findViewById(R.id.t_amount);
             tx_category = (TextView) itemView.findViewById(R.id.t_category);
             im_typeDrink= (ImageView)itemView.findViewById(R.id.typeDrink);
+            deleteCategory = (ImageButton) itemView.findViewById(R.id.delete);
 
         }
     }
