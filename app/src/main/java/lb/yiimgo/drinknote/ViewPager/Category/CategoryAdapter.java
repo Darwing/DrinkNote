@@ -34,15 +34,17 @@ import lb.yiimgo.drinknote.Utility.Utility;
  */
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryHolder>
-    implements View.OnClickListener{
+{
 
     List<Category> listCategory;
     private View.OnClickListener listener;
     private Context mContext;
     private ListAdapterListener mListener;
+    private List<Category> names;
 
-    public interface ListAdapterListener { // create an interface
-        void onClickAtOKButton(int p); // create callback function
+    public interface ListAdapterListener {
+        void onClickDeleteButton(int p);
+        void onClickAddButton(View v);
     }
     public CategoryAdapter(Context context,List<Category> listCategory, ListAdapterListener  mListener) {
        this.listCategory = listCategory;
@@ -51,149 +53,22 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     }
 
-
-  /*   public void add(Category object)
-    {
-        list.add(object);
-        super.add(object);
-    }
-
     @Override
-    public int getCount()
-    {
-       return list.size();
-    }
-
-    @Override
-    public Object getItem(int position)
-    {
-        return list.get(position);
-    }
-
-    @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        View row = convertView;
-        CategoryHolder categoryHolder;
-        if (row == null)
-        {
-            LayoutInflater layoutInflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row = layoutInflater.inflate(R.layout.fragment_category_row,parent,false);
-            categoryHolder = new CategoryHolder();
-
-            categoryHolder.im_typeDrink = (ImageView) row.findViewById(R.id.typeDrink);
-            categoryHolder.tx_id = (TextView) row.findViewById(R.id.t_id);
-            categoryHolder.tx_name = (TextView) row.findViewById(R.id.t_name);
-            categoryHolder.tx_amount = (TextView) row.findViewById(R.id.t_amount);
-            categoryHolder.tx_category = (TextView) row.findViewById(R.id.t_category);
-
-            row.setTag(categoryHolder);
-        }else
-        {
-            categoryHolder = (CategoryHolder) row.getTag();
-        }
-
-        Category category = (Category) getItem(position);
-        categoryHolder.im_typeDrink.setImageResource( DrinkType(category.getCategory().toString()));
-        categoryHolder.tx_id.setText(category.getId().toString());
-        categoryHolder.tx_name.setText(category.getName().toString());
-        categoryHolder.tx_amount.setText(category.getAmount().toString());
-        categoryHolder.tx_category.setText(category.getCategory().toString());
-        deleteCategory(position,row,category,"delete");
-        addDinrk(position,row,category,"add");
-        return row;
-    }
-    private int DrinkType(String cat)
-    {
-        int result = 0;
-        switch (cat)
-        {
-            case "Cerveza" :
-                result = R.drawable.bg_presidente_light;
-                break;
-            case "Wisky" :
-                result = R.drawable.bg_wisky;
-                break;
-            case "Romo" :
-                result = R.drawable.bg_romo;
-                break;
-        }
-
-        return result;
-    }
-    private void deleteCategory(final int position, View row,final Category c,final String method)
-    {
-
-        button = (ImageButton) row.findViewById(R.id.delete);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v)
-            {
-                AlertDialog(position,c.getId().toString(),method);
-            }
-        });
-    }
-
-    private void addDinrk(final int position, View row,final Category c,final String method)
-    {
-        buttonAddDrink = (LinearLayout) row.findViewById(R.id.layout_row);
-
-        buttonAddDrink.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v)
-            {
-                AlertDialog(position,c.getId().toString(),method);
-            }
-        });
-    }
-    public void AlertDialog(final int position,final ViewGroup parent, final String method){
-
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(parent.getContext());
-        builder1.setMessage("Are your sure "+method+" this item?");
-        builder1.setCancelable(true);
-
-        builder1.setPositiveButton(
-                "Yes",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        switch (method)
-                        {
-                            case  "delete" :
-
-                                listCategory.remove(position);
-                                notifyDataSetChanged();
-
-                            break;
-                            case  "add" :
-                                Toast.makeText(parent.getContext(),"Se agrego " + String.valueOf(position),Toast.LENGTH_SHORT).show();
-                            break;
-                        }
-                    }
-                });
-
-        builder1.setNegativeButton(
-                "No",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
-    }
-*/
-
-    @Override
-    public CategoryHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CategoryHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
         View layoutInflater = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_category_row,parent,false);
 
         RecyclerView.LayoutParams layoutParams =new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutInflater.setLayoutParams(layoutParams);
+        layoutInflater.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onClickAddButton(view);
+            }
+        });
 
-        layoutInflater.setOnClickListener(this);
         return new CategoryHolder(layoutInflater);
     }
-    private int DrinkType(String cat)
+    private int drinkType(String cat)
     {
         int result = 0;
         switch (cat)
@@ -211,6 +86,23 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         return result;
     }
+
+    private int statusType(String s)
+    {
+        int result = 0;
+        switch (s)
+        {
+            case "Disponible" :
+                result = R.drawable.available;
+                break;
+            case "No disponible" :
+                result = R.drawable.no_available;
+                break;
+
+        }
+
+        return result;
+    }
     private String getFormatedAmount(Double amount){
         return NumberFormat.getNumberInstance(Locale.US).format(amount);
     }
@@ -223,40 +115,34 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         holder.tx_name.setText(listCategory.get(position).getName().toString());
         holder.tx_amount.setText(getFormatedAmount(listCategory.get(position).getAmount()));
         holder.tx_category.setText(listCategory.get(position).getCategory().toString());
-        holder.im_typeDrink.setImageResource( DrinkType(listCategory.get(position).getCategory().toString()));
+        holder.im_typeDrink.setImageResource(drinkType(listCategory.get(position).getCategory().toString()));
+        holder.tx_status.setText(listCategory.get(position).getStatus());
+        holder.tx_icon_status.setImageResource(statusType(listCategory.get(position).getStatus()));
         holder.deleteCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // use callback function in the place you want
-                mListener.onClickAtOKButton(position);
+                mListener.onClickDeleteButton(position);
             }
         });
 
     }
-
+    public void updateList(List<Category> newList)
+    {
+        names = new ArrayList<>();
+        names.addAll(newList);
+        notifyDataSetChanged();
+    }
     @Override
     public int getItemCount() {
         return listCategory.size();
     }
 
-    public void setOnClickListener(View.OnClickListener listener)
-    {
-        this.listener=listener;
-    }
-    @Override
-    public void onClick(View view) {
-        if(listener != null)
-        {
-            listener.onClick(view);
-
-        }
-    }
 
     public class CategoryHolder extends RecyclerView.ViewHolder
     {
-        TextView tx_id,tx_name,tx_amount,tx_category;
+        TextView tx_id,tx_name,tx_amount,tx_category,tx_status;
         ImageView im_typeDrink;
-        ImageButton deleteCategory;
+        ImageButton deleteCategory,tx_icon_status;
 
         public CategoryHolder(View itemView)
         {   super(itemView);
@@ -266,6 +152,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             tx_amount = (TextView) itemView.findViewById(R.id.t_amount);
             tx_category = (TextView) itemView.findViewById(R.id.t_category);
             im_typeDrink= (ImageView)itemView.findViewById(R.id.typeDrink);
+            tx_status = (TextView) itemView.findViewById(R.id.t_status);
+            tx_icon_status = (ImageButton) itemView.findViewById(R.id.changeStatus);
             deleteCategory = (ImageButton) itemView.findViewById(R.id.delete);
 
         }

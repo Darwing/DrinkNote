@@ -27,6 +27,8 @@
     <string name="id_number_row">000 - </string>
     <string name="create_category">New Category</string>
     <string name="create_room">New Room</string>
+    <string name="search">Search</string>
+    <string name="refresh">Refresh</string>
 
 
 </resources>
