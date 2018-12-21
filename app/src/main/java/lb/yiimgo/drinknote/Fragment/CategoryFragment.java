@@ -42,7 +42,7 @@ import lb.yiimgo.drinknote.R;
 import lb.yiimgo.drinknote.ViewPager.Category.CategoryAdapter;
 
 public class CategoryFragment extends Fragment implements Response.Listener<JSONObject>,
-        Response.ErrorListener{
+        Response.ErrorListener {
     View view;
     RecyclerView recyclerCategory;
     ArrayList<Category> listCategory;
@@ -217,11 +217,15 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
     }
 
 
-    @Override
+/*    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_category_fragment, menu);
+ *//*       MenuItem menuItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView)menuItem.getActionView();
+        searchView.setOnQueryTextListener(this);*//*
 
         super.onCreateOptionsMenu(menu, inflater);
-    }
+    }*/
 
 
 }

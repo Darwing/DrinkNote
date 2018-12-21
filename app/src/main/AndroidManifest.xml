@@ -22,6 +22,7 @@
         <activity android:name="lb.yiimgo.drinknote.ViewPager.RoomDrink.CreateRoomDrink"
             android:label="@string/create_room_title"
             android:parentActivityName=".ViewPager.Home"/>
+        <activity android:name="lb.yiimgo.drinknote.ViewPager.CategoryActivity"></activity>
     </application>
 
 </manifest>
