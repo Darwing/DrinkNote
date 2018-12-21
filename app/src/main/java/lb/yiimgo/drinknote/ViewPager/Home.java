@@ -64,7 +64,7 @@ public class Home extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_category_fragment, menu);
+        getMenuInflater().inflate(R.menu.menu_home, menu);
         // Associate searchable configuration with the SearchView
         return true;
     }

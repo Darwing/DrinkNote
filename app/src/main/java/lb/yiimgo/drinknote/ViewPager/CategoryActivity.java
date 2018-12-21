@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
@@ -26,17 +28,17 @@ import lb.yiimgo.drinknote.ViewPagerAdapter;
  * Created by Darwing on 21-Dec-18.
  */
 
-public class CategoryActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class CategoryActivity extends AppCompatActivity
+{
     private TabLayout tabLayout;
     private ViewPager viewPager;
     HomeFragment homeFragment;
     CategoryFragment ctFragment;
     RoomDrinkFragment rmFragment;
-    ArrayList<Category> listCategory;
-    CategoryAdapter categoryAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
         //Initializing viewPager
@@ -46,7 +48,7 @@ public class CategoryActivity extends AppCompatActivity implements SearchView.On
         //Initializing the tablayout
         tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
-
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -68,14 +70,6 @@ public class CategoryActivity extends AppCompatActivity implements SearchView.On
         setupViewPager(viewPager);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_category_fragment, menu);
-        MenuItem menuItem = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView)menuItem.getActionView();
-        searchView.setOnQueryTextListener(this);
-        return true;
-    }
 
     private void setupViewPager(ViewPager viewPager)
     {
@@ -91,22 +85,4 @@ public class CategoryActivity extends AppCompatActivity implements SearchView.On
         viewPager.setAdapter(adapter);
     }
 
-    @Override
-    public boolean onQueryTextSubmit(String s) {
-
-        String userInput = s.toLowerCase();
-        List<Category> newList = new ArrayList<>();
-        for(Category category : listCategory)
-        {
-            newList.add(category);
-        }
-        categoryAdapter.updateList(newList);
-        return true;
-
-    }
-
-    @Override
-    public boolean onQueryTextChange(String s) {
-        return false;
-    }
 }
