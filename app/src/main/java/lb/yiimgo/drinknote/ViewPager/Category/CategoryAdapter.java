@@ -23,16 +23,16 @@ import lb.yiimgo.drinknote.R;
  */
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryHolder>
-{
+ {
 
-    List<Category> listCategory;
+    ArrayList<Category> listCategory;
     private Context mContext;
     private ListAdapterListener mListener; 
-
+    View layoutInflater;
     public interface ListAdapterListener {
         void onClickAddButton(View v);
     }
-    public CategoryAdapter(Context context,List<Category> listCategory, ListAdapterListener  mListener) {
+    public CategoryAdapter(Context context,ArrayList<Category> listCategory, ListAdapterListener  mListener) {
        this.listCategory = listCategory;
        this.mContext = context;
        this.mListener = mListener;
@@ -41,16 +41,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public CategoryHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
-        View layoutInflater = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_category_row,parent,false);
+        layoutInflater = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_category_row,parent,false);
 
         RecyclerView.LayoutParams layoutParams =new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutInflater.setLayoutParams(layoutParams);
-        layoutInflater.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListener.onClickAddButton(view);
-            }
-        });
+
 
         return new CategoryHolder(layoutInflater);
     }
@@ -104,6 +99,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         holder.im_typeDrink.setImageResource(drinkType(listCategory.get(position).getCategory().toString()));
         holder.tx_status.setText(listCategory.get(position).getStatus());
         holder.tx_status.setBackgroundColor(statusType(listCategory.get(position).getStatus()));
+
+        layoutInflater.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onClickAddButton(view);
+            }
+        });
+
       /*  holder.deleteCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,7 +115,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         });*/
 
     }
-    public void updateList(List<Category> newList)
+    public void updateList(ArrayList<Category> newList)
     {
         listCategory = new ArrayList<>();
         listCategory.addAll(newList);

@@ -82,7 +82,7 @@ public class LoginFragment extends Fragment implements Response.Listener<JSONObj
             users.setCompany(jsonObject.optString("Company"));
             users.setFullName(jsonObject.optString("FullName"));
 
-              
+
              Intent intent = new Intent(getContext(),Home.class);
              intent.putExtra(Home.company,users.getCompany().toString());
              startActivity(intent);

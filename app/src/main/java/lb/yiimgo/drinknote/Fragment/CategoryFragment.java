@@ -45,14 +45,18 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
     public View view;
     public RecyclerView recyclerCategory;
     public ArrayList<Category> listCategory;
+    public ArrayList<Category> newList;
+    public ArrayList<Category> searchNewList;
+
     public ProgressDialog progressDialog;
     public CategoryAdapter adapter;
     public Category category = null;
     public RequestQueue requestQueue;
     public JsonObjectRequest jsonObjectRequest;
     public SearchView searchView;
-    public ArrayList<Category> newList;
+
     public TextView notFound;
+    public boolean ifSearch = false;
 
     public CategoryFragment() { }
 
@@ -73,9 +77,10 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
         recyclerCategory.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerCategory.setHasFixedSize(true);
         notFound = (TextView) view.findViewById(R.id.not_found);
-
+        adapterOnClick();
         requestQueue = Volley.newRequestQueue(getContext());
         loadWebServices();
+
         return view;
     }
 
@@ -111,20 +116,29 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
 
             progressDialog.hide();
 
-            adapter = new CategoryAdapter(getActivity(), listCategory, new CategoryAdapter.ListAdapterListener() {
-
-                @Override
-                public void onClickAddButton(View view) {
-                     addDialog(view);
-                }
-        });
             recyclerCategory.setAdapter(adapter);
 
     }
 
+    public void adapterOnClick()
+    {
+        adapter = new CategoryAdapter(getActivity(), listCategory, new CategoryAdapter.ListAdapterListener() {
+
+            @Override
+            public void onClickAddButton(View v) {
+                addDialog(v);
+            }
+        });
+    }
     public void addDialog(View v)
     {
-       Toast.makeText(getActivity(), "Popup ID: " + listCategory.get(recyclerCategory.getChildAdapterPosition(v)).getName(), Toast.LENGTH_SHORT).show();
+        String value;
+        if(ifSearch)
+            value = newList.get(recyclerCategory.getChildAdapterPosition(v)).getName();
+          else
+            value = listCategory.get(recyclerCategory.getChildAdapterPosition(v)).getName();
+
+        Toast.makeText(getActivity(), "Popup ID: " + value, Toast.LENGTH_SHORT).show();
     }
     public void loadWebServices()
     {
@@ -196,10 +210,9 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
 
     public void refresh()
     {
-
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.detach(this).attach(this).commit();
-
+        ifSearch = false;
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -207,6 +220,7 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
         inflater.inflate(R.menu.menu_category_fragment, menu);
         MenuItem item = menu.findItem(R.id.search);
         searchView = (SearchView) item.getActionView();
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -217,6 +231,8 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
             @Override
             public boolean onQueryTextChange(String newText) {
 
+                if(listCategory.size() > 0){
+                ifSearch = true;
                 newText = newText.toLowerCase();
                 newList = new ArrayList<>();
 
@@ -233,11 +249,15 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
                             notFound.setText("Record not found with '"+newText+"'");
                   }
 
-                adapter.updateList(newList);
+                  adapter.updateList(newList);
 
-                return true;
+                    return true;
+                }else{
+                    return false;
+                }
             }
         });
+
 
     }
 
