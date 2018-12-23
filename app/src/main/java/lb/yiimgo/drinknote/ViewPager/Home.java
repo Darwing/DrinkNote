@@ -7,11 +7,13 @@ package lb.yiimgo.drinknote.ViewPager;
         import android.support.v7.app.AppCompatActivity;
         import android.view.Menu;
         import android.view.MenuItem;
+        import android.widget.Toast;
 
         import lb.yiimgo.drinknote.Fragment.HomeFragment;
         import lb.yiimgo.drinknote.Fragment.CategoryFragment;
        // import lb.yiimgo.drinknote.Fragment.ContactsFragment;
         import lb.yiimgo.drinknote.Fragment.RoomDrinkFragment;
+        import lb.yiimgo.drinknote.Fragment.UserFragment;
         import lb.yiimgo.drinknote.R;
         import lb.yiimgo.drinknote.ViewPager.Category.CreateCategory;
         import lb.yiimgo.drinknote.ViewPager.RoomDrink.CreateRoomDrink;
@@ -21,11 +23,12 @@ public class Home extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
-
+    public static final String company ="company";
     //Fragments
     HomeFragment homeFragment;
     CategoryFragment ctFragment;
     RoomDrinkFragment rmFragment;
+    UserFragment usFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,11 +95,12 @@ public class Home extends AppCompatActivity {
         homeFragment = new HomeFragment();
         ctFragment = new CategoryFragment();
         rmFragment = new RoomDrinkFragment();
+        usFragment = new UserFragment();
 
         adapter.addFragment(homeFragment,"DASHBOARD");
         adapter.addFragment(ctFragment,"SERVICES");
         adapter.addFragment(rmFragment,"ROOMS");
-
+        adapter.addFragment(usFragment,"USERS");
         viewPager.setAdapter(adapter);
     }
 

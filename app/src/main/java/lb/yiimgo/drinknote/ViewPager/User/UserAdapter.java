@@ -1,4 +1,4 @@
-package lb.yiimgo.drinknote.ViewPager.Category;
+package lb.yiimgo.drinknote.ViewPager.User;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -15,33 +15,33 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import lb.yiimgo.drinknote.Entity.Category;
+import lb.yiimgo.drinknote.Entity.Users;
 import lb.yiimgo.drinknote.R;
 
 /**
  * Created by Darwing on 16-Dec-18.
  */
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryHolder>
+public class UserAdapter extends RecyclerView.Adapter<lb.yiimgo.drinknote.ViewPager.User.UserAdapter.UserHolder>
 {
 
-    List<Category> listCategory;
+    List<Users> listUser;
     private Context mContext;
-    private ListAdapterListener mListener; 
+    private lb.yiimgo.drinknote.ViewPager.User.UserAdapter.ListAdapterListener mListener;
 
     public interface ListAdapterListener {
         void onClickAddButton(View v);
     }
-    public CategoryAdapter(Context context,List<Category> listCategory, ListAdapterListener  mListener) {
-       this.listCategory = listCategory;
-       this.mContext = context;
-       this.mListener = mListener;
+    public UserAdapter(Context context,List<Users> listUser, lb.yiimgo.drinknote.ViewPager.User.UserAdapter.ListAdapterListener mListener) {
+        this.listUser = listUser;
+        this.mContext = context;
+        this.mListener = mListener;
 
     }
 
     @Override
-    public CategoryHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
-        View layoutInflater = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_category_row,parent,false);
+    public lb.yiimgo.drinknote.ViewPager.User.UserAdapter.UserHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
+        View layoutInflater = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_user_row,parent,false);
 
         RecyclerView.LayoutParams layoutParams =new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutInflater.setLayoutParams(layoutParams);
@@ -52,7 +52,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             }
         });
 
-        return new CategoryHolder(layoutInflater);
+        return new lb.yiimgo.drinknote.ViewPager.User.UserAdapter.UserHolder(layoutInflater);
     }
     private int drinkType(String cat)
     {
@@ -94,17 +94,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     }
 
     @Override
-    public void onBindViewHolder(CategoryHolder holder, final int position)
+    public void onBindViewHolder(lb.yiimgo.drinknote.ViewPager.User.UserAdapter.UserHolder holder, final int position)
     {
 
-        holder.tx_id.setText(listCategory.get(position).getId().toString());
-        holder.tx_name.setText(listCategory.get(position).getName().toString());
-        holder.tx_amount.setText(getFormatedAmount(listCategory.get(position).getAmount()));
-        holder.tx_category.setText(listCategory.get(position).getCategory().toString());
-        holder.im_typeDrink.setImageResource(drinkType(listCategory.get(position).getCategory().toString()));
-        holder.tx_status.setText(listCategory.get(position).getStatus());
-        holder.tx_status.setBackgroundColor(statusType(listCategory.get(position).getStatus()));
-      /*  holder.deleteCategory.setOnClickListener(new View.OnClickListener() {
+       /*  holder.tx_id.setText(listUser.get(position).getId().toString());
+        holder.tx_name.setText(listUser.get(position).getFullName().toString());
+        holder.tx_user.setText(listUser.get(position).getUserName().toString());
+        holder.tx_status.setText(listUser.get(position).getId());
+       holder.deleteUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mListener.onClickDeleteButton(position);
@@ -112,34 +109,34 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         });*/
 
     }
-    public void updateList(List<Category> newList)
+    public void updateList(List<Users> newList)
     {
-        listCategory = new ArrayList<>();
-        listCategory.addAll(newList);
+        listUser = new ArrayList<>();
+        listUser.addAll(newList);
         notifyDataSetChanged();
     }
     @Override
     public int getItemCount() {
-        return listCategory.size();
+        return listUser.size();
     }
 
 
-    public class CategoryHolder extends RecyclerView.ViewHolder
+    public class UserHolder extends RecyclerView.ViewHolder
     {
-        TextView tx_id,tx_name,tx_amount,tx_category,tx_status;
+        TextView tx_id,tx_name,tx_amount,tx_user,tx_status;
         ImageView im_typeDrink;
-        ImageButton deleteCategory;
+        ImageButton deleteUser;
 
-        public CategoryHolder(View itemView)
+        public UserHolder(View itemView)
         {   super(itemView);
 
             tx_id = (TextView) itemView.findViewById(R.id.t_id);
             tx_name = (TextView) itemView.findViewById(R.id.t_name);
             tx_amount = (TextView) itemView.findViewById(R.id.t_amount);
-            tx_category = (TextView) itemView.findViewById(R.id.t_category);
+            tx_user = (TextView) itemView.findViewById(R.id.t_user);
             im_typeDrink= (ImageView)itemView.findViewById(R.id.typeDrink);
             tx_status = (TextView) itemView.findViewById(R.id.t_status);
-//            deleteCategory = (ImageButton) itemView.findViewById(R.id.delete);
+//            deleteUser = (ImageButton) itemView.findViewById(R.id.delete);
 
         }
     }

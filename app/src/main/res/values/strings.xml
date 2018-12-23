@@ -12,7 +12,7 @@
     <string name="cost">RD$ </string>
     <string name="category_label">Category Name</string>
     <string name="send_data">Enviar</string>
-    <string name="cerveza">nulo</string>
+    <string name="cerveza">null</string>
     <string name="delete">Delete</string>
     <string name="create_title">Create Category</string>
     <string name="money">bg_monery</string>
@@ -25,12 +25,21 @@
     <string name="cutomer_name">Customer Name</string>
     <string name="room_name">Room - </string>
     <string name="id_number_row">000 - </string>
-    <string name="create_category">New Category</string>
-    <string name="create_room">New Room</string>
+    <string name="create_category">New services</string>
+    <string name="create_room">New room</string>
     <string name="search">Search</string>
     <string name="refresh">Refresh</string>
-    <string name="app_label">Buscar</string>
-    <string name="search_hint">Buscar</string>
+    <string name="not_found">Not record found with</string>
+    <string name="status_services">Status Services</string>
+    <string name="no_available">Not available</string>
+    <string name="create_user">New user</string>
+    <string name="login">LOGIN</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="start">Start</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+
 import lb.yiimgo.drinknote.Fragment.CategoryFragment;
 import lb.yiimgo.drinknote.Fragment.HomeFragment;
 import lb.yiimgo.drinknote.Fragment.RoomDrinkFragment;
@@ -17,7 +18,7 @@ import lb.yiimgo.drinknote.ViewPagerAdapter;
  * Created by Darwing on 21-Dec-18.
  */
 
-public class CategoryActivity extends AppCompatActivity
+public class UserActivity extends AppCompatActivity
 {
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -25,7 +26,6 @@ public class CategoryActivity extends AppCompatActivity
     CategoryFragment ctFragment;
     RoomDrinkFragment rmFragment;
     UserFragment usFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -72,8 +72,7 @@ public class CategoryActivity extends AppCompatActivity
         adapter.addFragment(homeFragment,"DASHBOARD");
         adapter.addFragment(ctFragment,"SERVICES");
         adapter.addFragment(rmFragment,"ROOMS");
-        adapter.addFragment(usFragment,"USER");
-
+        adapter.addFragment(usFragment,"USERS");
         viewPager.setAdapter(adapter);
     }
 

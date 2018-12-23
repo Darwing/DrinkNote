@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -34,27 +33,28 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 
-import lb.yiimgo.drinknote.Entity.Category;
+import lb.yiimgo.drinknote.Entity.Users;
+import lb.yiimgo.drinknote.Entity.Users;
 import lb.yiimgo.drinknote.Entity.VolleySingleton;
 import lb.yiimgo.drinknote.R;
-import lb.yiimgo.drinknote.ViewPager.Category.CategoryAdapter;
+import lb.yiimgo.drinknote.ViewPager.User.UserAdapter;
 
-public class CategoryFragment extends Fragment implements Response.Listener<JSONObject>,
+public class UserFragment extends Fragment implements Response.Listener<JSONObject>,
         Response.ErrorListener
 {
     public View view;
-    public RecyclerView recyclerCategory;
-    public ArrayList<Category> listCategory;
+    public RecyclerView recyclerUser;
+    public ArrayList<Users> listUser;
     public ProgressDialog progressDialog;
-    public CategoryAdapter adapter;
-    public Category category = null;
+    public UserAdapter adapter;
+    public Users users;
     public RequestQueue requestQueue;
     public JsonObjectRequest jsonObjectRequest;
     public SearchView searchView;
-    public ArrayList<Category> newList;
+    public ArrayList<Users> newList;
     public TextView notFound;
 
-    public CategoryFragment() { }
+    public UserFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,11 +67,11 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
                              Bundle savedInstanceState) {
 
 
-        view = inflater.inflate(R.layout.fragment_category, container, false);
-        listCategory = new ArrayList<>();
-        recyclerCategory = (RecyclerView) view.findViewById(R.id.idRecycler);
-        recyclerCategory.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        recyclerCategory.setHasFixedSize(true);
+        view = inflater.inflate(R.layout.fragment_user, container, false);
+        listUser = new ArrayList<>();
+        recyclerUser = (RecyclerView) view.findViewById(R.id.idRecycler);
+        recyclerUser.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerUser.setHasFixedSize(true);
         notFound = (TextView) view.findViewById(R.id.not_found);
 
         requestQueue = Volley.newRequestQueue(getContext());
@@ -91,40 +91,40 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
         try{
             for(int i =0; i<json.length(); i++)
             {
-                category = new Category();
+                users = new Users();
                 JSONObject jsonObject = null;
                 jsonObject =json.getJSONObject(i);
 
-                category.setId(jsonObject.optString("Id"));
-                category.setName(jsonObject.optString("Name"));
-                category.setAmount(jsonObject.optDouble("Amount"));
-                category.setCategory(jsonObject.optString("Category"));
-                category.setStatus(jsonObject.optString("Status"));
+                users.setUserName(jsonObject.optString("UserName"));
+                users.setPassword(jsonObject.optString("Password"));
+                users.setProfile(jsonObject.optString("Profile"));
+                users.setCompany(jsonObject.optString("Company"));
+                users.setFullName(jsonObject.optString("FullName"));
 
-                listCategory.add(category);
+                listUser.add(users);
 
             }
-            }catch (JSONException e)
-            {
-                e.printStackTrace();
+        }catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+
+        progressDialog.hide();
+
+        adapter = new UserAdapter(getActivity(), listUser, new UserAdapter.ListAdapterListener() {
+
+            @Override
+            public void onClickAddButton(View view) {
+                addDialog(view);
             }
-
-            progressDialog.hide();
-
-            adapter = new CategoryAdapter(getActivity(), listCategory, new CategoryAdapter.ListAdapterListener() {
-
-                @Override
-                public void onClickAddButton(View view) {
-                     addDialog(view);
-                }
         });
-            recyclerCategory.setAdapter(adapter);
+        recyclerUser.setAdapter(adapter);
 
     }
 
     public void addDialog(View v)
     {
-       Toast.makeText(getActivity(), "Popup ID: " + listCategory.get(recyclerCategory.getChildAdapterPosition(v)).getName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Popup ID: " + listUser.get(recyclerUser.getChildAdapterPosition(v)).getFullName(), Toast.LENGTH_SHORT).show();
     }
     public void loadWebServices()
     {
@@ -144,13 +144,13 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
         progressDialog.show();
 
         StringRequest stringRequest;
-        String url="http://rizikyasociados.com.do/wsDrinkNote/Main/deleteCategory?Id="+id;
+        String url="http://rizikyasociados.com.do/wsDrinkNote/Main/deleteUser?Id="+id;
 
         stringRequest =new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 progressDialog.hide();
-                listCategory.remove(po);
+                listUser.remove(po);
                 adapter.notifyDataSetChanged();
             }
         }, new Response.ErrorListener() {
@@ -176,7 +176,7 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
                         switch (method)
                         {
                             case  "delete" :
-                                webServiceDelete(listCategory.get(position).getId().toString(),position);
+                                webServiceDelete(listUser.get(position).getId().toString(),position);
                                 break;
                         }
                     }
@@ -204,7 +204,7 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onPrepareOptionsMenu(menu);
-        inflater.inflate(R.menu.menu_category_fragment, menu);
+        inflater.inflate(R.menu.menu_user_fragment, menu);
         MenuItem item = menu.findItem(R.id.search);
         searchView = (SearchView) item.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -220,18 +220,18 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
                 newText = newText.toLowerCase();
                 newList = new ArrayList<>();
 
-                for(Category c : listCategory)
+                for(Users c : listUser)
                 {
-                    String name = c.getName().toLowerCase();
+                    String name = c.getFullName().toLowerCase();
                     if(name.contains(newText)){
                         newList.add(c);
                     }
                 }
 
                 if (newList.size() == 0){
-                        if(!newText.isEmpty())
-                            notFound.setText("Record not found with '"+newText+"'");
-                  }
+                    if(!newText.isEmpty())
+                        notFound.setText("Record not found with '"+newText+"'");
+                }
 
                 adapter.updateList(newList);
 

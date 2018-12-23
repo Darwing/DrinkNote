@@ -8,14 +8,13 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name="lb.yiimgo.drinknote.ViewPager.Home">
+        <activity android:name="lb.yiimgo.drinknote.ViewPager.LoginActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter></activity>
+        <activity android:name="lb.yiimgo.drinknote.ViewPager.Home"> </activity>
         <activity android:name="lb.yiimgo.drinknote.ViewPager.Category.CreateCategory"
             android:label="@string/create_title"
             android:parentActivityName=".ViewPager.Home"/>
@@ -23,6 +22,9 @@
             android:label="@string/create_room_title"
             android:parentActivityName=".ViewPager.Home"/>
         <activity android:name="lb.yiimgo.drinknote.ViewPager.CategoryActivity"></activity>
+        <activity android:name="lb.yiimgo.drinknote.ViewPager.UserActivity"></activity>
+
+
     </application>
 
 </manifest>

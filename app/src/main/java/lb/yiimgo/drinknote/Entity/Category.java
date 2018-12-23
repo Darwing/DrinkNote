@@ -6,7 +6,7 @@ package lb.yiimgo.drinknote.Entity;
 
 public class Category
 {
-    private Integer Id;
+    private String Id;
     private String Name;
     private Double Amount;
     private String Category;
@@ -20,11 +20,11 @@ public class Category
         Status = status;
     }
 
-    public Integer getId() {
+    public String getId() {
         return Id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         Id = id;
     }
 
