@@ -13,6 +13,15 @@ public class Users
     private String Company;
     private String DateJoin;
     private String Profile;
+    private int IdProfile;
+
+    public int getIdProfile() {
+        return IdProfile;
+    }
+
+    public void setIdProfile(int idProfile) {
+        IdProfile = idProfile;
+    }
 
     public String getId() {
         return Id;

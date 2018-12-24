@@ -46,8 +46,6 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
     public RecyclerView recyclerCategory;
     public ArrayList<Category> listCategory;
     public ArrayList<Category> newList;
-    public ArrayList<Category> searchNewList;
-
     public ProgressDialog progressDialog;
     public CategoryAdapter adapter;
     public Category category = null;
@@ -257,8 +255,6 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
                 }
             }
         });
-
-
     }
 
     @Override

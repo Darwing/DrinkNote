@@ -1,5 +1,6 @@
 package lb.yiimgo.drinknote.ViewPager;
 
+import android.content.pm.ActivityInfo;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +18,7 @@ public class LoginActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.login,new LoginFragment()).commit();
     }

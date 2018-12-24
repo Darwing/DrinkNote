@@ -1,6 +1,7 @@
 package lb.yiimgo.drinknote.ViewPager.Category;
 
 import android.content.ContentValues;
+import android.content.pm.ActivityInfo;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
@@ -31,7 +32,7 @@ public class CreateCategory extends AppCompatActivity implements AdapterView.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_create_category);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         spinner = (Spinner)findViewById(R.id.spinner);

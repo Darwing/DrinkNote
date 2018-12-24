@@ -1,6 +1,7 @@
 package lb.yiimgo.drinknote.ViewPager;
 
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -31,6 +32,7 @@ public class CategoryActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //Initializing viewPager
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setOffscreenPageLimit(3);
@@ -38,43 +40,11 @@ public class CategoryActivity extends AppCompatActivity
         //Initializing the tablayout
         tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-            }
 
-            @Override
-            public void onPageSelected(int position) {
-                viewPager.setCurrentItem(position,false);
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
-        setupViewPager(viewPager);
     }
 
 
-    private void setupViewPager(ViewPager viewPager)
-    {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        homeFragment = new HomeFragment();
-        ctFragment = new CategoryFragment();
-        rmFragment = new RoomDrinkFragment();
-        usFragment = new UserFragment();
 
-        adapter.addFragment(homeFragment,"DASHBOARD");
-        adapter.addFragment(ctFragment,"SERVICES");
-        adapter.addFragment(rmFragment,"ROOMS");
-        adapter.addFragment(usFragment,"USER");
-
-        viewPager.setAdapter(adapter);
-    }
 
 }

@@ -1,6 +1,7 @@
 package lb.yiimgo.drinknote.ViewPager.RoomDrink;
 
 import android.content.ContentValues;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -29,7 +30,7 @@ public class CreateRoomDrink extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_create_rooms);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         name = (EditText) findViewById(R.id.room_name);
         roomNumber = (EditText) findViewById(R.id.numberRoom);

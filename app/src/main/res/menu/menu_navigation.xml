@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_camera"
+            android:title="Formulario" />
+        <item
+            android:id="@+id/nav_gallery"
+            android:title="Rojo" />
+        <item
+            android:id="@+id/nav_slideshow"
+            android:title="Verde" />
+    </group>
+
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/setting"
+                android:title="Setting" />
+            <item
+                android:id="@+id/exit"
+                android:title="Log out" />
+        </menu>
+    </item>
+
+
+</menu>

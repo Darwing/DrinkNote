@@ -2,6 +2,7 @@ package lb.yiimgo.drinknote.Fragment;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -25,6 +26,7 @@ import org.json.JSONObject;
 
 import lb.yiimgo.drinknote.Entity.Users;
 import lb.yiimgo.drinknote.R;
+import lb.yiimgo.drinknote.Utility.SessionManager;
 import lb.yiimgo.drinknote.ViewPager.Home;
 
 
@@ -38,6 +40,7 @@ public class LoginFragment extends Fragment implements Response.Listener<JSONObj
     private Button btnStart;
     public RequestQueue requestQueue;
     public JsonObjectRequest jsonObjectRequest;
+    private SessionManager sessionManager;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,13 +50,14 @@ public class LoginFragment extends Fragment implements Response.Listener<JSONObj
             password = (EditText) view.findViewById(R.id.pass);
             btnStart = (Button) view.findViewById(R.id.btnStart);
 
-        requestQueue = Volley.newRequestQueue(getContext());
+            requestQueue = Volley.newRequestQueue(getContext());
 
             btnStart.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v)
                 {
-                    startSession();
+                    getDataFromServices();
+                    progressDialog.hide();
                 }
             });
             return view;
@@ -68,26 +72,30 @@ public class LoginFragment extends Fragment implements Response.Listener<JSONObj
 
         JSONArray json = response.optJSONArray("user");
         try{
-
+            sessionManager = new SessionManager(getContext());
             users = new Users();
             JSONObject jsonObject = null;
             jsonObject =json.getJSONObject(0);
-            if(jsonObject.optString("login") == "false"){
+
+            if(jsonObject.optString("login") == "false")
+            {
                 Toast.makeText(getContext(),"User or Password is wrong!",Toast.LENGTH_SHORT).show();
             }else
             {
-            users.setUserName(jsonObject.optString("UserName"));
-            users.setPassword(jsonObject.optString("Password"));
-            users.setProfile(jsonObject.optString("Profile"));
-            users.setCompany(jsonObject.optString("Company"));
-            users.setFullName(jsonObject.optString("FullName"));
+                users.setUserName(jsonObject.optString("UserName"));
+                users.setPassword(jsonObject.optString("Password"));
+                users.setProfile(jsonObject.optString("Profile"));
+                users.setCompany(jsonObject.optString("Company"));
+                users.setFullName(jsonObject.optString("FullName"));
+                users.setIdProfile(jsonObject.optInt("IdProfile"));
 
+                Intent intent = new Intent(getContext(),Home.class);
 
-             Intent intent = new Intent(getContext(),Home.class);
-             intent.putExtra(Home.company,users.getCompany().toString());
-             startActivity(intent);
+                sessionManager.startSession(users.getCompany(),users.getIdProfile());
+
+                startActivity(intent);
+
              }
-
 
             }catch (JSONException e)
             {
@@ -99,7 +107,7 @@ public class LoginFragment extends Fragment implements Response.Listener<JSONObj
 
       }
 
-      public void startSession()
+      public void getDataFromServices()
       {
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Cargando...");
