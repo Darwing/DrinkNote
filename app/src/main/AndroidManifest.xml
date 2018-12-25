@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="lb.yiimgo.drinknote">
+    package="lb.yiimgo.storenote">
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
@@ -8,23 +8,23 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="lb.yiimgo.drinknote.ViewPager.LoginActivity">
+        <activity android:name="lb.yiimgo.storenote.ViewPager.LoginActivity">
             <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
           </activity>
-        <activity android:name="lb.yiimgo.drinknote.ViewPager.Home" android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name="lb.yiimgo.storenote.ViewPager.Home" android:theme="@style/AppTheme.NoActionBar">
             </activity>
-        <activity android:name="lb.yiimgo.drinknote.ViewPager.Category.CreateCategory"
+        <activity android:name="lb.yiimgo.storenote.ViewPager.Category.CreateCategory"
             android:label="@string/create_title"
-            android:parentActivityName=".ViewPager.Home"/>
-        <activity android:name="lb.yiimgo.drinknote.ViewPager.RoomDrink.CreateRoomDrink"
+            android:parentActivityName="lb.yiimgo.storenote.ViewPager.Home"/>
+        <activity android:name="lb.yiimgo.storenote.ViewPager.RoomDrink.CreateRoomDrink"
             android:label="@string/create_room_title"
-            android:parentActivityName=".ViewPager.Home"/>
-        <activity android:name="lb.yiimgo.drinknote.ViewPager.CategoryActivity"></activity>
-        <activity android:name="lb.yiimgo.drinknote.ViewPager.UserActivity"></activity>
+            android:parentActivityName="lb.yiimgo.storenote.ViewPager.Home"/>
+        <activity android:name="lb.yiimgo.storenote.ViewPager.CategoryActivity"></activity>
+        <activity android:name="lb.yiimgo.storenote.ViewPager.UserActivity"></activity>
 
 
     </application>

@@ -4,23 +4,29 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:title="Formulario" />
+            android:id="@+id/nav_services"
+            android:icon="@drawable/ic_room_service_black_24dp"
+            android:title="Services" />
         <item
-            android:id="@+id/nav_gallery"
-            android:title="Rojo" />
+            android:id="@+id/nav_rooom"
+            android:icon="@drawable/ic_room_black_24dp"
+            android:title="Rooms" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:title="Verde" />
+            android:id="@+id/nav_user"
+            android:icon="@drawable/ic_account_circle_black_24dp"
+            android:title="User" />
     </group>
 
     <item android:title="">
         <menu>
             <item
                 android:id="@+id/setting"
+                android:icon="@drawable/ic_settings_black_24dp"
                 android:title="Setting" />
             <item
-                android:id="@+id/exit"
+                android:id="@+id/logout"
+                android:icon="@drawable/ic_power_settings_new_black_24dp"
+
                 android:title="Log out" />
         </menu>
     </item>

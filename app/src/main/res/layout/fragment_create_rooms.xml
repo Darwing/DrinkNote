@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:layout_margin="20dp"
     android:orientation="vertical"
-    tools:context="lb.yiimgo.drinknote.ViewPager.RoomDrink.CreateRoomDrink">
+    tools:context="lb.yiimgo.storenote.ViewPager.RoomDrink.CreateRoomDrink">
 
     <EditText
         android:id="@+id/numberRoom"

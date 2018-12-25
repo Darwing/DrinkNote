@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Drink Note</string>
+    <string name="app_name">Store Note</string>
 
     <string name="tab1">HOME</string>
     <string name="tab2">CATEGORY</string>
@@ -12,7 +12,7 @@
     <string name="cost">RD$ </string>
     <string name="category_label">Category Name</string>
     <string name="send_data">Enviar</string>
-    <string name="cerveza">null</string>
+    <string name="cerveza">Null</string>
     <string name="delete">Delete</string>
     <string name="create_title">Create Category</string>
     <string name="money">bg_monery</string>
@@ -41,7 +41,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="full_name">Jose Garcia Vargas</string>
     <string name="profile">Adminstrator</string>
     <string name="navigation">TODO</string>
