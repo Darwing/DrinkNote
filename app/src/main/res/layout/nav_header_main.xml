@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
     android:background="@drawable/side_nav_bar"
-    android:gravity="bottom"
+    android:gravity="center"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -13,18 +13,18 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:weightSum="1">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="91dp"
-        android:layout_height="91dp"
-        android:background="@drawable/unknown"
-        android:contentDescription="@string/navigation"
-         />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="91dp"
+            android:layout_height="91dp"
+            android:background="@drawable/unknown"
+            android:contentDescription="@string/navigation" />
 
     <TextView
         android:id="@+id/title_nav"
         android:layout_width="match_parent"
         android:layout_height="19dp"
+        android:gravity="center"
         android:text="@string/full_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
