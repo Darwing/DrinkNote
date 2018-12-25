@@ -8,6 +8,7 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -40,6 +41,7 @@ public class LoginFragment extends Fragment implements Response.Listener<JSONObj
     public RequestQueue requestQueue;
     public JsonObjectRequest jsonObjectRequest;
     private SessionManager sessionManager;
+    private AlphaAnimation buttonClick = new AlphaAnimation(3F, 1.8F);
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,7 +58,8 @@ public class LoginFragment extends Fragment implements Response.Listener<JSONObj
                 public void onClick(View v)
                 {
                     getDataFromServices();
-                    progressDialog.hide();
+                    v.startAnimation(buttonClick);
+
                 }
             });
             return view;
