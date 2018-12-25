@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ public class LoginFragment extends Fragment implements Response.Listener<JSONObj
     public Users users;
     public ProgressDialog progressDialog;
     private EditText username,password;
-    private Button btnStart;
+    private CardView btnStart;
     public RequestQueue requestQueue;
     public JsonObjectRequest jsonObjectRequest;
     private SessionManager sessionManager;
@@ -46,7 +47,7 @@ public class LoginFragment extends Fragment implements Response.Listener<JSONObj
             view = inflater.inflate(R.layout.fragment_login,container,false);
             username = (EditText) view.findViewById(R.id.user);
             password = (EditText) view.findViewById(R.id.pass);
-            btnStart = (Button) view.findViewById(R.id.btnStart);
+            btnStart = (CardView) view.findViewById(R.id.cardView);
 
             requestQueue = Volley.newRequestQueue(getContext());
 
