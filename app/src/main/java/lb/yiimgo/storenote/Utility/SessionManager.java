@@ -31,6 +31,7 @@ public class SessionManager
                 ("dataUser",_context.MODE_PRIVATE);
 
         editor = sp.edit();
+        editor.putString("Id", users.getId());
         editor.putString("company", users.getCompany());
         editor.putInt("idProfile", users.getIdProfile());
         editor.putString("fullName", users.getFullName());
@@ -45,14 +46,18 @@ public class SessionManager
 
         list = new ArrayList<>();
 
+
         int idProfile= sp.getInt("idProfile",2);
         String company = sp.getString("company","Null");
         String fullName = sp.getString("fullName","Null");
         String profile = sp.getString("profile","Null");
+        String id = sp.getString("Id","Null");
+
         list.add(String.valueOf(idProfile));
         list.add(company);
         list.add(fullName);
         list.add(profile);
+        list.add(id);
 
         return list;
     }

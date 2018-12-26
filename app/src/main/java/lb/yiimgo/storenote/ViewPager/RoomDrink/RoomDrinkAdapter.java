@@ -1,16 +1,20 @@
 package lb.yiimgo.storenote.ViewPager.RoomDrink;
 
-import android.support.annotation.NonNull;
+import android.content.Context;
+import android.icu.util.Calendar;
+import android.os.Build;
+import android.os.SystemClock;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.util.List;
-
+import java.util.ArrayList;
 import lb.yiimgo.storenote.Entity.RoomDrinks;
 import lb.yiimgo.storenote.R;
 
@@ -18,178 +22,132 @@ import lb.yiimgo.storenote.R;
  * Created by Darwing on 16-Dec-18.
  */
 
-public class RoomDrinkAdapter extends RecyclerView.Adapter<RoomDrinkAdapter.RoomHolder> {
+public class RoomDrinkAdapter extends RecyclerView.Adapter<RoomDrinkAdapter.RoomDrinkHolder>
+{
+    Button testBh;
 
-    ImageButton button;
-    LinearLayout buttonAddDrink,layoutRoom;
-
-    List<RoomDrinks> listDrinkRoom;
-
-    public RoomDrinkAdapter(List<RoomDrinks> listDrinkRoom) {
-        this.listDrinkRoom = listDrinkRoom;
+    public boolean running;
+    ArrayList<RoomDrinks> listRoomDrink;
+    private Context mContext;
+    private ListAdapterListener mListener;
+    View layoutInflater;
+    public interface ListAdapterListener {
+        void onClickAddButton(View v);
     }
+    public RoomDrinkAdapter(Context context,ArrayList<RoomDrinks> listRoomDrink, ListAdapterListener  mListener) {
+        this.listRoomDrink = listRoomDrink;
+        this.mContext = context;
+        this.mListener = mListener;
 
-
-  /*  public void add(RoomDrinks object)
-    {
-        list.add(object);
-        super.add(object);
-    }
-
-    @Override
-    public int getCount()
-    {
-        return list.size();
     }
 
     @Override
-    public Object getItem(int position)
-    {
-        return list.get(position);
-    }
- 
-    @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        View row = convertView;
-        RoomDrinkHolder roomHolder;
+    public RoomDrinkHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
+        layoutInflater = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_room_row,parent,false);
 
-
-        if (row == null)
-        {
-            LayoutInflater layoutInflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row = layoutInflater.inflate(R.layout.fragment_room_row,parent,false);
-            roomHolder = new RoomDrinkHolder();
-
-            roomHolder.tx_id = (TextView) row.findViewById(R.id.t_id);
-            roomHolder.tx_name = (TextView) row.findViewById(R.id.t_name);
-            roomHolder.tx_ubication = (TextView) row.findViewById(R.id.t_ubication);
-            roomHolder.tx_status = (TextView) row.findViewById(R.id.t_status);
-            row.setTag(roomHolder);
-        }else
-        {
-            roomHolder = (RoomDrinkHolder) row.getTag();
-        }
-        layoutRoom = (LinearLayout) row.findViewById(R.id.layout_room_row);
-        RoomDrinks roomDrinks = (RoomDrinks) getItem(position);
-
-        if(roomDrinks.getStatus() == 0)
-        {
-            layoutRoom.setBackgroundResource(R.color.bgRowsGreen);
-            roomHolder.tx_status.setText("Disponible");
-        }else{
-            layoutRoom.setBackgroundResource(R.color.bgRowsRed);
-            roomHolder.tx_status.setText("No Disponible");
-        }
-        roomHolder.tx_id.setText(roomDrinks.getIdRoom().toString());
-        roomHolder.tx_name.setText(roomDrinks.getNameRoom().toString());
-        roomHolder.tx_ubication.setText(roomDrinks.getRoomUbication().toString());
-
-        deleteDrinkRow(position,row,roomDrinks,"delete");
-       // addDinrk(position,row,category,"add");
-        return row;
-    }
-
-    private void deleteDrinkRow(final int position, View row,final RoomDrinks c,final String method)
-    {
-
-        button = (ImageButton) row.findViewById(R.id.delete);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v)
-            {
-                AlertDialog(position,c.getIdRoom().toString(),method);
-            }
-        });
-    }
-
-    private void addDinrk(final int position, View row,final RoomDrinks c,final String method)
-    {
-        buttonAddDrink = (LinearLayout) row.findViewById(R.id.layout_row);
-
-        buttonAddDrink.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v)
-            {
-                AlertDialog(position,c.getIdRoom().toString(),method);
-            }
-        });
-    }
-    public void AlertDialog(final int position,final String field_id,final String method){
-        ConecctionSQLiteHelper conn = new ConecctionSQLiteHelper(getContext(), "db_drinknote",null,1);
-        final SQLiteDatabase db = conn.getWritableDatabase();
-
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
-        builder1.setMessage("Are your sure "+method+" this item?");
-        builder1.setCancelable(true);
-
-        builder1.setPositiveButton(
-                "Yes",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        switch (method)
-                        {
-                            case  "delete" :
-                                String[] param = {field_id};
-                                db.delete(Utility.TABLE_ROOM_DRINK,Utility.FIELD_ID_ROOM +"=?",param);
-                                list.remove(position);
-                                notifyDataSetChanged();
-                                db.close();
-                                break;
-                            case  "add" :
-                                Toast.makeText(getContext(),"Se agrego " + String.valueOf(position),Toast.LENGTH_SHORT).show();
-                                break;
-                        }
-                    }
-                });
-
-        builder1.setNegativeButton(
-                "No",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
-    }*/
-
-
-    @Override
-    public RoomDrinkAdapter.RoomHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View layoutInflater = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_room_row,parent,false);
         RecyclerView.LayoutParams layoutParams =new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutInflater.setLayoutParams(layoutParams);
 
-        return new RoomDrinkAdapter.RoomHolder(layoutInflater);
+        return new RoomDrinkHolder(layoutInflater);
     }
 
+    private int statusType(String s)
+    {
+        int result = 0;
+        switch (s)
+        {
+            case "Free" :
+                result = mContext.getResources().getColor(android.R.color.holo_green_light);
+                break;
+            case "Occupied" :
+                result = mContext.getResources().getColor(android.R.color.holo_red_light);
+                break;
+
+        }
+
+        return result;
+    }
+/*    private int getCurrentMiliSecondsOfChronometer(final RoomDrinkHolder holder) {
+        int stoppedMilliseconds = 0;
+        String chronoText = holder.tx_chronometer.getText().toString();
+        String array[] = chronoText.split(":");
+        if (array.length == 2) {
+            stoppedMilliseconds = Integer.parseInt(array[0]) * 60 * 1000 + Integer.parseInt(array[1]) * 1000;
+        } else if (array.length == 3) {
+            stoppedMilliseconds =
+                    Integer.parseInt(array[0]) * 60 * 60 * 1000 + Integer.parseInt(array[1]) * 60 * 1000
+                            + Integer.parseInt(array[2]) * 1000;
+        }
+        return stoppedMilliseconds;
+    }
+
+    private void startChronometer(final RoomDrinkHolder holder) {
+         int stoppedMilliseconds = getCurrentMiliSecondsOfChronometer(holder);
+         holder.tx_chronometer.setBase(SystemClock.elapsedRealtime() - stoppedMilliseconds);
+         holder.tx_chronometer.start();
+    }*/
     @Override
-    public void onBindViewHolder(@NonNull RoomHolder holder, int position) {
-        holder.tx_id.setText(listDrinkRoom.get(position).getIdRoom().toString());
-        holder.tx_name.setText(listDrinkRoom.get(position).getNameRoom().toString());
-        holder.tx_ubication.setText(listDrinkRoom.get(position).getRoomUbication().toString());
-        holder.tx_status.setText(listDrinkRoom.get(position).getStatus().toString());
-        //holder.im_typeDrink.setImageResource( DrinkType(listCategory.get(position).getCategory().toString()));
-}
+    public void onBindViewHolder(final RoomDrinkHolder holder, final int position)
+    {
 
+        holder.tx_id.setText(listRoomDrink.get(position).getIdRoom().toString());
+        holder.tx_waiter.setText(listRoomDrink.get(position).getWaiterRoom());
+        holder.tx_drinkroom.setText(listRoomDrink.get(position).getRoomUbication());
+        holder.tx_status.setText(listRoomDrink.get(position).getStatus().toString());
+        holder.tx_status.setBackgroundColor(statusType(listRoomDrink.get(position).getStatus()));
+        layoutInflater.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onClickAddButton(view);
+             }
+        });
+/*        holder.tx_testBh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startChronometer(holder);
 
+                holder.tx_chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    public void onChronometerTick(Chronometer cArg) {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(Calendar.HOUR_OF_DAY, 0);
+                        calendar.set(Calendar.MINUTE, 0);
+                        calendar.set(Calendar.SECOND, 0);
+                        calendar.set(Calendar.MILLISECOND, getCurrentMiliSecondsOfChronometer(holder));
+                        holder.tx_chronometer.setText(DateFormat.format("HH:mm:ss", calendar.getTime()));
+                    }
+                });
+            }
+        });*/
+    }
+    public void updateList(ArrayList<RoomDrinks> newList)
+    {
+        listRoomDrink = new ArrayList<>();
+        listRoomDrink.addAll(newList);
+        notifyDataSetChanged();
+    }
     @Override
     public int getItemCount() {
-        return listDrinkRoom.size();
+        return listRoomDrink.size();
     }
 
-    public class RoomHolder extends RecyclerView.ViewHolder
+
+    public class RoomDrinkHolder extends RecyclerView.ViewHolder
     {
-        TextView tx_id,tx_name,tx_ubication,tx_status;
+            TextView tx_id,tx_drinkroom,tx_status,tx_waiter;
+            //Chronometer tx_chronometer;
 
-        public RoomHolder(View itemView) {
-            super(itemView);
+            public RoomDrinkHolder(View itemView)
+            {   super(itemView);
 
-            tx_id = (TextView) itemView.findViewById(R.id.t_id);
-            tx_name = (TextView) itemView.findViewById(R.id.t_name);
-            tx_ubication = (TextView) itemView.findViewById(R.id.t_ubication);
-            tx_status = (TextView) itemView.findViewById(R.id.t_status);
-        }
-    }
+                tx_id = (TextView) itemView.findViewById(R.id.t_id);
+                tx_waiter = (TextView) itemView.findViewById(R.id.t_waiter);
+                tx_drinkroom = (TextView) itemView.findViewById(R.id.t_drinkroom);
+                tx_status = (TextView) itemView.findViewById(R.id.t_status);
+                //tx_chronometer = layoutInflater.findViewById(R.id.chronometer);
+
+            }
+     }
+
+
 }

@@ -10,7 +10,7 @@
         app:actionViewClass="android.support.v7.widget.SearchView"
         />
     <item android:id="@+id/refresh"
-        android:icon="@drawable/refresh"
+        android:icon="@drawable/ic_refresh_black_24dp"
         android:title="@string/refresh"
         app:showAsAction="always"
         />

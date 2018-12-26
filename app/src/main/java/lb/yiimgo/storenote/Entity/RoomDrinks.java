@@ -5,16 +5,25 @@ package lb.yiimgo.storenote.Entity;
  */
 
 public class RoomDrinks {
-    private Integer IdRoom;
+    private String IdRoom;
     private String NameRoom;
+    private String WaiterRoom;
     private String RoomUbication;
     private String Status;
 
-    public Integer getIdRoom() {
+    public String getWaiterRoom() {
+        return WaiterRoom;
+    }
+
+    public void setWaiterRoom(String waiterRoom) {
+        WaiterRoom = waiterRoom;
+    }
+
+    public String getIdRoom() {
         return IdRoom;
     }
 
-    public void setIdRoom(Integer idRoom) {
+    public void setIdRoom(String idRoom) {
         IdRoom = idRoom;
     }
 

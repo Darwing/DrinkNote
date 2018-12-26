@@ -44,6 +44,8 @@
     <string name="full_name">Jose Garcia Vargas</string>
     <string name="profile">Adminstrator</string>
     <string name="navigation">TODO</string>
+    <string name="waiter_name">Waiter Name</string>
+    <string name="bg_board">TODO</string>
 
 
 </resources>

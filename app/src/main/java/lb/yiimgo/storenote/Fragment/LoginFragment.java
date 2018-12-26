@@ -81,9 +81,10 @@ public class LoginFragment extends Fragment implements Response.Listener<JSONObj
 
             if(jsonObject.optString("login") == "false")
             {
-                Toast.makeText(getContext(),"User or Password is wrong!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"User or password incorrect!",Toast.LENGTH_SHORT).show();
             }else
             {
+                users.setId(jsonObject.optString("Id"));
                 users.setUserName(jsonObject.optString("UserName"));
                 users.setPassword(jsonObject.optString("Password"));
                 users.setProfile(jsonObject.optString("Profile"));
