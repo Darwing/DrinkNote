@@ -1,8 +1,5 @@
 package lb.yiimgo.storenote.ViewPager;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -11,7 +8,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -26,6 +22,8 @@ import lb.yiimgo.storenote.Fragment.RoomDrinkFragment;
 import lb.yiimgo.storenote.Fragment.UserFragment;
 import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.SessionManager;
+import lb.yiimgo.storenote.ViewPager.Category.CreateCategory;
+import lb.yiimgo.storenote.ViewPager.RoomDrink.CreateRoomDrink;
 import lb.yiimgo.storenote.ViewPagerAdapter;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -55,7 +53,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
         drawer.addDrawerListener(toggle);
-
+        sessionManager = new SessionManager(this);
+        sessionManager.validateSession();
         toggle.syncState();
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -166,35 +165,48 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     public boolean onNavigationItemSelected(MenuItem item)
     {
 
+        sessionManager = new SessionManager(this);
 
+            switch (item.getItemId())
+            {
+                case R.id.nav_home:
+                    viewPager.setCurrentItem(0,false);
+                    break;
+                case R.id.nav_services:
+                    if(Integer.valueOf(sessionManager.getDataFromSession().get(0)) == 1)
+                    {
+                        Intent services = new Intent(Home.this,CreateCategory.class);
+                        startActivity(services);
+                    }else{
+                        viewPager.setCurrentItem(1);
+                    }
+                    break;
+                case R.id.nav_rooom:
+                    if(Integer.valueOf(sessionManager.getDataFromSession().get(0)) == 1)
+                    {
+                        Intent rooms = new Intent(Home.this,CreateRoomDrink.class);
+                        startActivity(rooms);
+                    }else{
+                        viewPager.setCurrentItem(2);
+                    }
+                    break;
+                case R.id.nav_user:
+                        //Intent rooms = new Intent(Home.this,CreateRoomDrink.class);
+                        //startActivity(rooms);
+                    break;
+                case  R.id.setting :
+                    Toast.makeText(this,"ses", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.logout :
+                    sessionManager.logOut();
+                    Toast.makeText(this,"Logout successful!", Toast.LENGTH_SHORT).show();
+                    break;
 
-        switch (item.getItemId()){
-            case R.id.nav_home:
-                viewPager.setCurrentItem(0,false);
-                break;
-            case R.id.nav_services:
-                viewPager.setCurrentItem(1,false);
-                break;
-            case R.id.nav_rooom:
-                viewPager.setCurrentItem(2,false);
-                break;
-            case R.id.nav_user:
-                viewPager.setCurrentItem(3,false);
-                break;
-            case  R.id.setting :
-                Toast.makeText(this,"ses", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.logout :
-                sessionManager.logOut();
-                Toast.makeText(this,"Logout successful!", Toast.LENGTH_SHORT).show();
-                break;
-        }
+            }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
 
 }

@@ -20,7 +20,7 @@ import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.Utility;
 
 
-public class CreateCategory extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class Category extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private EditText name,amount;
     private Spinner category;
@@ -36,7 +36,7 @@ public class CreateCategory extends AppCompatActivity implements AdapterView.OnI
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         spinner = (Spinner)findViewById(R.id.spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(CreateCategory.this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>( Category.this,
                 android.R.layout.simple_spinner_item,paths);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

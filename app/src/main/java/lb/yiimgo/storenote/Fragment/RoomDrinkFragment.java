@@ -67,7 +67,6 @@ public class RoomDrinkFragment extends Fragment implements Response.Listener<JSO
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
         view = inflater.inflate(R.layout.fragment_room_drink, container, false);
         listRoomDrink = new ArrayList<>();
 
@@ -77,6 +76,7 @@ public class RoomDrinkFragment extends Fragment implements Response.Listener<JSO
         notFound = (TextView) view.findViewById(R.id.not_found);
         adapterOnClick();
         requestQueue = Volley.newRequestQueue(getContext());
+
         loadWebServices();
 
         return view;

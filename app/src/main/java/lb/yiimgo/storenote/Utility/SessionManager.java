@@ -3,6 +3,7 @@ package lb.yiimgo.storenote.Utility;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -62,6 +63,19 @@ public class SessionManager
         return list;
     }
 
+    public void validateSession()
+    {
+        sp = _context.getSharedPreferences
+                ("dataUser", _context.MODE_PRIVATE);
+
+        String profile = sp.getString("profile","Null");
+
+        if(profile.toString() == "Null")
+        {
+            logOut();
+            Toast.makeText(_context,"Start session one more time!", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     public void logOut()
     {
