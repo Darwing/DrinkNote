@@ -1,8 +1,9 @@
 package lb.yiimgo.storenote.ViewPager;
 
-import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -10,6 +11,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,9 +20,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.Arrays;
-
 import lb.yiimgo.storenote.Fragment.HomeFragment;
 import lb.yiimgo.storenote.Fragment.CategoryFragment;
 import lb.yiimgo.storenote.Fragment.RoomDrinkFragment;
@@ -31,6 +30,7 @@ import lb.yiimgo.storenote.ViewPagerAdapter;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private SessionManager sessionManager;
@@ -40,6 +40,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     RoomDrinkFragment rmFragment;
     UserFragment usFragment;
     TextView profile,fullName;
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -57,9 +57,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         drawer.addDrawerListener(toggle);
 
         toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         this.basicInfoUser(navigationView);
+        hideMenuNavigation();
+
         //Initializing viewPager
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setOffscreenPageLimit(3);
@@ -67,6 +69,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         //Initializing the tablayout
         tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
+
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -88,6 +91,18 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         setupViewPager(viewPager);
 
+
+    }
+    public void hideMenuNavigation()
+    {
+        sessionManager = new SessionManager(this);
+        Menu menu =navigationView.getMenu();
+        MenuItem target =  menu.findItem(R.id.nav_user);
+
+        if(Integer.valueOf(sessionManager.getDataFromSession().get(0)) == 1)
+            target.setVisible(true);
+        else
+            target.setVisible(false);
 
     }
     @Override
@@ -122,20 +137,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         usFragment = new UserFragment();
         int idProfile = Integer.valueOf(sessionManager.getDataFromSession().get(0));
 
-        if(idProfile == 1)
-        {
+
         adapter.addFragment(homeFragment,"BOARD");
         adapter.addFragment(ctFragment,"SERVICES");
         adapter.addFragment(rmFragment,"ROOMS");
-        adapter.addFragment(usFragment,"USERS");
 
-        }else
-        {
-            adapter.addFragment(homeFragment,"BOARD");
-            adapter.addFragment(ctFragment,"SERVICES");
-            adapter.addFragment(rmFragment,"ROOMS");
+        if(idProfile == 1)
+         adapter.addFragment(usFragment,"USERS");
 
-        }
         viewPager.setAdapter(adapter);
     }
 
@@ -154,9 +163,24 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(MenuItem item)
+    {
+
+
 
         switch (item.getItemId()){
+            case R.id.nav_home:
+                viewPager.setCurrentItem(0,false);
+                break;
+            case R.id.nav_services:
+                viewPager.setCurrentItem(1,false);
+                break;
+            case R.id.nav_rooom:
+                viewPager.setCurrentItem(2,false);
+                break;
+            case R.id.nav_user:
+                viewPager.setCurrentItem(3,false);
+                break;
             case  R.id.setting :
                 Toast.makeText(this,"ses", Toast.LENGTH_SHORT).show();
                 break;

@@ -14,8 +14,5 @@
         android:title="@string/refresh"
         app:showAsAction="always"
         />
-    <item android:id="@+id/action_category"
-        android:orderInCategory="10"
-        android:title="@string/create_category"
-        app:showAsAction="never"/>
+
 </menu>

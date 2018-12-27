@@ -39,8 +39,6 @@ public class CategoryActivity extends AppCompatActivity
         //Initializing the tablayout
         tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
-
-
     }
 
 
