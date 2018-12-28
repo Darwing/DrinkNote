@@ -46,6 +46,8 @@
     <string name="navigation">TODO</string>
     <string name="waiter_name">Waiter Name</string>
     <string name="bg_board">TODO</string>
+    <string name="msg_add">Add the selected service to the corresponding room.</string>
+    <string name="tittle_add">Item selected:</string>
 
 
 </resources>

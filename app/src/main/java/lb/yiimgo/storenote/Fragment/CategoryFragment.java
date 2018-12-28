@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,6 +34,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import lb.yiimgo.storenote.Entity.Category;
+import lb.yiimgo.storenote.Entity.RoomDrinks;
 import lb.yiimgo.storenote.Entity.VolleySingleton;
 import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.ViewPager.Category.CategoryAdapter;
@@ -50,7 +52,7 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
     public RequestQueue requestQueue;
     public JsonObjectRequest jsonObjectRequest;
     public SearchView searchView;
-
+    public RoomDrinkFragment roomDrinkFragment;
     public TextView notFound;
     public boolean ifSearch = false;
 
@@ -128,13 +130,22 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
     }
     public void addDialog(View v)
     {
+        roomDrinkFragment= new RoomDrinkFragment();
+        DialogsFragment dialogsFragment = new DialogsFragment(getContext());
+        dialogsFragment.show(getActivity().getFragmentManager(),"roomDialog");
+
         String value;
         if(ifSearch)
             value = newList.get(recyclerCategory.getChildAdapterPosition(v)).getName();
           else
             value = listCategory.get(recyclerCategory.getChildAdapterPosition(v)).getName();
 
-        Toast.makeText(getActivity(), "Popup ID: " + value, Toast.LENGTH_SHORT).show();
+     /*     TextView itemSelected = layoutFrom.findViewById(R.id.item_selected);
+          itemSelected.setText(value);
+          builder.setView(layoutFrom);
+          AlertDialog dialog = builder.create();
+          dialog.show();*/
+        //Toast.makeText(getActivity(), "Popup ID: " + value, Toast.LENGTH_SHORT).show();
     }
     public void loadWebServices()
     {
@@ -186,7 +197,7 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
                         switch (method)
                         {
                             case  "delete" :
-                                webServiceDelete(listCategory.get(position).getId().toString(),position);
+                                webServiceDelete(listCategory.get(position).getId(),position);
                                 break;
                         }
                     }

@@ -22,8 +22,8 @@ import lb.yiimgo.storenote.Fragment.RoomDrinkFragment;
 import lb.yiimgo.storenote.Fragment.UserFragment;
 import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.SessionManager;
-import lb.yiimgo.storenote.ViewPager.Category.CreateCategory;
-import lb.yiimgo.storenote.ViewPager.RoomDrink.CreateRoomDrink;
+import lb.yiimgo.storenote.ViewPager.Category.Category;
+import lb.yiimgo.storenote.ViewPager.RoomDrink.RoomDrink;
 import lb.yiimgo.storenote.ViewPagerAdapter;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -175,7 +175,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 case R.id.nav_services:
                     if(Integer.valueOf(sessionManager.getDataFromSession().get(0)) == 1)
                     {
-                        Intent services = new Intent(Home.this,CreateCategory.class);
+                        Intent services = new Intent(Home.this,Category.class);
                         startActivity(services);
                     }else{
                         viewPager.setCurrentItem(1);
@@ -184,7 +184,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 case R.id.nav_rooom:
                     if(Integer.valueOf(sessionManager.getDataFromSession().get(0)) == 1)
                     {
-                        Intent rooms = new Intent(Home.this,CreateRoomDrink.class);
+                        Intent rooms = new Intent(Home.this,RoomDrink.class);
                         startActivity(rooms);
                     }else{
                         viewPager.setCurrentItem(2);
