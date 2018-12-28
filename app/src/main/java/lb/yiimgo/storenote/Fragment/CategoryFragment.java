@@ -37,6 +37,7 @@ import lb.yiimgo.storenote.Entity.Category;
 import lb.yiimgo.storenote.Entity.RoomDrinks;
 import lb.yiimgo.storenote.Entity.VolleySingleton;
 import lb.yiimgo.storenote.R;
+import lb.yiimgo.storenote.Utility.Utility;
 import lb.yiimgo.storenote.ViewPager.Category.CategoryAdapter;
 
 public class CategoryFragment extends Fragment implements Response.Listener<JSONObject>,
@@ -55,7 +56,7 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
     public RoomDrinkFragment roomDrinkFragment;
     public TextView notFound;
     public boolean ifSearch = false;
-
+    public Utility utility;
     public CategoryFragment() { }
 
     @Override
@@ -103,7 +104,7 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
                 category.setAmount(jsonObject.optDouble("Amount"));
                 category.setCategory(jsonObject.optString("Category"));
                 category.setStatus(jsonObject.optString("Status"));
-
+                category.setNumStatus(jsonObject.optInt("StatusId"));
                 listCategory.add(category);
 
             }
@@ -124,28 +125,32 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
 
             @Override
             public void onClickAddButton(View v) {
-                addDialog(v);
+                if(listCategory.get(recyclerCategory.getChildAdapterPosition(v)).getNumStatus() == 1)
+                {
+                    addDialog(v);
+
+                }else
+                {
+                    String message =listCategory.get(recyclerCategory.getChildAdapterPosition(v)).getName();
+                    utility = new Utility(getContext());
+                    utility.showDialogAnimation(R.style.DialogSlide,
+                        "This item: "+ message
+                                +", is not available.","Not Available");
+                }
             }
         });
     }
     public void addDialog(View v)
     {
-        roomDrinkFragment= new RoomDrinkFragment();
-        DialogsFragment dialogsFragment = new DialogsFragment(getContext());
+        Category value;
+        if(ifSearch)
+            value = newList.get(recyclerCategory.getChildAdapterPosition(v));
+        else
+            value = listCategory.get(recyclerCategory.getChildAdapterPosition(v));
+
+        DialogsFragment dialogsFragment = new DialogsFragment(getContext(),value);
         dialogsFragment.show(getActivity().getFragmentManager(),"roomDialog");
 
-        String value;
-        if(ifSearch)
-            value = newList.get(recyclerCategory.getChildAdapterPosition(v)).getName();
-          else
-            value = listCategory.get(recyclerCategory.getChildAdapterPosition(v)).getName();
-
-     /*     TextView itemSelected = layoutFrom.findViewById(R.id.item_selected);
-          itemSelected.setText(value);
-          builder.setView(layoutFrom);
-          AlertDialog dialog = builder.create();
-          dialog.show();*/
-        //Toast.makeText(getActivity(), "Popup ID: " + value, Toast.LENGTH_SHORT).show();
     }
     public void loadWebServices()
     {

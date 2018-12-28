@@ -15,6 +15,7 @@ import java.util.Locale;
 
 import lb.yiimgo.storenote.Entity.Category;
 import lb.yiimgo.storenote.R;
+import lb.yiimgo.storenote.Utility.Utility;
 
 /**
  * Created by Darwing on 16-Dec-18.
@@ -82,9 +83,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         return result;
     }
-    private String getFormatedAmount(Double amount){
-        return NumberFormat.getNumberInstance(Locale.US).format(amount);
-    }
 
     @Override
     public void onBindViewHolder(CategoryHolder holder, final int position)
@@ -92,7 +90,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         holder.tx_id.setText(listCategory.get(position).getId().toString());
         holder.tx_name.setText(listCategory.get(position).getName().toString());
-        holder.tx_amount.setText(getFormatedAmount(listCategory.get(position).getAmount()));
+        holder.tx_amount.setText(Utility.getFormatedAmount(listCategory.get(position).getAmount()));
         holder.tx_category.setText(listCategory.get(position).getCategory().toString());
         holder.im_typeDrink.setImageResource(drinkType(listCategory.get(position).getCategory().toString()));
         holder.tx_status.setText(listCategory.get(position).getStatus());

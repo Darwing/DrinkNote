@@ -1,15 +1,10 @@
 <resources>
     <string name="app_name">Store Note</string>
 
-    <string name="tab1">HOME</string>
-    <string name="tab2">CATEGORY</string>
-    <string name="tab3">CONTACTS</string>
-
     <string name="action_status">Status</string>
-
     <string name="id_number">00000</string>
     <string name="store_name">Store Name</string>
-    <string name="cost">RD$ </string>
+    <string name="cost">RD$</string>
     <string name="category_label">Category Name</string>
     <string name="send_data">Enviar</string>
     <string name="cerveza">Null</string>
@@ -47,7 +42,7 @@
     <string name="waiter_name">Waiter Name</string>
     <string name="bg_board">TODO</string>
     <string name="msg_add">Add the selected service to the corresponding room.</string>
-    <string name="tittle_add">Item selected:</string>
+    <string name="tittle_add">Item:</string>
 
 
 </resources>

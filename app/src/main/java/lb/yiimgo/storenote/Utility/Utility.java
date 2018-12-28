@@ -1,11 +1,22 @@
 package lb.yiimgo.storenote.Utility;
 
+import android.app.AlertDialog;
+import android.content.Context;
+
+import java.text.NumberFormat;
+import java.util.Locale;
+
 /**
  * Created by Darwing on 16-Dec-18.
  */
 
 public class Utility
 {
+    Context _context;
+    public Utility(Context context)
+    {
+        this._context = context;
+    }
     //const field to create category
     public static final  String TABLE_CATEGORY = "Category";
 
@@ -29,4 +40,17 @@ public class Utility
             " ("+FIELD_ID_ROOM+" INTEGER PRIMARY KEY AUTOINCREMENT, "+FIELD_NAME_ROOM+" TEXT, "+FIELD_CATEGORY+" TEXT," +
             " "+FIELD_ROOM_DRINK_UBICATION+" TEXT,"+FIELD_ROOM_DRINK_STATUS+" INTEGER DEFAULT 0)";
 
+
+    public void showDialogAnimation(int type,String message,String title)
+    {
+        AlertDialog dialog = new AlertDialog.Builder(_context).create();
+        dialog.setTitle(title);
+        dialog.setMessage(message);
+        dialog.getWindow().getAttributes().windowAnimations = type;
+        dialog.show();
+    }
+
+    public static String getFormatedAmount(Double amount){
+        return NumberFormat.getNumberInstance(Locale.US).format(amount);
+    }
 }

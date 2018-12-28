@@ -11,6 +11,15 @@ public class Category
     private Double Amount;
     private String Category;
     private String Status;
+    private Integer numStatus;
+
+    public Integer getNumStatus() {
+        return numStatus;
+    }
+
+    public void setNumStatus(Integer numStatus) {
+        this.numStatus = numStatus;
+    }
 
     public String getStatus() {
         return Status;

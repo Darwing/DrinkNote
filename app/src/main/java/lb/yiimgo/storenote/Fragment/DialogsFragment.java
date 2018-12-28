@@ -25,17 +25,20 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import lb.yiimgo.storenote.Entity.RoomDrinks;
 import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.SessionManager;
+import lb.yiimgo.storenote.Entity.Category;
+import lb.yiimgo.storenote.Utility.Utility;
 import lb.yiimgo.storenote.ViewPager.RoomDrink.RoomDrinkAdapter;
 
 @SuppressLint("ValidFragment")
 public class DialogsFragment extends DialogFragment implements Response.Listener<JSONObject>,
         Response.ErrorListener
 {
-   private static final String TAG="roomDialog";
     public View view;
     public RecyclerView recyclerRoomDrink;
     public ArrayList<RoomDrinks> listRoomDrink;
@@ -45,10 +48,13 @@ public class DialogsFragment extends DialogFragment implements Response.Listener
     public JsonObjectRequest jsonObjectRequest;
     public SessionManager sessionManager;
     public Context _context;
-
-    public DialogsFragment(Context context)
+    public Category _category;
+    TextView itemSelected;
+    TextView itemCost;
+    public DialogsFragment(Context context,Category category)
     {
         this._context = context;
+        this._category = category;
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,13 +65,16 @@ public class DialogsFragment extends DialogFragment implements Response.Listener
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
                              saveInstanceState)
    {
-       View view = inflater.inflate(R.layout.form_add_services,container,false);
+       view = inflater.inflate(R.layout.form_add_services,container,false);
        listRoomDrink = new ArrayList<>();
        adapterOnClick();
        recyclerRoomDrink = (RecyclerView) view.findViewById(R.id.display_room_dialog);
        recyclerRoomDrink.setLayoutManager(new LinearLayoutManager(_context));
        recyclerRoomDrink.setHasFixedSize(true);
-
+       itemSelected = (TextView) view.findViewById(R.id.item_selected);
+       itemCost = (TextView) view.findViewById(R.id.itemCost);
+       itemSelected.setText(_category.getName());
+       itemCost.setText(Utility.getFormatedAmount(_category.getAmount()));
        requestQueue = Volley.newRequestQueue(_context);
 
        loadWebServices();
@@ -82,16 +91,17 @@ public class DialogsFragment extends DialogFragment implements Response.Listener
 
             @Override
             public void onClickAddButton(View v) {
-                addDialog(v);
+
+                addServicesToRoom(v);
 
             }
         });
     }
 
-    public void addDialog(View v)
+    public void addServicesToRoom(View v)
     {
 
-        Toast.makeText(getActivity(), "Popup ID: ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Popup ID: " +listRoomDrink.get(recyclerRoomDrink.getChildAdapterPosition(v)).getIdRoom(), Toast.LENGTH_SHORT).show();
     }
     @Override
     public void onResponse(JSONObject response) {
