@@ -51,7 +51,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         return new CategoryHolder(layoutInflater);
     }
     private int drinkType(String cat)
-    { 
+    {
         int result = 0;
         switch (cat)
         {
@@ -92,11 +92,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void onBindViewHolder(CategoryHolder holder, final int position)
     {
 
-        holder.tx_id.setText(listCategory.get(position).getId().toString());
-        holder.tx_name.setText(listCategory.get(position).getName().toString());
+        holder.tx_id.setText(listCategory.get(position).getId());
+        holder.tx_name.setText(listCategory.get(position).getName());
         holder.tx_amount.setText(Utility.getFormatedAmount(listCategory.get(position).getAmount()));
-        holder.tx_category.setText(listCategory.get(position).getCategory().toString());
-        holder.im_typeDrink.setImageResource(drinkType(listCategory.get(position).getCategory().toString()));
+        holder.tx_category.setText(listCategory.get(position).getCategory());
+        holder.im_typeDrink.setImageResource(drinkType(listCategory.get(position).getCategory()));
         holder.tx_status.setText(listCategory.get(position).getStatus());
         holder.tx_status.setBackgroundColor(statusType(listCategory.get(position).getStatus()));
 

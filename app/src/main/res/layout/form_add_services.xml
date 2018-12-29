@@ -24,15 +24,15 @@
              android:id="@+id/item_selected"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:layout_marginLeft="5dp"
-             android:text="TextView"
+             android:layout_marginStart="5dp"
+             android:text="@string/item_selected"
              android:textColor="@color/bgRowsGreen" />
 
          <TextView
              android:id="@+id/textView4"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:layout_marginLeft="5dp"
+             android:layout_marginStart="5dp"
              android:text="@string/cost"
              android:textStyle="bold" />
 
@@ -40,8 +40,8 @@
              android:id="@+id/itemCost"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:layout_marginLeft="5dp"
-             android:text="TextView"
+             android:layout_marginStart="5dp"
+             android:text="@string/cost_selected"
              android:textColor="@color/bgRowsGreen" />
 
      </LinearLayout>

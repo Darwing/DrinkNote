@@ -90,10 +90,10 @@ public class RoomDrinkAdapter extends RecyclerView.Adapter<RoomDrinkAdapter.Room
     public void onBindViewHolder(final RoomDrinkHolder holder, final int position)
     {
 
-        holder.tx_id.setText(listRoomDrink.get(position).getIdRoom().toString());
+        holder.tx_id.setText(listRoomDrink.get(position).getIdRoom());
         holder.tx_waiter.setText(listRoomDrink.get(position).getWaiterRoom());
         holder.tx_drinkroom.setText(listRoomDrink.get(position).getRoomUbication());
-        holder.tx_status.setText(listRoomDrink.get(position).getStatus().toString());
+        holder.tx_status.setText(listRoomDrink.get(position).getStatus());
         holder.tx_status.setBackgroundColor(statusType(listRoomDrink.get(position).getStatus()));
         layoutInflater.setOnClickListener(new View.OnClickListener() {
             @Override

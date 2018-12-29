@@ -43,6 +43,8 @@
     <string name="bg_board">TODO</string>
     <string name="msg_add">Add the selected service to the corresponding room.</string>
     <string name="tittle_add">Item:</string>
+    <string name="item_selected">Item Selected</string>
+    <string name="cost_selected">00.0</string>
 
 
 </resources>
