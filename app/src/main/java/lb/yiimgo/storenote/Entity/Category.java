@@ -1,5 +1,7 @@
 package lb.yiimgo.storenote.Entity;
 
+import android.content.Intent;
+
 /**
  * Created by Darwing on 15-Dec-18.
  */
@@ -12,6 +14,15 @@ public class Category
     private String Category;
     private String Status;
     private Integer numStatus;
+    private Integer CategoryId;
+
+    public Integer getCategoryId() {
+        return CategoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        CategoryId = categoryId;
+    }
 
     public Integer getNumStatus() {
         return numStatus;

@@ -1,9 +1,11 @@
 package lb.yiimgo.storenote.Fragment;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -51,6 +53,8 @@ public class DialogsFragment extends DialogFragment implements Response.Listener
     public Category _category;
     TextView itemSelected;
     TextView itemCost;
+    public ProgressDialog progressDialog;
+
     public DialogsFragment(Context context,Category category)
     {
         this._context = context;
@@ -93,15 +97,48 @@ public class DialogsFragment extends DialogFragment implements Response.Listener
             public void onClickAddButton(View v) {
 
                 addServicesToRoom(v);
-
             }
         });
     }
 
-    public void addServicesToRoom(View v)
+    public void addServicesToRoom(final View v)
     {
 
-        Toast.makeText(getActivity(), "Popup ID: " +listRoomDrink.get(recyclerRoomDrink.getChildAdapterPosition(v)).getIdRoom(), Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(_context, R.style.DialogTheme);
+            builder1.setMessage("Are you sure to add "+_category.getName()+" in the room "+
+                    listRoomDrink.get(recyclerRoomDrink.getChildAdapterPosition(v)).getRoomUbication());
+            builder1.setCancelable(true);
+
+            builder1.setPositiveButton(
+                    "Yes",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            saveDataBoard(v);
+
+                            android.app.FragmentManager fm = getFragmentManager();
+                            fm.executePendingTransactions();
+
+                            android.app.DialogFragment existingFragment = (android.app.DialogFragment) fm
+                                    .findFragmentByTag("roomDialog");
+                            if (existingFragment != null) {
+                                // Just show the latest error
+                                existingFragment.dismiss();
+                            }
+
+                            progressDialog.hide();
+                        }
+                    });
+
+            builder1.setNegativeButton(
+                    "No",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
     }
     @Override
     public void onResponse(JSONObject response) {
@@ -129,6 +166,25 @@ public class DialogsFragment extends DialogFragment implements Response.Listener
         recyclerRoomDrink.setAdapter(adapter);
 
     }
+    public void saveDataBoard(View v)
+    {
+        sessionManager = new SessionManager(_context);
+        progressDialog = new ProgressDialog(_context);
+        progressDialog.setMessage("Cargando...");
+        progressDialog.show();
+        String idUser = sessionManager.getDataFromSession().get(4);
+        String ubication = listRoomDrink.get(recyclerRoomDrink.getChildAdapterPosition(v)).getIdRoom();
+        String url = Utility.BASE_URL + "Main/saveDataBoard?IdServices="+_category.getId()
+                +"&Amount="+_category.getAmount()
+                +"&CategoryId="+_category.getCategoryId()
+                +"&Ubication="+ubication
+                +"&UserCreate=" + idUser;
+
+        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
+        requestQueue.add(jsonObjectRequest);
+
+
+    }
     public void loadWebServices()
     {
         sessionManager = new SessionManager(_context);
@@ -136,7 +192,7 @@ public class DialogsFragment extends DialogFragment implements Response.Listener
         String idUser = sessionManager.getDataFromSession().get(4);
         String idProfile = sessionManager.getDataFromSession().get(0);
 
-        String url = "http://rizikyasociados.com.do/wsDrinkNote/Main/getDataRooms?Id=" + idUser +"&idProfile="+idProfile;
+        String url = Utility.BASE_URL +"Main/getDataRooms?Id=" + idUser +"&idProfile="+idProfile;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
         requestQueue.add(jsonObjectRequest);
     }

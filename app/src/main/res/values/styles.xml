@@ -24,6 +24,9 @@
     <style name="AppBarOverlay" parent="Widget.AppCompat.Light.ActionBar.Solid">
         <item name="elevation">0dp</item>
     </style>
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/cardview_dark_background</item>
+    </style>
     <style name="DialogSlide">
         <item name="android:windowEnterAnimation">@anim/slide_left</item>
         <item name="android:windowExitAnimation">@anim/slide_right</item>

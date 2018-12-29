@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import lb.yiimgo.storenote.Entity.Users;
 import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.SessionManager;
+import lb.yiimgo.storenote.Utility.Utility;
 import lb.yiimgo.storenote.ViewPager.Home;
 
 
@@ -116,7 +117,7 @@ public class LoginFragment extends Fragment implements Response.Listener<JSONObj
         progressDialog.setMessage("Cargando...");
         progressDialog.show();
         String usr =username.getText().toString().toLowerCase();
-        String url = "http://rizikyasociados.com.do/wsDrinkNote/Main/getUserById?username="+usr
+        String url = Utility.BASE_URL +"Main/getUserById?username="+usr
                 +"&password="+password.getText().toString();
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
         requestQueue.add(jsonObjectRequest);

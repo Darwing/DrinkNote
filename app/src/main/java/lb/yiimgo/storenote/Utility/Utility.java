@@ -2,6 +2,7 @@ package lb.yiimgo.storenote.Utility;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -40,6 +41,7 @@ public class Utility
             " ("+FIELD_ID_ROOM+" INTEGER PRIMARY KEY AUTOINCREMENT, "+FIELD_NAME_ROOM+" TEXT, "+FIELD_CATEGORY+" TEXT," +
             " "+FIELD_ROOM_DRINK_UBICATION+" TEXT,"+FIELD_ROOM_DRINK_STATUS+" INTEGER DEFAULT 0)";
 
+    public static  String BASE_URL  ="http://rizikyasociados.com.do/wsDrinkNote/";
 
     public void showDialogAnimation(int type,String message,String title)
     {

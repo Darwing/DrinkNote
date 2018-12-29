@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,7 +33,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import lb.yiimgo.storenote.Entity.Category;
-import lb.yiimgo.storenote.Entity.RoomDrinks;
 import lb.yiimgo.storenote.Entity.VolleySingleton;
 import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.Utility;
@@ -53,7 +51,6 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
     public RequestQueue requestQueue;
     public JsonObjectRequest jsonObjectRequest;
     public SearchView searchView;
-    public RoomDrinkFragment roomDrinkFragment;
     public TextView notFound;
     public boolean ifSearch = false;
     public Utility utility;
@@ -105,6 +102,7 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
                 category.setCategory(jsonObject.optString("Category"));
                 category.setStatus(jsonObject.optString("Status"));
                 category.setNumStatus(jsonObject.optInt("StatusId"));
+                category.setCategoryId(jsonObject.getInt("CategoryId"));
                 listCategory.add(category);
 
             }
@@ -114,7 +112,6 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
             }
 
             progressDialog.hide();
-
             recyclerCategory.setAdapter(adapter);
 
     }
@@ -158,7 +155,7 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
         progressDialog.setMessage("Cargando...");
         progressDialog.show();
 
-        String url = "http://rizikyasociados.com.do/wsDrinkNote/Main/getDataServices";
+        String url = Utility.BASE_URL +"Main/getDataServices";
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
         requestQueue.add(jsonObjectRequest);
     }
@@ -170,7 +167,7 @@ public class CategoryFragment extends Fragment implements Response.Listener<JSON
         progressDialog.show();
 
         StringRequest stringRequest;
-        String url="http://rizikyasociados.com.do/wsDrinkNote/Main/deleteCategory?Id="+id;
+        String url= Utility.BASE_URL + "Main/deleteCategory?Id="+id;
 
         stringRequest =new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override

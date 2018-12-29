@@ -1,6 +1,8 @@
 package lb.yiimgo.storenote.ViewPager.Category;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +51,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         return new CategoryHolder(layoutInflater);
     }
     private int drinkType(String cat)
-    {
+    { 
         int result = 0;
         switch (cat)
         {
@@ -62,6 +64,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             case "Ron" :
                 result = R.drawable.bg_romo;
                 break;
+            default:
+                result= R.drawable.unknown_image;
         }
 
         return result;

@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import lb.yiimgo.storenote.Entity.Users;
 import lb.yiimgo.storenote.Entity.VolleySingleton;
 import lb.yiimgo.storenote.R;
+import lb.yiimgo.storenote.Utility.Utility;
 import lb.yiimgo.storenote.ViewPager.User.UserAdapter;
 
 public class UserFragment extends Fragment implements Response.Listener<JSONObject>,
@@ -130,7 +131,7 @@ public class UserFragment extends Fragment implements Response.Listener<JSONObje
         progressDialog.setMessage("Cargando...");
         progressDialog.show();
 
-        String url = "http://rizikyasociados.com.do/wsDrinkNote/Main/getDataServices";
+        String url = Utility.BASE_URL +"Main/getDataServices";
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
         requestQueue.add(jsonObjectRequest);
     }
@@ -142,7 +143,7 @@ public class UserFragment extends Fragment implements Response.Listener<JSONObje
         progressDialog.show();
 
         StringRequest stringRequest;
-        String url="http://rizikyasociados.com.do/wsDrinkNote/Main/deleteUser?Id="+id;
+        String url= Utility.BASE_URL +"Main/deleteUser?Id="+id;
 
         stringRequest =new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override

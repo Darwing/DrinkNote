@@ -36,6 +36,7 @@ import lb.yiimgo.storenote.Entity.RoomDrinks;
 import lb.yiimgo.storenote.Entity.VolleySingleton;
 import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.SessionManager;
+import lb.yiimgo.storenote.Utility.Utility;
 import lb.yiimgo.storenote.ViewPager.RoomDrink.RoomDrinkAdapter;
 
 public class RoomDrinkFragment extends Fragment implements Response.Listener<JSONObject>,
@@ -124,7 +125,6 @@ public class RoomDrinkFragment extends Fragment implements Response.Listener<JSO
 
             @Override
             public void onClickAddButton(View v) {
-                addDialog(v);
 
             }
         });
@@ -148,7 +148,7 @@ public class RoomDrinkFragment extends Fragment implements Response.Listener<JSO
         String idUser = sessionManager.getDataFromSession().get(4);
         String idProfile = sessionManager.getDataFromSession().get(0);
 
-        String url = "http://rizikyasociados.com.do/wsDrinkNote/Main/getDataRooms?Id=" + idUser +"&idProfile="+idProfile;
+        String url = Utility.BASE_URL +"Main/getDataRooms?Id=" + idUser +"&idProfile="+idProfile;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
         requestQueue.add(jsonObjectRequest);
     }
@@ -160,7 +160,7 @@ public class RoomDrinkFragment extends Fragment implements Response.Listener<JSO
         progressDialog.show();
 
         StringRequest stringRequest;
-        String url="http://rizikyasociados.com.do/wsDrinkNote/Main/deleteRoomDrink?Id="+id;
+        String url= Utility.BASE_URL +"Main/deleteRoomDrink?Id="+id;
 
         stringRequest =new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -178,37 +178,7 @@ public class RoomDrinkFragment extends Fragment implements Response.Listener<JSO
         });
         VolleySingleton.getIntanciaVolley(getContext()).addToRequestQueue(stringRequest);
     }
-    public void alertDialog(final int position, final String method)
-    {
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
-        builder1.setMessage("Are your sure "+method+" this item?");
-        builder1.setCancelable(true);
 
-        builder1.setPositiveButton(
-                "Yes",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        switch (method)
-                        {
-                            case  "delete" :
-                                webServiceDelete(listRoomDrink.get(position).getIdRoom().toString(),position);
-                                break;
-                        }
-                    }
-                });
-
-        builder1.setNegativeButton(
-                "No",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
-    }
 
     public void refresh()
     {
