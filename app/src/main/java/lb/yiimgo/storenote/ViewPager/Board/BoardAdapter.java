@@ -9,6 +9,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import lb.yiimgo.storenote.Entity.Boards;
 import lb.yiimgo.storenote.R;
+import lb.yiimgo.storenote.Utility.Utility;
 
 /**
  * Created by Darwing on 16-Dec-18.
@@ -83,7 +84,8 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
 
         holder.tx_id.setText(listBoard.get(position).getIdServices());
         holder.tx_waiter.setText(listBoard.get(position).getFullName());
-        holder.tx_drinkroom.setText(listBoard.get(position).getUbication());
+        holder.tx_ubication.setText(listBoard.get(position).getUbication());
+        holder.tx_total_amount.setText(Utility.getFormatedAmount(listBoard.get(position).getTotalAmount()));
 
         layoutInflater.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,7 +126,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
 
     public class BoardHolder extends RecyclerView.ViewHolder
     {
-        TextView tx_id,tx_drinkroom,tx_status,tx_waiter;
+        TextView tx_id,tx_ubication,tx_total_amount,tx_waiter;
         //Chronometer tx_chronometer;
 
         public BoardHolder(View itemView)
@@ -132,8 +134,8 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
 
             tx_id = (TextView) itemView.findViewById(R.id.t_id);
             tx_waiter = (TextView) itemView.findViewById(R.id.t_waiter);
-            tx_drinkroom = (TextView) itemView.findViewById(R.id.t_drinkroom);
-            tx_status = (TextView) itemView.findViewById(R.id.t_status);
+            tx_ubication = (TextView) itemView.findViewById(R.id.t_drinkroom);
+            tx_total_amount = (TextView) itemView.findViewById(R.id.t_total_amount);
             //tx_chronometer = layoutInflater.findViewById(R.id.chronometer);
 
         }

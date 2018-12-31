@@ -4,17 +4,17 @@ public class Boards
 {
     private String IdServices;
     private String Amount;
-    private String TotalAmount;
+    private Double TotalAmount;
     private Integer CategoryId;
     private String Ubication;
     private String FullName;
     private String DateCreate;
 
-    public String getTotalAmount() {
+    public Double getTotalAmount() {
         return TotalAmount;
     }
 
-    public void setTotalAmount(String totalAmount) {
+    public void setTotalAmount(Double totalAmount) {
         TotalAmount = totalAmount;
     }
 
