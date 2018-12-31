@@ -103,7 +103,7 @@ public class RoomDrinkFragment extends Fragment implements Response.Listener<JSO
 
                 RoomDrink.setIdRoom(jsonObject.optString("IdRoom"));
                 RoomDrink.setWaiterRoom(jsonObject.getString("WaiterRoom"));
-                RoomDrink.setRoomUbication("Ubication - " + jsonObject.optString("RoomUbication"));
+                RoomDrink.setRoomUbication(jsonObject.optString("RoomUbication"));
                 RoomDrink.setStatus(jsonObject.optString("Status"));
 
                 listRoomDrink.add(RoomDrink);

@@ -38,7 +38,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.Category
 
     @Override
     public CategoryHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
-        layoutInflater = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_category_row,parent,false);
+        layoutInflater = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_service_row,parent,false);
 
         RecyclerView.LayoutParams layoutParams =new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutInflater.setLayoutParams(layoutParams);

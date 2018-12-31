@@ -125,7 +125,7 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
 
                 board.setIdServices(jsonObject.optString("Id"));
                 board.setFullName(jsonObject.getString("FullName"));
-                board.setUbication("Ubication - " + jsonObject.optString("Ubication"));
+                board.setUbication(jsonObject.optString("Ubication"));
                 //Board.getAmount(jsonObject.optString("Amount"));
 
                 listBoard.add(board);

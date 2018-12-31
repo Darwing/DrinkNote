@@ -37,13 +37,26 @@
             android:layout_height="wrap_content"
             android:text="@string/waiter_name" />
 
-        <TextView
-            android:id="@+id/t_drinkroom"
-            style="@style/body_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ubication" />
+        <LinearLayout
 
+            android:layout_width="185dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fixed_text"
+                style="@style/body_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ubication" />
+
+            <TextView
+                android:id="@+id/t_drinkroom"
+                style="@style/body_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp" />
+        </LinearLayout>
         <!--   <Chronometer
             android:id="@+id/chronometer"
             android:layout_width="wrap_content"

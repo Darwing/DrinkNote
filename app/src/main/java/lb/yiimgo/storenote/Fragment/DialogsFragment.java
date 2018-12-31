@@ -6,13 +6,17 @@ import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -108,7 +112,9 @@ public class DialogsFragment extends DialogFragment implements Response.Listener
             builder1.setPositiveButton(
                     "Yes",
                     new DialogInterface.OnClickListener() {
+
                         public void onClick(DialogInterface dialog, int id) {
+
                             saveDataBoard(v);
 
                             android.app.FragmentManager fm = getFragmentManager();
@@ -147,7 +153,7 @@ public class DialogsFragment extends DialogFragment implements Response.Listener
 
                 RoomDrink.setIdRoom(jsonObject.optString("IdRoom"));
                 RoomDrink.setWaiterRoom(jsonObject.getString("WaiterRoom"));
-                RoomDrink.setRoomUbication("Ubication - " + jsonObject.optString("RoomUbication"));
+                RoomDrink.setRoomUbication(jsonObject.optString("RoomUbication"));
                 RoomDrink.setStatus(jsonObject.optString("Status"));
 
                 listRoomDrink.add(RoomDrink);
@@ -166,15 +172,15 @@ public class DialogsFragment extends DialogFragment implements Response.Listener
         sessionManager = new SessionManager(_context);
 
         String idUser = sessionManager.getDataFromSession().get(4);
-        String ubication = listRoomDrink.get(recyclerRoomDrink.getChildAdapterPosition(v)).getIdRoom();
+        String ubication = listRoomDrink.get(recyclerRoomDrink.getChildAdapterPosition(v)).getRoomUbication();
         String url = Utility.BASE_URL + "Main/saveDataBoard?IdServices="+ _services.getId()
                 +"&Amount="+ _services.getAmount()
                 +"&CategoryId="+ _services.getServiceId()
-                +"&Ubication="+ubication
+                +"&Ubication="+ ubication
                 +"&UserCreate=" + idUser;
 
-        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
-        requestQueue.add(jsonObjectRequest);
+         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
+         requestQueue.add(jsonObjectRequest);
 
 
     }
