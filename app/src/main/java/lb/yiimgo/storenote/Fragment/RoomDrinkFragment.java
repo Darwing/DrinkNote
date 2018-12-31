@@ -42,6 +42,7 @@ import lb.yiimgo.storenote.ViewPager.RoomDrink.RoomDrinkAdapter;
 public class RoomDrinkFragment extends Fragment implements Response.Listener<JSONObject>,
         Response.ErrorListener
 {
+
     public View view;
     public RecyclerView recyclerRoomDrink;
     public ArrayList<RoomDrinks> listRoomDrink;
@@ -180,17 +181,10 @@ public class RoomDrinkFragment extends Fragment implements Response.Listener<JSO
     }
 
 
-    public void refresh()
-    {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.detach(this).attach(this).commit();
-        ifSearch = false;
-    }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onPrepareOptionsMenu(menu);
-        inflater.inflate(R.menu.menu_room_fragment, menu);
-        MenuItem item = menu.findItem(R.id.search_room);
+        MenuItem item = menu.findItem(R.id.search);
         searchView = (SearchView) item.getActionView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -231,18 +225,6 @@ public class RoomDrinkFragment extends Fragment implements Response.Listener<JSO
         });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
-        switch (item.getItemId()) {
-            case R.id.refresh_room:
 
-                refresh();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
 }

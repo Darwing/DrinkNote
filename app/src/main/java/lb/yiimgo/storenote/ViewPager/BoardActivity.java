@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -12,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -32,6 +34,7 @@ public class BoardActivity extends AppCompatActivity implements NavigationView.O
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private SessionManager sessionManager;
+    ViewPagerAdapter adapter;
     //Fragments
     BoardFragment boardFragment;
     ServiceFragment ctFragment;
@@ -79,7 +82,7 @@ public class BoardActivity extends AppCompatActivity implements NavigationView.O
             @Override
             public void onPageSelected(int position) {
                 viewPager.setCurrentItem(position,false);
-
+                viewPager.getAdapter().notifyDataSetChanged();
             }
 
             @Override
@@ -114,16 +117,10 @@ public class BoardActivity extends AppCompatActivity implements NavigationView.O
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-       return super.onOptionsItemSelected(item);
-
-    }
-
     private void setupViewPager(ViewPager viewPager)
     {
         sessionManager = new SessionManager(this);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
         boardFragment = new BoardFragment();
         ctFragment = new ServiceFragment();
         rmFragment = new RoomDrinkFragment();
@@ -202,5 +199,34 @@ public class BoardActivity extends AppCompatActivity implements NavigationView.O
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    public void refresh()
+    {
 
+        FragmentTransaction ft0 = getSupportFragmentManager().beginTransaction();
+        ft0.detach(boardFragment).attach(boardFragment);
+
+        ft0.detach(ctFragment).attach(ctFragment);
+
+        ft0.detach(rmFragment).attach(rmFragment);
+
+        ft0.detach(usFragment).attach(usFragment).commit();
+
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_board_fragment, menu);
+        return true;
+    }
+/*        @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.refresh:
+                refresh();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }*/
 }

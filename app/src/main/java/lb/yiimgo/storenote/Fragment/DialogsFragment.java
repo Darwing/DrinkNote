@@ -175,8 +175,8 @@ public class DialogsFragment extends DialogFragment implements Response.Listener
         String ubication = listRoomDrink.get(recyclerRoomDrink.getChildAdapterPosition(v)).getRoomUbication();
         String url = Utility.BASE_URL + "Main/saveDataBoard?IdServices="+ _services.getId()
                 +"&Amount="+ _services.getAmount()
-                +"&CategoryId="+ _services.getServiceId()
-                +"&Ubication="+ ubication
+                +"&CategoryId=" + _services.getServiceId()
+                +"&Ubication=" + ubication
                 +"&UserCreate=" + idUser;
 
          jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,this,this);

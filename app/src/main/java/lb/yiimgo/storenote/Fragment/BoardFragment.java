@@ -40,6 +40,7 @@ import lb.yiimgo.storenote.ViewPager.Board.BoardAdapter;
 public class BoardFragment extends Fragment implements Response.Listener<JSONObject>,
         Response.ErrorListener
 {
+
     public View view;
     public RecyclerView recyclerBoard;
     public ArrayList<Boards> listBoard;
@@ -202,17 +203,10 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
     }
 
 
-    public void refresh()
-    {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.detach(this).attach(this).commit();
-        ifSearch = false;
-    }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onPrepareOptionsMenu(menu);
-        inflater.inflate(R.menu.menu_board_fragment, menu);
-        MenuItem item = menu.findItem(R.id.search_board);
+        MenuItem item = menu.findItem(R.id.search);
         searchView = (SearchView) item.getActionView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -253,17 +247,5 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
         });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
-        switch (item.getItemId()) {
-            case R.id.refresh_board:
-                refresh();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
 }

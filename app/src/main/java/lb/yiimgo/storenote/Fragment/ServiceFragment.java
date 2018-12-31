@@ -217,19 +217,12 @@ public class ServiceFragment extends Fragment implements Response.Listener<JSONO
         alert11.show();
     }
 
-    public void refresh()
-    {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.detach(this).attach(this).commit();
-        ifSearch = false;
-    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onPrepareOptionsMenu(menu);
-        inflater.inflate(R.menu.menu_service_fragment, menu);
-        MenuItem item = menu.findItem(R.id.search_service);
+        MenuItem item = menu.findItem(R.id.search);
         searchView = (SearchView) item.getActionView();
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -268,18 +261,6 @@ public class ServiceFragment extends Fragment implements Response.Listener<JSONO
         });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
-        switch (item.getItemId()) {
-            case R.id.refresh_service:
 
-                refresh();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
 }
