@@ -1,4 +1,4 @@
-package lb.yiimgo.storenote.ViewPager.Category;
+package lb.yiimgo.storenote.ViewPager.Service;
 
 import android.content.ContentValues;
 import android.content.pm.ActivityInfo;
@@ -20,7 +20,7 @@ import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.Utility;
 
 
-public class Category extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class ServiceBase extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private EditText name,amount;
     private Spinner category;
@@ -31,12 +31,12 @@ public class Category extends AppCompatActivity implements AdapterView.OnItemSel
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_create_category);
+        setContentView(R.layout.fragment_create_service);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         spinner = (Spinner)findViewById(R.id.spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>( Category.this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>( ServiceBase.this,
                 android.R.layout.simple_spinner_item,paths);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

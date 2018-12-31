@@ -1,8 +1,6 @@
-package lb.yiimgo.storenote.ViewPager.Category;
+package lb.yiimgo.storenote.ViewPager.Service;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,11 +9,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 
-import lb.yiimgo.storenote.Entity.Category;
+import lb.yiimgo.storenote.Entity.Services;
 import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.Utility;
 
@@ -23,18 +19,18 @@ import lb.yiimgo.storenote.Utility.Utility;
  * Created by Darwing on 16-Dec-18.
  */
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryHolder>
+public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.CategoryHolder>
  {
 
-    ArrayList<Category> listCategory;
+    ArrayList<Services> listServices;
     private Context mContext;
     private ListAdapterListener mListener; 
     View layoutInflater;
     public interface ListAdapterListener {
         void onClickAddButton(View v);
     }
-    public CategoryAdapter(Context context,ArrayList<Category> listCategory, ListAdapterListener  mListener) {
-       this.listCategory = listCategory;
+    public ServiceAdapter(Context context, ArrayList<Services> listServices, ListAdapterListener  mListener) {
+       this.listServices = listServices;
        this.mContext = context;
        this.mListener = mListener;
 
@@ -92,13 +88,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void onBindViewHolder(CategoryHolder holder, final int position)
     {
 
-        holder.tx_id.setText(listCategory.get(position).getId());
-        holder.tx_name.setText(listCategory.get(position).getName());
-        holder.tx_amount.setText(Utility.getFormatedAmount(listCategory.get(position).getAmount()));
-        holder.tx_category.setText(listCategory.get(position).getCategory());
-        holder.im_typeDrink.setImageResource(drinkType(listCategory.get(position).getCategory()));
-        holder.tx_status.setText(listCategory.get(position).getStatus());
-        holder.tx_status.setBackgroundColor(statusType(listCategory.get(position).getStatus()));
+        holder.tx_id.setText(listServices.get(position).getId());
+        holder.tx_name.setText(listServices.get(position).getName());
+        holder.tx_amount.setText(Utility.getFormatedAmount(listServices.get(position).getAmount()));
+        holder.tx_category.setText(listServices.get(position).getService());
+        holder.im_typeDrink.setImageResource(drinkType(listServices.get(position).getService()));
+        holder.tx_status.setText(listServices.get(position).getStatus());
+        holder.tx_status.setBackgroundColor(statusType(listServices.get(position).getStatus()));
 
         layoutInflater.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,15 +111,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         });*/
 
     }
-    public void updateList(ArrayList<Category> newList)
+    public void updateList(ArrayList<Services> newList)
     {
-        listCategory = new ArrayList<>();
-        listCategory.addAll(newList);
+        listServices = new ArrayList<>();
+        listServices.addAll(newList);
         notifyDataSetChanged();
     }
     @Override
     public int getItemCount() {
-        return listCategory.size();
+        return listServices.size();
     }
 
 

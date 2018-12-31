@@ -15,7 +15,7 @@ import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.Utility;
 
 
-public class RoomDrink extends AppCompatActivity  {
+public class RoomBase extends AppCompatActivity  {
 
     private EditText name;
     private EditText roomNumber;

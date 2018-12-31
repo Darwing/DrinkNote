@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_row"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:drawable/dialog_holo_light_frame"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/typeDrink"
+        android:layout_width="88dp"
+        android:layout_height="104dp"
+        android:background="@drawable/table_drink"
+        android:contentDescription="@string/cerveza"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp" />
+
+    <LinearLayout
+
+        android:layout_width="185dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="7dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/t_id"
+            style="@style/title_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/id_number" />
+
+        <TextView
+            android:id="@+id/t_waiter"
+            style="@style/title_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/waiter_name" />
+
+        <TextView
+            android:id="@+id/t_drinkroom"
+            style="@style/body_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ubication" />
+
+        <!--   <Chronometer
+            android:id="@+id/chronometer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/body_style"/>-->
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -28,7 +27,7 @@ import lb.yiimgo.storenote.Entity.Users;
 import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.SessionManager;
 import lb.yiimgo.storenote.Utility.Utility;
-import lb.yiimgo.storenote.ViewPager.Home;
+import lb.yiimgo.storenote.ViewPager.BoardActivity;
 
 
 public class LoginFragment extends Fragment implements Response.Listener<JSONObject>,
@@ -93,7 +92,7 @@ public class LoginFragment extends Fragment implements Response.Listener<JSONObj
                 users.setFullName(jsonObject.optString("FullName"));
                 users.setIdProfile(jsonObject.optInt("IdProfile"));
 
-                Intent intent = new Intent(getContext(),Home.class);
+                Intent intent = new Intent(getContext(),BoardActivity.class);
 
                 sessionManager.startSession(users);
 

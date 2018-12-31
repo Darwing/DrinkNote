@@ -5,43 +5,41 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import java.util.ArrayList;
-import lb.yiimgo.storenote.Entity.Homes;
+import lb.yiimgo.storenote.Entity.Boards;
 import lb.yiimgo.storenote.R;
 
 /**
  * Created by Darwing on 16-Dec-18.
  */
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder>
+public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
 {
-    Button testBh;
 
     public boolean running;
-    ArrayList<Homes> listHome;
+    ArrayList<Boards> listBoard;
     private Context mContext;
     private ListAdapterListener mListener;
     View layoutInflater;
     public interface ListAdapterListener {
         void onClickAddButton(View v);
     }
-    public HomeAdapter(Context context,ArrayList<Homes> listHome, ListAdapterListener  mListener) {
-        this.listHome = listHome;
+    public BoardAdapter(Context context, ArrayList<Boards> listBoard, ListAdapterListener  mListener) {
+        this.listBoard = listBoard;
         this.mContext = context;
         this.mListener = mListener;
 
     }
 
     @Override
-    public HomeHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
-        layoutInflater = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_room_row,parent,false);
+    public BoardHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
+        layoutInflater = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_board_row,parent,false);
 
         RecyclerView.LayoutParams layoutParams =new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutInflater.setLayoutParams(layoutParams);
 
-        return new HomeHolder(layoutInflater);
+        return new BoardHolder(layoutInflater);
     }
 
     private int statusType(String s)
@@ -60,7 +58,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder>
 
         return result;
     }
-    /*    private int getCurrentMiliSecondsOfChronometer(final HomeHolder holder) {
+    /*    private int getCurrentMiliSecondsOfChronometer(final BoardHolder holder) {
             int stoppedMilliseconds = 0;
             String chronoText = holder.tx_chronometer.getText().toString();
             String array[] = chronoText.split(":");
@@ -74,20 +72,19 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder>
             return stoppedMilliseconds;
         }
 
-        private void startChronometer(final HomeHolder holder) {
+        private void startChronometer(final BoardHolder holder) {
              int stoppedMilliseconds = getCurrentMiliSecondsOfChronometer(holder);
              holder.tx_chronometer.setBase(SystemClock.elapsedRealtime() - stoppedMilliseconds);
              holder.tx_chronometer.start();
         }*/
     @Override
-    public void onBindViewHolder(final HomeHolder holder, final int position)
+    public void onBindViewHolder(final BoardHolder holder, final int position)
     {
 
-        holder.tx_id.setText(listHome.get(position).getIdServices());
-        holder.tx_waiter.setText(listHome.get(position).getAmount());
-        holder.tx_drinkroom.setText(listHome.get(position).getCategoryId());
-        holder.tx_status.setText(listHome.get(position).getUbication());
-        holder.tx_status.setBackgroundColor(statusType(listHome.get(position).getUserCreate()));
+        holder.tx_id.setText(listBoard.get(position).getIdServices());
+        holder.tx_waiter.setText(listBoard.get(position).getFullName());
+        holder.tx_drinkroom.setText(listBoard.get(position).getUbication());
+
         layoutInflater.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,24 +110,24 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder>
             }
         });*/
     }
-    public void updateList(ArrayList<Homes> newList)
+    public void updateList(ArrayList<Boards> newList)
     {
-        listHome = new ArrayList<>();
-        listHome.addAll(newList);
+        listBoard = new ArrayList<>();
+        listBoard.addAll(newList);
         notifyDataSetChanged();
     }
     @Override
     public int getItemCount() {
-        return listHome.size();
+        return listBoard.size();
     }
 
 
-    public class HomeHolder extends RecyclerView.ViewHolder
+    public class BoardHolder extends RecyclerView.ViewHolder
     {
         TextView tx_id,tx_drinkroom,tx_status,tx_waiter;
         //Chronometer tx_chronometer;
 
-        public HomeHolder(View itemView)
+        public BoardHolder(View itemView)
         {   super(itemView);
 
             tx_id = (TextView) itemView.findViewById(R.id.t_id);

@@ -6,23 +6,15 @@ import android.content.Intent;
  * Created by Darwing on 15-Dec-18.
  */
 
-public class Category
+public class Services
 {
     private String Id;
     private String Name;
     private Double Amount;
-    private String Category;
+    private String Service;
     private String Status;
     private Integer numStatus;
-    private Integer CategoryId;
-
-    public Integer getCategoryId() {
-        return CategoryId;
-    }
-
-    public void setCategoryId(Integer categoryId) {
-        CategoryId = categoryId;
-    }
+    private Integer ServiceId;
 
     public Integer getNumStatus() {
         return numStatus;
@@ -64,11 +56,19 @@ public class Category
         Amount = amount;
     }
 
-    public String getCategory() {
-        return Category;
+    public String getService() {
+        return Service;
     }
 
-    public void setCategory(String category) {
-        Category = category;
+    public void setService(String service) {
+        Service = service;
+    }
+
+    public Integer getServiceId() {
+        return ServiceId;
+    }
+
+    public void setServiceId(Integer serviceId) {
+        ServiceId = serviceId;
     }
 }

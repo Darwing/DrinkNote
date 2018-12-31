@@ -1,11 +1,38 @@
 package lb.yiimgo.storenote.Entity;
 
-public class Homes {
+public class Boards
+{
     private String IdServices;
     private String Amount;
+    private String TotalAmount;
     private Integer CategoryId;
     private String Ubication;
-    private String UserCreate;
+    private String FullName;
+    private String DateCreate;
+
+    public String getTotalAmount() {
+        return TotalAmount;
+    }
+
+    public void setTotalAmount(String totalAmount) {
+        TotalAmount = totalAmount;
+    }
+
+    public String getFullName() {
+        return FullName;
+    }
+
+    public void setFullName(String fullName) {
+        FullName = fullName;
+    }
+
+    public String getDateCreate() {
+        return DateCreate;
+    }
+
+    public void setDateCreate(String dateCreate) {
+        DateCreate = dateCreate;
+    }
 
     public String getIdServices() {
         return IdServices;
@@ -39,11 +66,5 @@ public class Homes {
         Ubication = ubication;
     }
 
-    public String getUserCreate() {
-        return UserCreate;
-    }
 
-    public void setUserCreate(String userCreate) {
-        UserCreate = userCreate;
-    }
 }

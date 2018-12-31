@@ -7,8 +7,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
-import lb.yiimgo.storenote.Fragment.CategoryFragment;
-import lb.yiimgo.storenote.Fragment.HomeFragment;
+import lb.yiimgo.storenote.Fragment.ServiceFragment;
+import lb.yiimgo.storenote.Fragment.BoardFragment;
 import lb.yiimgo.storenote.Fragment.RoomDrinkFragment;
 import lb.yiimgo.storenote.Fragment.UserFragment;
 import lb.yiimgo.storenote.R;
@@ -22,8 +22,8 @@ public class UserActivity extends AppCompatActivity
 {
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    HomeFragment homeFragment;
-    CategoryFragment ctFragment;
+    BoardFragment boardFragment;
+    ServiceFragment ctFragment;
     RoomDrinkFragment rmFragment;
     UserFragment usFragment;
     @Override

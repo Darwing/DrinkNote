@@ -16,25 +16,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import lb.yiimgo.storenote.Fragment.HomeFragment;
-import lb.yiimgo.storenote.Fragment.CategoryFragment;
+import lb.yiimgo.storenote.Fragment.BoardFragment;
+import lb.yiimgo.storenote.Fragment.ServiceFragment;
 import lb.yiimgo.storenote.Fragment.RoomDrinkFragment;
 import lb.yiimgo.storenote.Fragment.UserFragment;
 import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.SessionManager;
-import lb.yiimgo.storenote.ViewPager.Category.Category;
-import lb.yiimgo.storenote.ViewPager.RoomDrink.RoomDrink;
+import lb.yiimgo.storenote.ViewPager.Service.ServiceBase;
+import lb.yiimgo.storenote.ViewPager.RoomDrink.RoomBase;
 import lb.yiimgo.storenote.ViewPagerAdapter;
 
-public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class BoardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private SessionManager sessionManager;
     //Fragments
-    HomeFragment homeFragment;
-    CategoryFragment ctFragment;
+    BoardFragment boardFragment;
+    ServiceFragment ctFragment;
     RoomDrinkFragment rmFragment;
     UserFragment usFragment;
     TextView profile,fullName;
@@ -43,7 +43,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_board);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -60,7 +60,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         navigationView.setNavigationItemSelectedListener(this);
         this.basicInfoUser(navigationView);
         hideMenuNavigation();
-
+        getSupportActionBar().setTitle(sessionManager.getDataFromSession().get(1));
         //Initializing viewPager
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setOffscreenPageLimit(3);
@@ -113,12 +113,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             super.onBackPressed();
         }
     }
-    @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_home, menu);
-        // Associate searchable configuration with the SearchView
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -130,14 +124,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     {
         sessionManager = new SessionManager(this);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        homeFragment = new HomeFragment();
-        ctFragment = new CategoryFragment();
+        boardFragment = new BoardFragment();
+        ctFragment = new ServiceFragment();
         rmFragment = new RoomDrinkFragment();
         usFragment = new UserFragment();
         int idProfile = Integer.valueOf(sessionManager.getDataFromSession().get(0));
 
 
-        adapter.addFragment(homeFragment,"BOARD");
+        adapter.addFragment(boardFragment,"BOARD");
         adapter.addFragment(ctFragment,"SERVICES");
         adapter.addFragment(rmFragment,"ROOMS");
 
@@ -175,7 +169,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 case R.id.nav_services:
                     if(Integer.valueOf(sessionManager.getDataFromSession().get(0)) == 1)
                     {
-                        Intent services = new Intent(Home.this,Category.class);
+                        Intent services = new Intent(BoardActivity.this,ServiceBase.class);
                         startActivity(services);
                     }else{
                         viewPager.setCurrentItem(1);
@@ -184,14 +178,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 case R.id.nav_rooom:
                     if(Integer.valueOf(sessionManager.getDataFromSession().get(0)) == 1)
                     {
-                        Intent rooms = new Intent(Home.this,RoomDrink.class);
+                        Intent rooms = new Intent(BoardActivity.this,RoomBase.class);
                         startActivity(rooms);
                     }else{
                         viewPager.setCurrentItem(2);
                     }
                     break;
                 case R.id.nav_user:
-                        //Intent rooms = new Intent(Home.this,CreateRoomDrink.class);
+                        //Intent rooms = new Intent(BoardActivity.this,CreateRoomDrink.class);
                         //startActivity(rooms);
                     break;
                 case  R.id.setting :

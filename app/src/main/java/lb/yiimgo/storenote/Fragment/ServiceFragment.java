@@ -32,28 +32,29 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 
-import lb.yiimgo.storenote.Entity.Users;
+import lb.yiimgo.storenote.Entity.Services;
 import lb.yiimgo.storenote.Entity.VolleySingleton;
 import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.Utility;
-import lb.yiimgo.storenote.ViewPager.User.UserAdapter;
+import lb.yiimgo.storenote.ViewPager.Service.ServiceAdapter;
 
-public class UserFragment extends Fragment implements Response.Listener<JSONObject>,
+public class ServiceFragment extends Fragment implements Response.Listener<JSONObject>,
         Response.ErrorListener
 {
     public View view;
-    public RecyclerView recyclerUser;
-    public ArrayList<Users> listUser;
+    public RecyclerView recyclerService;
+    public ArrayList<Services> listServices;
+    public ArrayList<Services> newList;
     public ProgressDialog progressDialog;
-    public UserAdapter adapter;
-    public Users users;
+    public ServiceAdapter adapter;
+    public Services services = null;
     public RequestQueue requestQueue;
     public JsonObjectRequest jsonObjectRequest;
     public SearchView searchView;
-    public ArrayList<Users> newList;
     public TextView notFound;
-
-    public UserFragment() { }
+    public boolean ifSearch = false;
+    public Utility utility;
+    public ServiceFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,15 +67,16 @@ public class UserFragment extends Fragment implements Response.Listener<JSONObje
                              Bundle savedInstanceState) {
 
 
-        view = inflater.inflate(R.layout.fragment_user, container, false);
-        listUser = new ArrayList<>();
-        recyclerUser = (RecyclerView) view.findViewById(R.id.idRecycler);
-        recyclerUser.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        recyclerUser.setHasFixedSize(true);
+        view = inflater.inflate(R.layout.fragment_service, container, false);
+        listServices = new ArrayList<>();
+        recyclerService = (RecyclerView) view.findViewById(R.id.idRecycler);
+        recyclerService.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerService.setHasFixedSize(true);
         notFound = (TextView) view.findViewById(R.id.not_found);
-
+        adapterOnClick();
         requestQueue = Volley.newRequestQueue(getContext());
         loadWebServices();
+
         return view;
     }
 
@@ -90,17 +92,18 @@ public class UserFragment extends Fragment implements Response.Listener<JSONObje
         try{
             for(int i =0; i<json.length(); i++)
             {
-                users = new Users();
+                services = new Services();
                 JSONObject jsonObject = null;
                 jsonObject =json.getJSONObject(i);
 
-                users.setUserName(jsonObject.optString("UserName"));
-                users.setPassword(jsonObject.optString("Password"));
-                users.setProfile(jsonObject.optString("Profile"));
-                users.setCompany(jsonObject.optString("Company"));
-                users.setFullName(jsonObject.optString("FullName"));
-
-                listUser.add(users);
+                services.setId(jsonObject.optString("Id"));
+                services.setName(jsonObject.optString("Name"));
+                services.setAmount(jsonObject.optDouble("Amount"));
+                services.setService(jsonObject.optString("Service"));
+                services.setStatus(jsonObject.optString("Status"));
+                services.setNumStatus(jsonObject.optInt("StatusId"));
+                services.setServiceId(jsonObject.getInt("ServiceId"));
+                listServices.add(services);
 
             }
         }catch (JSONException e)
@@ -109,21 +112,42 @@ public class UserFragment extends Fragment implements Response.Listener<JSONObje
         }
 
         progressDialog.hide();
-
-        adapter = new UserAdapter(getActivity(), listUser, new UserAdapter.ListAdapterListener() {
-
-            @Override
-            public void onClickAddButton(View view) {
-                addDialog(view);
-            }
-        });
-        recyclerUser.setAdapter(adapter);
+        recyclerService.setAdapter(adapter);
 
     }
 
+    public void adapterOnClick()
+    {
+        adapter = new ServiceAdapter(getActivity(), listServices, new ServiceAdapter.ListAdapterListener() {
+
+            @Override
+            public void onClickAddButton(View v) {
+                if(listServices.get(recyclerService.getChildAdapterPosition(v)).getNumStatus() == 1)
+                {
+                    addDialog(v);
+
+                }else
+                {
+                    String message = listServices.get(recyclerService.getChildAdapterPosition(v)).getName();
+                    utility = new Utility(getContext());
+                    utility.showDialogAnimation(R.style.DialogSlide,
+                            "This item: "+ message
+                                    +", is not available.","Not Available");
+                }
+            }
+        });
+    }
     public void addDialog(View v)
     {
-        Toast.makeText(getActivity(), "Popup ID: " + listUser.get(recyclerUser.getChildAdapterPosition(v)).getFullName(), Toast.LENGTH_SHORT).show();
+        Services value;
+        if(ifSearch)
+            value = newList.get(recyclerService.getChildAdapterPosition(v));
+        else
+            value = listServices.get(recyclerService.getChildAdapterPosition(v));
+
+        DialogsFragment dialogsFragment = new DialogsFragment(getContext(),value);
+        dialogsFragment.show(getActivity().getFragmentManager(),"roomDialog");
+
     }
     public void loadWebServices()
     {
@@ -143,13 +167,13 @@ public class UserFragment extends Fragment implements Response.Listener<JSONObje
         progressDialog.show();
 
         StringRequest stringRequest;
-        String url= Utility.BASE_URL +"Main/deleteUser?Id="+id;
+        String url= Utility.BASE_URL + "Main/deleteService?Id="+id;
 
         stringRequest =new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 progressDialog.hide();
-                listUser.remove(po);
+                listServices.remove(po);
                 adapter.notifyDataSetChanged();
             }
         }, new Response.ErrorListener() {
@@ -175,7 +199,7 @@ public class UserFragment extends Fragment implements Response.Listener<JSONObje
                         switch (method)
                         {
                             case  "delete" :
-                                webServiceDelete(listUser.get(position).getId().toString(),position);
+                                webServiceDelete(listServices.get(position).getId(),position);
                                 break;
                         }
                     }
@@ -195,17 +219,17 @@ public class UserFragment extends Fragment implements Response.Listener<JSONObje
 
     public void refresh()
     {
-
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.detach(this).attach(this).commit();
-
+        ifSearch = false;
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onPrepareOptionsMenu(menu);
-        inflater.inflate(R.menu.menu_user_fragment, menu);
-        MenuItem item = menu.findItem(R.id.search_user);
+        inflater.inflate(R.menu.menu_service_fragment, menu);
+        MenuItem item = menu.findItem(R.id.search_service);
         searchView = (SearchView) item.getActionView();
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -216,35 +240,39 @@ public class UserFragment extends Fragment implements Response.Listener<JSONObje
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                newText = newText.toLowerCase();
-                newList = new ArrayList<>();
+                if(listServices.size() > 0){
+                    ifSearch = true;
+                    newText = newText.toLowerCase();
+                    newList = new ArrayList<>();
 
-                for(Users c : listUser)
-                {
-                    String name = c.getFullName().toLowerCase();
-                    if(name.contains(newText)){
-                        newList.add(c);
+                    for(Services c : listServices)
+                    {
+                        String name = c.getName().toLowerCase();
+                        if(name.contains(newText)){
+                            newList.add(c);
+                        }
                     }
+
+                    if (newList.size() == 0){
+                        if(!newText.isEmpty())
+                            notFound.setText("Record not found with '"+newText+"'");
+                    }
+
+                    adapter.updateList(newList);
+
+                    return true;
+                }else{
+                    return false;
                 }
-
-                if (newList.size() == 0){
-                    if(!newText.isEmpty())
-                        notFound.setText("Record not found with '"+newText+"'");
-                }
-
-                adapter.updateList(newList);
-
-                return true;
             }
         });
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
-            case R.id.refresh_user:
+            case R.id.refresh_service:
 
                 refresh();
                 return true;

@@ -80,6 +80,7 @@ public class RoomDrinkFragment extends Fragment implements Response.Listener<JSO
 
         loadWebServices();
 
+
         return view;
     }
 
@@ -125,19 +126,18 @@ public class RoomDrinkFragment extends Fragment implements Response.Listener<JSO
 
             @Override
             public void onClickAddButton(View v) {
-
+                addDialog(v);
             }
         });
     }
     public void addDialog(View v)
     {
-        String value;
         if(ifSearch)
-            value = newList.get(recyclerRoomDrink.getChildAdapterPosition(v)).getRoomUbication();
+          newList.get(recyclerRoomDrink.getChildAdapterPosition(v)).getRoomUbication();
         else
-            value = listRoomDrink.get(recyclerRoomDrink.getChildAdapterPosition(v)).getRoomUbication();
+          listRoomDrink.get(recyclerRoomDrink.getChildAdapterPosition(v)).getRoomUbication();
 
-        Toast.makeText(getActivity(), "Popup ID: " + value, Toast.LENGTH_SHORT).show();
+
     }
     public void loadWebServices()
     {
@@ -190,7 +190,7 @@ public class RoomDrinkFragment extends Fragment implements Response.Listener<JSO
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onPrepareOptionsMenu(menu);
         inflater.inflate(R.menu.menu_room_fragment, menu);
-        MenuItem item = menu.findItem(R.id.search);
+        MenuItem item = menu.findItem(R.id.search_room);
         searchView = (SearchView) item.getActionView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -235,7 +235,7 @@ public class RoomDrinkFragment extends Fragment implements Response.Listener<JSO
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
-            case R.id.refresh:
+            case R.id.refresh_room:
 
                 refresh();
                 return true;

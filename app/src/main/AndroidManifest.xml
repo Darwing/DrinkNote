@@ -12,7 +12,7 @@
             android:theme="@style/AppTheme.NoActionBar">
 
           </activity>
-        <activity android:name="lb.yiimgo.storenote.ViewPager.Home"
+        <activity android:name="lb.yiimgo.storenote.ViewPager.BoardActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,13 +20,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             </activity>
-        <activity android:name="lb.yiimgo.storenote.ViewPager.Category.CreateCategory"
+        <activity android:name="lb.yiimgo.storenote.ViewPager.Service.ServiceBase"
             android:label="@string/create_title"
-            android:parentActivityName="lb.yiimgo.storenote.ViewPager.Home"/>
-        <activity android:name="lb.yiimgo.storenote.ViewPager.RoomDrink.CreateRoomDrink"
+            android:parentActivityName="lb.yiimgo.storenote.ViewPager.BoardActivity"/>
+        <activity android:name="lb.yiimgo.storenote.ViewPager.RoomDrink.RoomBase"
             android:label="@string/create_room_title"
-            android:parentActivityName="lb.yiimgo.storenote.ViewPager.Home"/>
-        <activity android:name="lb.yiimgo.storenote.ViewPager.CategoryActivity"></activity>
+            android:parentActivityName="lb.yiimgo.storenote.ViewPager.BoardActivity"/>
+        <activity android:name="lb.yiimgo.storenote.ViewPager.ServiceActivity"></activity>
         <activity android:name="lb.yiimgo.storenote.ViewPager.UserActivity"></activity>
     </application>
 

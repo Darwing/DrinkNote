@@ -7,15 +7,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,13 +24,12 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import lb.yiimgo.storenote.Entity.RoomDrinks;
 import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.SessionManager;
-import lb.yiimgo.storenote.Entity.Category;
+import lb.yiimgo.storenote.Entity.Services;
 import lb.yiimgo.storenote.Utility.Utility;
 import lb.yiimgo.storenote.ViewPager.RoomDrink.RoomDrinkAdapter;
 
@@ -50,15 +46,15 @@ public class DialogsFragment extends DialogFragment implements Response.Listener
     public JsonObjectRequest jsonObjectRequest;
     public SessionManager sessionManager;
     public Context _context;
-    public Category _category;
+    public Services _services;
     TextView itemSelected;
     TextView itemCost;
     public ProgressDialog progressDialog;
 
-    public DialogsFragment(Context context,Category category)
+    public DialogsFragment(Context context,Services services)
     {
         this._context = context;
-        this._category = category;
+        this._services = services;
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,8 +73,8 @@ public class DialogsFragment extends DialogFragment implements Response.Listener
        recyclerRoomDrink.setHasFixedSize(true);
        itemSelected = (TextView) view.findViewById(R.id.item_selected);
        itemCost = (TextView) view.findViewById(R.id.itemCost);
-       itemSelected.setText(_category.getName());
-       itemCost.setText(Utility.getFormatedAmount(_category.getAmount()));
+       itemSelected.setText(_services.getName());
+       itemCost.setText(Utility.getFormatedAmount(_services.getAmount()));
        requestQueue = Volley.newRequestQueue(_context);
 
        loadWebServices();
@@ -105,7 +101,7 @@ public class DialogsFragment extends DialogFragment implements Response.Listener
     {
 
             AlertDialog.Builder builder1 = new AlertDialog.Builder(_context, R.style.DialogTheme);
-            builder1.setMessage("Are you sure to add "+_category.getName()+" in the room "+
+            builder1.setMessage("Are you sure to add "+ _services.getName()+" in the room "+
                     listRoomDrink.get(recyclerRoomDrink.getChildAdapterPosition(v)).getRoomUbication());
             builder1.setCancelable(true);
 
@@ -125,7 +121,6 @@ public class DialogsFragment extends DialogFragment implements Response.Listener
                                 existingFragment.dismiss();
                             }
 
-                            progressDialog.hide();
                         }
                     });
 
@@ -169,14 +164,12 @@ public class DialogsFragment extends DialogFragment implements Response.Listener
     public void saveDataBoard(View v)
     {
         sessionManager = new SessionManager(_context);
-        progressDialog = new ProgressDialog(_context);
-        progressDialog.setMessage("Cargando...");
-        progressDialog.show();
+
         String idUser = sessionManager.getDataFromSession().get(4);
         String ubication = listRoomDrink.get(recyclerRoomDrink.getChildAdapterPosition(v)).getIdRoom();
-        String url = Utility.BASE_URL + "Main/saveDataBoard?IdServices="+_category.getId()
-                +"&Amount="+_category.getAmount()
-                +"&CategoryId="+_category.getCategoryId()
+        String url = Utility.BASE_URL + "Main/saveDataBoard?IdServices="+ _services.getId()
+                +"&Amount="+ _services.getAmount()
+                +"&CategoryId="+ _services.getServiceId()
                 +"&Ubication="+ubication
                 +"&UserCreate=" + idUser;
 
