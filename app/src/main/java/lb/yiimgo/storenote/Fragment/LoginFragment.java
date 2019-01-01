@@ -49,7 +49,7 @@ public class LoginFragment extends Fragment implements Response.Listener<JSONObj
             view = inflater.inflate(R.layout.fragment_login,container,false);
             username = (EditText) view.findViewById(R.id.user);
             password = (EditText) view.findViewById(R.id.pass);
-            btnStart = (CardView) view.findViewById(R.id.cardView);
+            btnStart = (CardView) view.findViewById(R.id.card_view);
 
             requestQueue = Volley.newRequestQueue(getContext());
 

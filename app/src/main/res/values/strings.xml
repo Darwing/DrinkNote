@@ -45,6 +45,7 @@
     <string name="tittle_add">Item:</string>
     <string name="item_selected">Item Selected</string>
     <string name="cost_selected">00.0</string>
+    <string name="pay_now">Pay Now</string>
 
 
 </resources>

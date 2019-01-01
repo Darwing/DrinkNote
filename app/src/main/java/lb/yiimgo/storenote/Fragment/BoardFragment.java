@@ -2,9 +2,10 @@ package lb.yiimgo.storenote.Fragment;
 
 
 import android.app.ProgressDialog;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.SearchView;
-import android.widget.AbsListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +54,9 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
     public SessionManager sessionManager;
     public TextView notFound;
     public boolean ifSearch = false;
+    int spanCount = 2;
+    int spacing = 50;
+    boolean includeEdge = false;
 
     public BoardFragment() { }
 
@@ -71,38 +74,14 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
         listBoard = new ArrayList<>();
 
         recyclerBoard = (RecyclerView) view.findViewById(R.id.id_recycle_board);
-        recyclerBoard.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this.getContext(), 2);
+        recyclerBoard.setLayoutManager(mLayoutManager);
+        recyclerBoard.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
         recyclerBoard.setHasFixedSize(true);
         notFound = (TextView) view.findViewById(R.id.not_found);
         adapterOnClick();
         requestQueue = Volley.newRequestQueue(getContext());
 
-
-        recyclerBoard.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy > 0) {
-                    Toast.makeText(getContext(),"UP",Toast.LENGTH_SHORT);
-                } else {
-                    Toast.makeText(getContext(),"DOWN",Toast.LENGTH_SHORT);
-                }
-            }
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-                    Toast.makeText(getContext(),"SCROLL_STATE_FLING",Toast.LENGTH_SHORT);
-                } else if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-                    Toast.makeText(getContext(),"SCROLL_STATE_TOUCH_SCROLL",Toast.LENGTH_SHORT);
-                } else {
-                    Toast.makeText(getContext(),"lo contrario",Toast.LENGTH_SHORT);
-                }
-            }
-        });
         loadWebServices();
         return view;
     }
@@ -128,6 +107,7 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
                 board.setFullName(jsonObject.getString("FullName"));
                 board.setUbication(jsonObject.optString("Ubication"));
                 board.setTotalAmount(jsonObject.getDouble("TotalAmount"));
+                board.setDateCreate(jsonObject.getString("DateCreate"));
                 //Board.getAmount(jsonObject.optString("Amount"));
 
                 listBoard.add(board);
@@ -247,6 +227,39 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
             }
         });
     }
+    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
+        private int spanCount;
+        private int spacing;
+        private boolean includeEdge;
+
+        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
+            this.spanCount = spanCount;
+            this.spacing = spacing;
+            this.includeEdge = includeEdge;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            int position = parent.getChildAdapterPosition(view); // item position
+            int column = position % spanCount; // item column
+
+            if (includeEdge) {
+                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
+                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
+
+                if (position < spanCount) { // top edge
+                    outRect.top = spacing;
+                }
+                outRect.bottom = spacing; // item bottom
+            } else {
+                outRect.left = column+1* spacing / spanCount; // column * ((1f / spanCount) * spacing)
+                outRect.right = spacing - (column ) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+                if (position >= spanCount) {
+                    outRect.top = spacing; // item top
+                }
+            }
+        }
+    }
 
 }

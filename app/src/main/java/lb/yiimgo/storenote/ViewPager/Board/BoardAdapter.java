@@ -1,12 +1,19 @@
 package lb.yiimgo.storenote.ViewPager.Board;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Chronometer;
 import android.widget.TextView;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 import lb.yiimgo.storenote.Entity.Boards;
 import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.Utility;
@@ -43,46 +50,9 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
         return new BoardHolder(layoutInflater);
     }
 
-    private int statusType(String s)
-    {
-        int result = 0;
-        switch (s)
-        {
-            case "Free" :
-                result = mContext.getResources().getColor(android.R.color.holo_green_light);
-                break;
-            case "Occupied" :
-                result = mContext.getResources().getColor(android.R.color.holo_red_light);
-                break;
-
-        }
-
-        return result;
-    }
-    /*    private int getCurrentMiliSecondsOfChronometer(final BoardHolder holder) {
-            int stoppedMilliseconds = 0;
-            String chronoText = holder.tx_chronometer.getText().toString();
-            String array[] = chronoText.split(":");
-            if (array.length == 2) {
-                stoppedMilliseconds = Integer.parseInt(array[0]) * 60 * 1000 + Integer.parseInt(array[1]) * 1000;
-            } else if (array.length == 3) {
-                stoppedMilliseconds =
-                        Integer.parseInt(array[0]) * 60 * 60 * 1000 + Integer.parseInt(array[1]) * 60 * 1000
-                                + Integer.parseInt(array[2]) * 1000;
-            }
-            return stoppedMilliseconds;
-        }
-
-        private void startChronometer(final BoardHolder holder) {
-             int stoppedMilliseconds = getCurrentMiliSecondsOfChronometer(holder);
-             holder.tx_chronometer.setBase(SystemClock.elapsedRealtime() - stoppedMilliseconds);
-             holder.tx_chronometer.start();
-        }*/
     @Override
     public void onBindViewHolder(final BoardHolder holder, final int position)
     {
-
-        holder.tx_id.setText(listBoard.get(position).getIdServices());
         holder.tx_waiter.setText(listBoard.get(position).getFullName());
         holder.tx_ubication.setText(listBoard.get(position).getUbication());
         holder.tx_total_amount.setText(Utility.getFormatedAmount(listBoard.get(position).getTotalAmount()));
@@ -93,24 +63,55 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
                 mListener.onClickAddButton(view);
             }
         });
-/*        holder.tx_testBh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startChronometer(holder);
 
-                holder.tx_chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.N)
-                    public void onChronometerTick(Chronometer cArg) {
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.set(Calendar.HOUR_OF_DAY, 0);
-                        calendar.set(Calendar.MINUTE, 0);
-                        calendar.set(Calendar.SECOND, 0);
-                        calendar.set(Calendar.MILLISECOND, getCurrentMiliSecondsOfChronometer(holder));
-                        holder.tx_chronometer.setText(DateFormat.format("HH:mm:ss", calendar.getTime()));
+        currentTime(holder,position);
+    }
+
+    public void currentTime(final BoardHolder holder,final int position)
+    {
+
+            final String strDate = listBoard.get(position).getDateCreate();
+            Thread t = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while (!isInterrupted()) {
+                        Thread.sleep(1000);
+                        ((Activity)mContext).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                final String tStart = strDate.substring(strDate.indexOf(' ') +1);
+
+                                long date = System.currentTimeMillis();
+                                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+                                String dateString = sdf.format(date);
+                                String tFinish = dateString;
+
+                                String[] sTimeHourMinSec = tStart.split(":");
+                                int sHour = Integer.valueOf(sTimeHourMinSec[0]);
+                                int sMin = Integer.valueOf(sTimeHourMinSec[1]);
+                                int sSec = Integer.valueOf(sTimeHourMinSec[2]);
+
+                                String[] fTimeHourMinSec = tFinish.split(":");
+                                int fHour = Integer.valueOf(fTimeHourMinSec[0]);
+                                int fMin = Integer.valueOf(fTimeHourMinSec[1]);
+                                int fSec = Integer.valueOf(fTimeHourMinSec[2]);
+
+                                int diffTotSec = (fHour - sHour) * 3600 + (fMin - sMin) * 60 + (fSec - sSec);
+                                final int diffHours = diffTotSec / 3600;
+                                final int diffMins = (diffTotSec % 3600) / 60;
+                                final int diffSecs = (diffTotSec % 3600) % 60;
+                                holder.tx_chronometer.setText(diffHours+" h : "+diffMins+" m : "+diffSecs +" s");
+                            }
+                        });
                     }
-                });
+                } catch (InterruptedException e) {
+                }
             }
-        });*/
+        };
+        t.start();
+
+
     }
     public void updateList(ArrayList<Boards> newList)
     {
@@ -127,16 +128,15 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
     public class BoardHolder extends RecyclerView.ViewHolder
     {
         TextView tx_id,tx_ubication,tx_total_amount,tx_waiter;
-        //Chronometer tx_chronometer;
+        Chronometer tx_chronometer;
 
         public BoardHolder(View itemView)
         {   super(itemView);
 
-            tx_id = (TextView) itemView.findViewById(R.id.t_id);
             tx_waiter = (TextView) itemView.findViewById(R.id.t_waiter);
             tx_ubication = (TextView) itemView.findViewById(R.id.t_drinkroom);
             tx_total_amount = (TextView) itemView.findViewById(R.id.t_total_amount);
-            //tx_chronometer = layoutInflater.findViewById(R.id.chronometer);
+            tx_chronometer = layoutInflater.findViewById(R.id.chronometer);
 
         }
     }
