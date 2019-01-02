@@ -5,12 +5,30 @@ import java.util.Date;
 public class Boards
 {
     private String IdServices;
-    private String Amount;
+    private Double Amount;
     private Double TotalAmount;
     private Integer CategoryId;
     private String Ubication;
     private String FullName;
     private String DateCreate;
+    private String ServiceCategory;
+    private String Service;
+
+    public String getServiceCategory() {
+        return ServiceCategory;
+    }
+
+    public void setServiceCategory(String serviceCategory) {
+        ServiceCategory = serviceCategory;
+    }
+
+    public String getService() {
+        return Service;
+    }
+
+    public void setService(String service) {
+        Service = service;
+    }
 
     public Double getTotalAmount() {
         return TotalAmount;
@@ -44,11 +62,11 @@ public class Boards
         IdServices = idServices;
     }
 
-    public String getAmount() {
+    public Double getAmount() {
         return Amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(Double amount) {
         Amount = amount;
     }
 

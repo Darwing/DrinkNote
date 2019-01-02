@@ -4,9 +4,11 @@ package lb.yiimgo.storenote.Fragment;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -54,6 +56,10 @@ public class ServiceFragment extends Fragment implements Response.Listener<JSONO
     public TextView notFound;
     public boolean ifSearch = false;
     public Utility utility;
+    int spanCount = 1;
+    int spacing = 50;
+    boolean includeEdge = false;
+
     public ServiceFragment() { }
 
     @Override
@@ -70,7 +76,9 @@ public class ServiceFragment extends Fragment implements Response.Listener<JSONO
         view = inflater.inflate(R.layout.fragment_service, container, false);
         listServices = new ArrayList<>();
         recyclerService = (RecyclerView) view.findViewById(R.id.idRecycler);
-        recyclerService.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this.getContext(), spanCount);
+        recyclerService.setLayoutManager(mLayoutManager);
+        recyclerService.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
         recyclerService.setHasFixedSize(true);
         notFound = (TextView) view.findViewById(R.id.not_found);
         adapterOnClick();
@@ -261,6 +269,39 @@ public class ServiceFragment extends Fragment implements Response.Listener<JSONO
         });
     }
 
+    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
+        private int spanCount;
+        private int spacing;
+        private boolean includeEdge;
+
+        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
+            this.spanCount = spanCount;
+            this.spacing = spacing;
+            this.includeEdge = includeEdge;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            int position = parent.getChildAdapterPosition(view); // item position
+            int column = position % spanCount; // item column
+
+            if (includeEdge) {
+                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
+                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
+
+                if (position < spanCount) { // top edge
+                    outRect.top = spacing;
+                }
+                outRect.bottom = spacing; // item bottom
+            } else {
+                outRect.left = column+1* spacing / spanCount; // column * ((1f / spanCount) * spacing)
+                outRect.right = spacing - (column ) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+                if (position >= spanCount) {
+                    outRect.top = spacing; // item top
+                }
+            }
+        }
+    }
 
 }

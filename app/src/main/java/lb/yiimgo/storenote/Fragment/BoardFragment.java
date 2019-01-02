@@ -6,7 +6,6 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,7 +22,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -31,7 +29,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import lb.yiimgo.storenote.Entity.Boards;
-import lb.yiimgo.storenote.Entity.VolleySingleton;
 import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.SessionManager;
 import lb.yiimgo.storenote.Utility.Utility;
@@ -74,7 +71,7 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
         listBoard = new ArrayList<>();
 
         recyclerBoard = (RecyclerView) view.findViewById(R.id.id_recycle_board);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this.getContext(), 2);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this.getContext(), spanCount);
         recyclerBoard.setLayoutManager(mLayoutManager);
         recyclerBoard.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
         recyclerBoard.setHasFixedSize(true);
@@ -108,7 +105,6 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
                 board.setUbication(jsonObject.optString("Ubication"));
                 board.setTotalAmount(jsonObject.getDouble("TotalAmount"));
                 board.setDateCreate(jsonObject.getString("DateCreate"));
-                //Board.getAmount(jsonObject.optString("Amount"));
 
                 listBoard.add(board);
 
@@ -136,13 +132,14 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
     }
     public void addDialog(View v)
     {
-        String value;
+        Boards value;
         if(ifSearch)
-            value = newList.get(recyclerBoard.getChildAdapterPosition(v)).getUbication();
+            value = newList.get(recyclerBoard.getChildAdapterPosition(v));
         else
-            value = listBoard.get(recyclerBoard.getChildAdapterPosition(v)).getUbication();
+            value = listBoard.get(recyclerBoard.getChildAdapterPosition(v));
 
-        Toast.makeText(getActivity(), "Popup ID: " + value, Toast.LENGTH_SHORT).show();
+        BoardDetailsFragment baordDetailsaordFragment = new BoardDetailsFragment(getContext(),value);
+        baordDetailsaordFragment.show(getActivity().getFragmentManager(),"roomDialog");
     }
     public void loadWebServices()
     {
@@ -157,37 +154,10 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void webServiceDelete(String id,final int po) {
-
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("Cargando...");
-        progressDialog.show();
-
-        StringRequest stringRequest;
-        String url= Utility.BASE_URL +"Main/deleteBoard?Id="+id;
-
-        stringRequest =new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                progressDialog.hide();
-                listBoard.remove(po);
-                adapter.notifyDataSetChanged();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(),"Not connection",Toast.LENGTH_SHORT).show();
-                progressDialog.hide();
-            }
-        });
-        VolleySingleton.getIntanciaVolley(getContext()).addToRequestQueue(stringRequest);
-    }
-
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onPrepareOptionsMenu(menu);
-        MenuItem item = menu.findItem(R.id.search);
+       MenuItem item = menu.findItem(R.id.search).setVisible(false);
         searchView = (SearchView) item.getActionView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

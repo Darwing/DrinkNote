@@ -3,6 +3,7 @@ package lb.yiimgo.storenote.ViewPager.Board;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import lb.yiimgo.storenote.Entity.Boards;
 import lb.yiimgo.storenote.R;
@@ -71,6 +73,8 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
     {
 
             final String strDate = listBoard.get(position).getDateCreate();
+            final String tStart = strDate.substring(strDate.indexOf(' ') +1);
+
             Thread t = new Thread() {
             @Override
             public void run() {
@@ -80,10 +84,9 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
                         ((Activity)mContext).runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                final String tStart = strDate.substring(strDate.indexOf(' ') +1);
 
                                 long date = System.currentTimeMillis();
-                                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+                                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.US);
                                 String dateString = sdf.format(date);
                                 String tFinish = dateString;
 
@@ -101,8 +104,8 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
                                 final int diffHours = diffTotSec / 3600;
                                 final int diffMins = (diffTotSec % 3600) / 60;
                                 final int diffSecs = (diffTotSec % 3600) % 60;
-                                holder.tx_chronometer.setText(diffHours+" h : "+diffMins+" m : "+diffSecs +" s");
-                            }
+                                holder.tx_timer.setText(diffHours+" h : "+diffMins+" m "+diffSecs +" s");
+                           }
                         });
                     }
                 } catch (InterruptedException e) {
@@ -110,8 +113,6 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
             }
         };
         t.start();
-
-
     }
     public void updateList(ArrayList<Boards> newList)
     {
@@ -127,8 +128,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
 
     public class BoardHolder extends RecyclerView.ViewHolder
     {
-        TextView tx_id,tx_ubication,tx_total_amount,tx_waiter;
-        Chronometer tx_chronometer;
+        TextView tx_id,tx_ubication,tx_total_amount,tx_waiter,tx_timer;
 
         public BoardHolder(View itemView)
         {   super(itemView);
@@ -136,7 +136,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
             tx_waiter = (TextView) itemView.findViewById(R.id.t_waiter);
             tx_ubication = (TextView) itemView.findViewById(R.id.t_drinkroom);
             tx_total_amount = (TextView) itemView.findViewById(R.id.t_total_amount);
-            tx_chronometer = layoutInflater.findViewById(R.id.chronometer);
+            tx_timer = layoutInflater.findViewById(R.id.t_timer);
 
         }
     }
