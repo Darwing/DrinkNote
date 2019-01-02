@@ -1,13 +1,15 @@
 package lb.yiimgo.storenote.ViewPager.Board;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import java.text.ParseException;
 import java.util.ArrayList;
 import lb.yiimgo.storenote.Entity.Boards;
 import lb.yiimgo.storenote.R;
@@ -50,9 +52,14 @@ public class BoardDetailAdapter extends RecyclerView.Adapter<BoardDetailAdapter.
     @Override
     public void onBindViewHolder(final BoardHolder holder, final int position)
     {
-        holder.tx_waiter.setText(listBoard.get(position).getFullName());
-        holder.tx_ubication.setText(listBoard.get(position).getUbication());
+        holder.tx_name_services.setText(listBoard.get(position).getService());
+        holder.tx_category.setText(listBoard.get(position).getServiceCategory());
         holder.tx_amount.setText(Utility.getFormatedAmount(listBoard.get(position).getAmount()));
+        try {
+            holder.tx_date_create.setText(Utility.dateFormat(listBoard.get(position).getDateCreate()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         layoutInflater.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,15 +84,15 @@ public class BoardDetailAdapter extends RecyclerView.Adapter<BoardDetailAdapter.
 
     public class BoardHolder extends RecyclerView.ViewHolder
     {
-        TextView tx_ubication,tx_amount,tx_waiter;
+        TextView tx_name_services,tx_category,tx_amount,tx_date_create;
 
         public BoardHolder(View itemView)
         {   super(itemView);
 
-            tx_waiter = (TextView) itemView.findViewById(R.id.t_waiter);
-            tx_ubication = (TextView) itemView.findViewById(R.id.t_drinkroom);
+            tx_name_services = (TextView) itemView.findViewById(R.id.t_name_services);
+            tx_category = (TextView) itemView.findViewById(R.id.t_category);
             tx_amount = (TextView) itemView.findViewById(R.id.t_amount);
-
+            tx_date_create =(TextView) itemView.findViewById(R.id.t_date_create);
 
         }
     }

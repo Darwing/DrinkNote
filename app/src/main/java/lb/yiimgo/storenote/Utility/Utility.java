@@ -2,9 +2,11 @@ package lb.yiimgo.storenote.Utility;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -54,5 +56,15 @@ public class Utility
 
     public static String getFormatedAmount(Double amount){
         return NumberFormat.getNumberInstance(Locale.US).format(amount);
+    }
+
+    public static String dateFormat(String date) throws ParseException
+    {
+        SimpleDateFormat sdfIn = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat sdfOut = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
+        String input = date;
+        Date d = sdfIn.parse(input);
+
+        return  sdfOut.format(d);
     }
 }

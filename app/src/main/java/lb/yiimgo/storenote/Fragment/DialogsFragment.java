@@ -64,15 +64,17 @@ public class DialogsFragment extends DialogFragment implements Response.Listener
         this._context = context;
         this._services = services;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
                              saveInstanceState)
-   {
+    {
        view = inflater.inflate(R.layout.form_add_services,container,false);
        listRoomDrink = new ArrayList<>();
        adapterOnClick();
@@ -89,12 +91,13 @@ public class DialogsFragment extends DialogFragment implements Response.Listener
 
        loadWebServices();
        return view;
-   }
+    }
 
     @Override
     public void onErrorResponse(VolleyError error) {
 
     }
+
     public void adapterOnClick()
     {
         adapter = new RoomDrinkAdapter(getActivity(), listRoomDrink, new RoomDrinkAdapter.ListAdapterListener() {
@@ -147,6 +150,7 @@ public class DialogsFragment extends DialogFragment implements Response.Listener
             AlertDialog alert11 = builder1.create();
             alert11.show();
     }
+
     @Override
     public void onResponse(JSONObject response) {
         JSONArray json = response.optJSONArray("roomDrink");
@@ -173,6 +177,7 @@ public class DialogsFragment extends DialogFragment implements Response.Listener
         recyclerRoomDrink.setAdapter(adapter);
 
     }
+
     public void saveDataBoard(View v)
     {
         sessionManager = new SessionManager(_context);
@@ -187,9 +192,8 @@ public class DialogsFragment extends DialogFragment implements Response.Listener
 
          jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
          requestQueue.add(jsonObjectRequest);
-
-
     }
+
     public void loadWebServices()
     {
         sessionManager = new SessionManager(_context);

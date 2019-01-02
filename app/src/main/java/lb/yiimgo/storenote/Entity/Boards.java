@@ -1,7 +1,5 @@
 package lb.yiimgo.storenote.Entity;
 
-import java.util.Date;
-
 public class Boards
 {
     private String IdServices;
