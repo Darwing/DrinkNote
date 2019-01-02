@@ -6,9 +6,11 @@ import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -53,7 +55,9 @@ public class DialogsFragment extends DialogFragment implements Response.Listener
     public Services _services;
     TextView itemSelected;
     TextView itemCost;
-    public ProgressDialog progressDialog;
+    int spanCount = 1;
+    int spacing = 50;
+    boolean includeEdge = false;
 
     public DialogsFragment(Context context,Services services)
     {
@@ -73,7 +77,9 @@ public class DialogsFragment extends DialogFragment implements Response.Listener
        listRoomDrink = new ArrayList<>();
        adapterOnClick();
        recyclerRoomDrink = (RecyclerView) view.findViewById(R.id.display_room_dialog);
-       recyclerRoomDrink.setLayoutManager(new LinearLayoutManager(_context));
+       RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(_context, spanCount);
+       recyclerRoomDrink.setLayoutManager(mLayoutManager);
+       recyclerRoomDrink.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
        recyclerRoomDrink.setHasFixedSize(true);
        itemSelected = (TextView) view.findViewById(R.id.item_selected);
        itemCost = (TextView) view.findViewById(R.id.itemCost);
@@ -194,5 +200,39 @@ public class DialogsFragment extends DialogFragment implements Response.Listener
         String url = Utility.BASE_URL +"Main/getDataRooms?Id=" + idUser +"&idProfile="+idProfile;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
         requestQueue.add(jsonObjectRequest);
+    }
+    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+
+        private int spanCount;
+        private int spacing;
+        private boolean includeEdge;
+
+        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
+            this.spanCount = spanCount;
+            this.spacing = spacing;
+            this.includeEdge = includeEdge;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            int position = parent.getChildAdapterPosition(view); // item position
+            int column = position % spanCount; // item column
+
+            if (includeEdge) {
+                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
+                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
+
+                if (position < spanCount) { // top edge
+                    outRect.top = spacing;
+                }
+                outRect.bottom = spacing; // item bottom
+            } else {
+                outRect.left = (int) (column + 0.2 * spacing / spanCount); // column * ((1f / spanCount) * spacing)
+                outRect.right = (int) (spacing - (column + 0.8) * spacing / spanCount); // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+                if (position >= spanCount) {
+                    outRect.top = spacing; // item top
+                }
+            }
+        }
     }
 }
