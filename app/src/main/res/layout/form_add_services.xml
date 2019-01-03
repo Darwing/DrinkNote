@@ -56,7 +56,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="lb.yiimgo.storenote.Fragment.DialogsFragment">
+        tools:context="lb.yiimgo.storenote.Fragment.AddServiceRoomFragment">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/display_room_dialog"

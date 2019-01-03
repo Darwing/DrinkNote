@@ -18,12 +18,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import lb.yiimgo.storenote.Fragment.BoardFragment;
 import lb.yiimgo.storenote.Fragment.ServiceFragment;
-import lb.yiimgo.storenote.Fragment.RoomDrinkFragment;
+import lb.yiimgo.storenote.Fragment.RoomFragment;
 import lb.yiimgo.storenote.Fragment.UserFragment;
 import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.SessionManager;
 import lb.yiimgo.storenote.ViewPager.Service.ServiceBase;
-import lb.yiimgo.storenote.ViewPager.RoomDrink.RoomBase;
+import lb.yiimgo.storenote.ViewPager.Room.RoomBase;
 import lb.yiimgo.storenote.ViewPagerAdapter;
 
 public class BoardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -36,7 +36,7 @@ public class BoardActivity extends AppCompatActivity implements NavigationView.O
     //Fragments
     BoardFragment boardFragment;
     ServiceFragment ctFragment;
-    RoomDrinkFragment rmFragment;
+    RoomFragment rmFragment;
     UserFragment usFragment;
     TextView profile,fullName;
     NavigationView navigationView;
@@ -121,7 +121,7 @@ public class BoardActivity extends AppCompatActivity implements NavigationView.O
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         boardFragment = new BoardFragment();
         ctFragment = new ServiceFragment();
-        rmFragment = new RoomDrinkFragment();
+        rmFragment = new RoomFragment();
         usFragment = new UserFragment();
         int idProfile = Integer.valueOf(sessionManager.getDataFromSession().get(0));
 

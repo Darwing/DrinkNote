@@ -23,7 +23,7 @@
         <activity android:name="lb.yiimgo.storenote.ViewPager.Service.ServiceBase"
             android:label="@string/create_title"
             android:parentActivityName="lb.yiimgo.storenote.ViewPager.BoardActivity"/>
-        <activity android:name="lb.yiimgo.storenote.ViewPager.RoomDrink.RoomBase"
+        <activity android:name="lb.yiimgo.storenote.ViewPager.Room.RoomBase"
             android:label="@string/create_room_title"
             android:parentActivityName="lb.yiimgo.storenote.ViewPager.BoardActivity"/>
         <activity android:name="lb.yiimgo.storenote.ViewPager.ServiceActivity"></activity>

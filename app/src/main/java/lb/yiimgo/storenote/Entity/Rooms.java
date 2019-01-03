@@ -4,7 +4,7 @@ package lb.yiimgo.storenote.Entity;
  * Created by Darwing on 15-Dec-18.
  */
 
-public class RoomDrinks {
+public class Rooms {
     private String IdRoom;
     private String NameRoom;
     private String WaiterRoom;

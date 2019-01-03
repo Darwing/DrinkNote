@@ -1,4 +1,4 @@
-package lb.yiimgo.storenote.ViewPager.RoomDrink;
+package lb.yiimgo.storenote.ViewPager.Room;
 
 import android.content.ContentValues;
 import android.content.pm.ActivityInfo;

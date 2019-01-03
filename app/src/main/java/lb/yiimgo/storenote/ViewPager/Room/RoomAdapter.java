@@ -1,40 +1,33 @@
-package lb.yiimgo.storenote.ViewPager.RoomDrink;
+package lb.yiimgo.storenote.ViewPager.Room;
 
 import android.content.Context;
-import android.icu.util.Calendar;
-import android.os.Build;
-import android.os.SystemClock;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Chronometer;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.ArrayList;
-import lb.yiimgo.storenote.Entity.RoomDrinks;
+import lb.yiimgo.storenote.Entity.Rooms;
 import lb.yiimgo.storenote.R;
 
 /**
  * Created by Darwing on 16-Dec-18.
  */
 
-public class RoomDrinkAdapter extends RecyclerView.Adapter<RoomDrinkAdapter.RoomDrinkHolder>
+public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomDrinkHolder>
 {
     Button testBh;
 
     public boolean running;
-    ArrayList<RoomDrinks> listRoomDrink;
+    ArrayList<Rooms> listRoomDrink;
     private Context mContext;
     private ListAdapterListener mListener;
     View layoutInflater;
     public interface ListAdapterListener {
         void onClickAddButton(View v);
     }
-    public RoomDrinkAdapter(Context context,ArrayList<RoomDrinks> listRoomDrink, ListAdapterListener  mListener) {
+    public RoomAdapter(Context context, ArrayList<Rooms> listRoomDrink, ListAdapterListener  mListener) {
         this.listRoomDrink = listRoomDrink;
         this.mContext = context;
         this.mListener = mListener;
@@ -120,7 +113,7 @@ public class RoomDrinkAdapter extends RecyclerView.Adapter<RoomDrinkAdapter.Room
             }
         });*/
     }
-    public void updateList(ArrayList<RoomDrinks> newList)
+    public void updateList(ArrayList<Rooms> newList)
     {
         listRoomDrink = new ArrayList<>();
         listRoomDrink.addAll(newList);

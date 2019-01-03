@@ -53,7 +53,6 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
     public boolean ifSearch = false;
     int spanCount = 2;
     int spacing = 50;
-    boolean includeEdge = false;
 
     public BoardFragment() { }
 
@@ -73,7 +72,7 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
         recyclerBoard = (RecyclerView) view.findViewById(R.id.id_recycle_board);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this.getContext(), spanCount);
         recyclerBoard.setLayoutManager(mLayoutManager);
-        recyclerBoard.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
+        recyclerBoard.addItemDecoration(new GridSpacingItemDecoration(spacing));
         recyclerBoard.setHasFixedSize(true);
         notFound = (TextView) view.findViewById(R.id.not_found);
         adapterOnClick();
@@ -148,8 +147,9 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
         progressDialog.setMessage("Cargando...");
         progressDialog.show();
         String idUser = sessionManager.getDataFromSession().get(4);
+        String p = sessionManager.getDataFromSession().get(0);
 
-        String url = Utility.BASE_URL +"Main/getDataBoard?Id=" + idUser;
+        String url = Utility.BASE_URL +"Main/getDataBoard?Id=" + idUser +"&profile="+ p;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
         requestQueue.add(jsonObjectRequest);
     }
@@ -199,36 +199,24 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
     }
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
-        private int spanCount;
-        private int spacing;
-        private boolean includeEdge;
+        private int halfSpace;
 
-        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
-            this.spanCount = spanCount;
-            this.spacing = spacing;
-            this.includeEdge = includeEdge;
+        public GridSpacingItemDecoration(int space) {
+            this.halfSpace = space / 2;
         }
 
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            int position = parent.getChildAdapterPosition(view); // item position
-            int column = position % spanCount; // item column
 
-            if (includeEdge) {
-                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
-                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
-
-                if (position < spanCount) { // top edge
-                    outRect.top = spacing;
-                }
-                outRect.bottom = spacing; // item bottom
-            } else {
-                outRect.left = column+1* spacing / spanCount; // column * ((1f / spanCount) * spacing)
-                outRect.right = spacing - (column ) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
-                if (position >= spanCount) {
-                    outRect.top = spacing; // item top
-                }
+            if (parent.getPaddingLeft() != halfSpace) {
+                parent.setPadding(halfSpace, halfSpace, halfSpace, halfSpace);
+                parent.setClipToPadding(false);
             }
+
+            outRect.top = halfSpace;
+            outRect.bottom = halfSpace;
+            outRect.left = halfSpace;
+            outRect.right = halfSpace;
         }
     }
 

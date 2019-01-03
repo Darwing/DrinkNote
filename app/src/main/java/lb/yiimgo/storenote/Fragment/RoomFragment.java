@@ -5,7 +5,6 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,7 +15,6 @@ import android.view.ViewGroup;
 import android.support.v7.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -24,29 +22,28 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
-import lb.yiimgo.storenote.Entity.RoomDrinks;
+import lb.yiimgo.storenote.Entity.Rooms;
 import lb.yiimgo.storenote.Entity.VolleySingleton;
 import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.SessionManager;
 import lb.yiimgo.storenote.Utility.Utility;
-import lb.yiimgo.storenote.ViewPager.RoomDrink.RoomDrinkAdapter;
+import lb.yiimgo.storenote.ViewPager.Room.RoomAdapter;
 
-public class RoomDrinkFragment extends Fragment implements Response.Listener<JSONObject>,
+public class RoomFragment extends Fragment implements Response.Listener<JSONObject>,
         Response.ErrorListener
 {
 
     public View view;
     public RecyclerView recyclerRoomDrink;
-    public ArrayList<RoomDrinks> listRoomDrink;
-    public ArrayList<RoomDrinks> newList;
+    public ArrayList<Rooms> listRoomDrink;
+    public ArrayList<Rooms> newList;
     public ProgressDialog progressDialog;
-    public RoomDrinkAdapter adapter;
-    public RoomDrinks RoomDrink = null;
+    public RoomAdapter adapter;
+    public Rooms RoomDrink = null;
     public RequestQueue requestQueue;
     public JsonObjectRequest jsonObjectRequest;
     public SearchView searchView;
@@ -55,9 +52,8 @@ public class RoomDrinkFragment extends Fragment implements Response.Listener<JSO
     public boolean ifSearch = false;
     int spanCount = 1;
     int spacing = 50;
-    boolean includeEdge = false;
 
-    public RoomDrinkFragment() { }
+    public RoomFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,20 +65,19 @@ public class RoomDrinkFragment extends Fragment implements Response.Listener<JSO
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_room_drink, container, false);
+        view = inflater.inflate(R.layout.fragment_room, container, false);
         listRoomDrink = new ArrayList<>();
 
         recyclerRoomDrink = (RecyclerView) view.findViewById(R.id.display_room);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this.getContext(), spanCount);
         recyclerRoomDrink.setLayoutManager(mLayoutManager);
-        recyclerRoomDrink.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
+        recyclerRoomDrink.addItemDecoration(new GridSpacingItemDecoration(spacing));
         recyclerRoomDrink.setHasFixedSize(true);
         notFound = (TextView) view.findViewById(R.id.not_found);
         adapterOnClick();
         requestQueue = Volley.newRequestQueue(getContext());
 
         loadWebServices();
-
 
         return view;
     }
@@ -100,7 +95,7 @@ public class RoomDrinkFragment extends Fragment implements Response.Listener<JSO
         try{
             for(int i =0; i<json.length(); i++)
             {
-                RoomDrink = new RoomDrinks();
+                RoomDrink = new Rooms();
                 JSONObject jsonObject = null;
                 jsonObject =json.getJSONObject(i);
 
@@ -125,7 +120,7 @@ public class RoomDrinkFragment extends Fragment implements Response.Listener<JSO
 
     public void adapterOnClick()
     {
-        adapter = new RoomDrinkAdapter(getActivity(), listRoomDrink, new RoomDrinkAdapter.ListAdapterListener() {
+        adapter = new RoomAdapter(getActivity(), listRoomDrink, new RoomAdapter.ListAdapterListener() {
 
             @Override
             public void onClickAddButton(View v) {
@@ -204,7 +199,7 @@ public class RoomDrinkFragment extends Fragment implements Response.Listener<JSO
                     newText = newText.toLowerCase();
                     newList = new ArrayList<>();
 
-                    for(RoomDrinks c : listRoomDrink)
+                    for(Rooms c : listRoomDrink)
                     {
                         String name = c.getRoomUbication().toLowerCase();
                         if(name.contains(newText)){
@@ -229,36 +224,24 @@ public class RoomDrinkFragment extends Fragment implements Response.Listener<JSO
 
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
-        private int spanCount;
-        private int spacing;
-        private boolean includeEdge;
+        private int halfSpace;
 
-        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
-            this.spanCount = spanCount;
-            this.spacing = spacing;
-            this.includeEdge = includeEdge;
+        public GridSpacingItemDecoration(int space) {
+            this.halfSpace = space / 2;
         }
 
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            int position = parent.getChildAdapterPosition(view); // item position
-            int column = position % spanCount; // item column
 
-            if (includeEdge) {
-                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
-                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
-
-                if (position < spanCount) { // top edge
-                    outRect.top = spacing;
-                }
-                outRect.bottom = spacing; // item bottom
-            } else {
-                outRect.left = column+1* spacing / spanCount; // column * ((1f / spanCount) * spacing)
-                outRect.right = spacing - (column ) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
-                if (position >= spanCount) {
-                    outRect.top = spacing; // item top
-                }
+            if (parent.getPaddingLeft() != halfSpace) {
+                parent.setPadding(halfSpace, halfSpace, halfSpace, halfSpace);
+                parent.setClipToPadding(false);
             }
+
+            outRect.top = halfSpace;
+            outRect.bottom = halfSpace;
+            outRect.left = halfSpace;
+            outRect.right = halfSpace;
         }
     }
 

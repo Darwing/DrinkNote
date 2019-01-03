@@ -1,14 +1,14 @@
 package lb.yiimgo.storenote.ViewPager.Board;
 
-
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
-
 import java.text.ParseException;
 import java.util.ArrayList;
 import lb.yiimgo.storenote.Entity.Boards;
@@ -19,10 +19,9 @@ import lb.yiimgo.storenote.Utility.Utility;
  * Created by Darwing on 16-Dec-18.
  */
 
-public class BoardDetailAdapter extends RecyclerView.Adapter<BoardDetailAdapter.BoardHolder>
+public class BoardDetailAdapter extends RecyclerView.Adapter<BoardDetailAdapter.BoarDetaildHolder>
 {
 
-    public boolean running;
     ArrayList<Boards> listBoard;
     private Context mContext;
     private ListAdapterListener mListener;
@@ -30,7 +29,7 @@ public class BoardDetailAdapter extends RecyclerView.Adapter<BoardDetailAdapter.
 
 
     public interface ListAdapterListener {
-        void onClickAddButton(View v);
+        void onClickDeleteButton(int position);
     }
     public BoardDetailAdapter(Context context, ArrayList<Boards> listBoard, ListAdapterListener  mListener) {
         this.listBoard = listBoard;
@@ -40,17 +39,17 @@ public class BoardDetailAdapter extends RecyclerView.Adapter<BoardDetailAdapter.
     }
 
     @Override
-    public BoardHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
+    public BoarDetaildHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
         layoutInflater = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_board_detail_row,parent,false);
 
         RecyclerView.LayoutParams layoutParams =new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutInflater.setLayoutParams(layoutParams);
 
-        return new BoardHolder(layoutInflater);
+        return new BoarDetaildHolder(layoutInflater);
     }
 
     @Override
-    public void onBindViewHolder(final BoardHolder holder, final int position)
+    public void onBindViewHolder(final BoarDetaildHolder holder, final int position)
     {
         holder.tx_name_services.setText(listBoard.get(position).getService());
         holder.tx_category.setText(listBoard.get(position).getServiceCategory());
@@ -61,10 +60,10 @@ public class BoardDetailAdapter extends RecyclerView.Adapter<BoardDetailAdapter.
             e.printStackTrace();
         }
 
-        layoutInflater.setOnClickListener(new View.OnClickListener() {
+        holder.tx_delete_service.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onClickAddButton(view);
+                mListener.onClickDeleteButton(position);
             }
         });
 
@@ -82,18 +81,19 @@ public class BoardDetailAdapter extends RecyclerView.Adapter<BoardDetailAdapter.
     }
 
 
-    public class BoardHolder extends RecyclerView.ViewHolder
+    public class BoarDetaildHolder extends RecyclerView.ViewHolder
     {
         TextView tx_name_services,tx_category,tx_amount,tx_date_create;
+        ImageView tx_delete_service;
 
-        public BoardHolder(View itemView)
+        public BoarDetaildHolder(View itemView)
         {   super(itemView);
 
             tx_name_services = (TextView) itemView.findViewById(R.id.t_name_services);
             tx_category = (TextView) itemView.findViewById(R.id.t_category);
             tx_amount = (TextView) itemView.findViewById(R.id.t_amount);
             tx_date_create =(TextView) itemView.findViewById(R.id.t_date_create);
-
+            tx_delete_service = (ImageView) itemView.findViewById(R.id.delete_service);
         }
     }
 

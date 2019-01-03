@@ -7,13 +7,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Chronometer;
 import android.widget.TextView;
-
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Locale;
 
 import lb.yiimgo.storenote.Entity.Boards;
@@ -27,7 +23,7 @@ import lb.yiimgo.storenote.Utility.Utility;
 public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
 {
 
-    public boolean running;
+
     ArrayList<Boards> listBoard;
     private Context mContext;
     private ListAdapterListener mListener;

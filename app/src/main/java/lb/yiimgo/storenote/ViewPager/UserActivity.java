@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import lb.yiimgo.storenote.Fragment.ServiceFragment;
 import lb.yiimgo.storenote.Fragment.BoardFragment;
-import lb.yiimgo.storenote.Fragment.RoomDrinkFragment;
+import lb.yiimgo.storenote.Fragment.RoomFragment;
 import lb.yiimgo.storenote.Fragment.UserFragment;
 import lb.yiimgo.storenote.R;
 
@@ -24,7 +24,7 @@ public class UserActivity extends AppCompatActivity
     private ViewPager viewPager;
     BoardFragment boardFragment;
     ServiceFragment ctFragment;
-    RoomDrinkFragment rmFragment;
+    RoomFragment rmFragment;
     UserFragment usFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState)
