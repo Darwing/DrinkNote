@@ -183,7 +183,19 @@ public class RoomFragment extends Fragment implements Response.Listener<JSONObje
         super.onPrepareOptionsMenu(menu);
         MenuItem item = menu.findItem(R.id.search);
         searchView = (SearchView) item.getActionView();
+        item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                //Toast.makeText(getContext(), "onMenuItemActionExpand called", Toast.LENGTH_SHORT).show();
+                return true;
+            }
 
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                notFound.setVisibility(View.GONE);
+                return true;
+            }
+        });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -210,6 +222,9 @@ public class RoomFragment extends Fragment implements Response.Listener<JSONObje
                     if (newList.size() == 0){
                         if(!newText.isEmpty())
                             notFound.setText("Record not found with '"+newText+"'");
+                    }else
+                    {
+                        notFound.setVisibility(View.GONE);
                     }
 
                     adapter.updateList(newList);

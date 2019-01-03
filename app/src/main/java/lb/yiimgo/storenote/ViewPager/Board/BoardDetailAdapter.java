@@ -6,13 +6,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.text.ParseException;
 import java.util.ArrayList;
 import lb.yiimgo.storenote.Entity.Boards;
 import lb.yiimgo.storenote.R;
+import lb.yiimgo.storenote.Utility.SessionManager;
 import lb.yiimgo.storenote.Utility.Utility;
 
 /**
@@ -59,6 +59,10 @@ public class BoardDetailAdapter extends RecyclerView.Adapter<BoardDetailAdapter.
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        SessionManager sessionManager = new SessionManager(this.mContext);
+
+        if(Integer.valueOf(sessionManager.getDataFromSession().get(0)) != 1)
+            holder.tx_delete_service.setVisibility(View.GONE);
 
         holder.tx_delete_service.setOnClickListener(new View.OnClickListener() {
             @Override

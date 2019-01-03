@@ -1,12 +1,12 @@
 package lb.yiimgo.storenote.Fragment;
 
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -142,6 +142,7 @@ public class ServiceFragment extends Fragment implements Response.Listener<JSONO
             }
         });
     }
+
     public void addDialog(View v)
     {
         Services value;
@@ -154,6 +155,7 @@ public class ServiceFragment extends Fragment implements Response.Listener<JSONO
         addServiceRoomFragment.show(getActivity().getFragmentManager(),"roomDialog");
 
     }
+
     public void loadWebServices()
     {
         progressDialog = new ProgressDialog(getContext());
@@ -196,7 +198,24 @@ public class ServiceFragment extends Fragment implements Response.Listener<JSONO
         super.onPrepareOptionsMenu(menu);
         MenuItem item = menu.findItem(R.id.search);
         searchView = (SearchView) item.getActionView();
+
+        item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                //Toast.makeText(getContext(), "onMenuItemActionExpand called", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                notFound.setVisibility(View.GONE);
+                return true;
+            }
+        });
+
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
             @Override
             public boolean onQueryTextSubmit(String s) {
                 searchView.clearFocus();
@@ -220,8 +239,13 @@ public class ServiceFragment extends Fragment implements Response.Listener<JSONO
                     }
 
                     if (newList.size() == 0){
-                        if(!newText.isEmpty())
+                        if(!newText.isEmpty()){
+                            notFound.setVisibility(View.VISIBLE);
                             notFound.setText("Record not found with '"+newText+"'");
+                        }
+                    }else
+                    {
+                        notFound.setVisibility(View.GONE);
                     }
 
                     adapter.updateList(newList);

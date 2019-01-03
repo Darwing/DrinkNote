@@ -61,7 +61,7 @@ public class Utility
     public static String dateFormat(String date) throws ParseException
     {
         SimpleDateFormat sdfIn = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        SimpleDateFormat sdfOut = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
+        SimpleDateFormat sdfOut = new SimpleDateFormat("HH:mm a");
         String input = date;
         Date d = sdfIn.parse(input);
 
