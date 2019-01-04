@@ -33,6 +33,7 @@ import lb.yiimgo.storenote.Entity.VolleySingleton;
 import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.SessionManager;
 import lb.yiimgo.storenote.Utility.Utility;
+import lb.yiimgo.storenote.ViewPager.Board.BoardAdapter;
 import lb.yiimgo.storenote.ViewPager.Board.BoardDetailAdapter;
 
 @SuppressLint("ValidFragment")
@@ -53,7 +54,6 @@ public class BoardDetailsFragment extends DialogFragment implements Response.Lis
     int spacing = 50;
     public Context _context;
     public Boards _boarDetail;
-
 
     public BoardDetailsFragment(Context context, Boards board) {
         this._context = context;
@@ -100,34 +100,8 @@ public class BoardDetailsFragment extends DialogFragment implements Response.Lis
 
     public void addDialog(final int position)
     {
-        CommentServicesFragment commentServicesFragment = new CommentServicesFragment(_context,listBoard);
+        CommentServicesFragment commentServicesFragment = new CommentServicesFragment(_context,listBoard,position,adapter);
         commentServicesFragment.show(((FragmentActivity)getActivity()).getSupportFragmentManager().beginTransaction(),"commentDialog");
-/*
-        final String idServices = listBoard.get(position).getIdServices();
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(_context,R.style.DialogTheme);
-        builder1.setMessage("Are your sure to delete this item?");
-        builder1.setCancelable(true);
-
-        builder1.setPositiveButton(
-                "Yes",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        webServiceDelete(idServices,position);
-                    }
-                });
-
-        builder1.setNegativeButton(
-                "No",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
-*/
 
     }
 
@@ -156,6 +130,7 @@ public class BoardDetailsFragment extends DialogFragment implements Response.Lis
                 board.setService(jsonObject.getString("Service"));
                 board.setServiceCategory(jsonObject.getString("ServiceCategory"));
                 board.setDateCreate(jsonObject.getString("DateCreate"));
+                board.setSerCateId(jsonObject.getInt("SerCateId"));
 
                 listBoard.add(board);
 
@@ -176,6 +151,7 @@ public class BoardDetailsFragment extends DialogFragment implements Response.Lis
         progressDialog = new ProgressDialog(_context);
         progressDialog.setMessage("Cargando...");
         progressDialog.show();
+
         String idUser = sessionManager.getDataFromSession().get(4);
         String p = sessionManager.getDataFromSession().get(0);
 

@@ -89,6 +89,7 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
         Toast.makeText(getContext(),"Error " + error.toString(),Toast.LENGTH_LONG).show();
         progressDialog.hide();
     }
+
     @Override
     public void onResponse(JSONObject response) {
 
@@ -115,7 +116,6 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
         }
 
         progressDialog.hide();
-
         recyclerBoard.setAdapter(adapter);
 
     }
@@ -153,6 +153,7 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
         String url = Utility.BASE_URL +"Main/getDataBoard?Id=" + idUser +"&profile="+ p;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
         requestQueue.add(jsonObjectRequest);
+
     }
 
     @Override

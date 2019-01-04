@@ -11,6 +11,15 @@ public class Boards
     private String DateCreate;
     private String ServiceCategory;
     private String Service;
+    private int SerCateId;
+
+    public int getSerCateId() {
+        return SerCateId;
+    }
+
+    public void setSerCateId(int serCateId) {
+        SerCateId = serCateId;
+    }
 
     public String getServiceCategory() {
         return ServiceCategory;
