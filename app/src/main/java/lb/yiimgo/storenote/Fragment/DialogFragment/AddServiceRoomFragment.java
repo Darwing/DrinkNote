@@ -1,4 +1,4 @@
-package lb.yiimgo.storenote.Fragment;
+package lb.yiimgo.storenote.Fragment.DialogFragment;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;

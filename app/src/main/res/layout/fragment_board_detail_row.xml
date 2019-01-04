@@ -15,14 +15,28 @@
         android:padding="5dp"
         tools:ignore="UselessParent">
 
-        <TextView
-            android:id="@+id/t_date_create"
-            style="@style/body_style"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="10sp" />
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/ico_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/icon"
+                android:background="@drawable/ic_access_time_black_24dp" />
 
+            <TextView
+                android:id="@+id/t_date_create"
+                style="@style/body_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:text="@string/time"
+                android:textSize="10sp" />
+        </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,6 +53,7 @@
                 style="@style/title_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
                 android:text="@string/waiter_name"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -61,6 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
+                android:text="@string/category_detail_services"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -81,6 +97,7 @@
                 style="@style/body_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
                 android:text="@string/cost"
                 android:textColor="@color/bgRowsGreen"
                 android:textSize="12sp" />

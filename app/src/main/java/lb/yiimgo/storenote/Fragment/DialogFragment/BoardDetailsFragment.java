@@ -1,4 +1,4 @@
-package lb.yiimgo.storenote.Fragment;
+package lb.yiimgo.storenote.Fragment.DialogFragment;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -8,12 +8,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.Request;
@@ -85,31 +86,7 @@ public class BoardDetailsFragment extends DialogFragment implements Response.Lis
 
         return view;
     }
-    private void webServiceDelete(String id,final int po) {
 
-        progressDialog = new ProgressDialog(_context);
-        progressDialog.setMessage("Cargando...");
-        progressDialog.show();
-
-        StringRequest stringRequest;
-        String url= Utility.BASE_URL +"Main/disableServices?Id="+id;
-
-        stringRequest =new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                progressDialog.hide();
-                listBoard.remove(po);
-                adapter.notifyDataSetChanged();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(_context,"Not connection",Toast.LENGTH_SHORT).show();
-                progressDialog.hide();
-            }
-        });
-        VolleySingleton.getIntanciaVolley(_context).addToRequestQueue(stringRequest);
-    }
     public void adapterOnClick()
     {
         adapter = new BoardDetailAdapter(getActivity(), listBoard, new BoardDetailAdapter.ListAdapterListener() {
@@ -123,6 +100,9 @@ public class BoardDetailsFragment extends DialogFragment implements Response.Lis
 
     public void addDialog(final int position)
     {
+        CommentServicesFragment commentServicesFragment = new CommentServicesFragment(_context,listBoard);
+        commentServicesFragment.show(((FragmentActivity)getActivity()).getSupportFragmentManager().beginTransaction(),"commentDialog");
+/*
         final String idServices = listBoard.get(position).getIdServices();
         AlertDialog.Builder builder1 = new AlertDialog.Builder(_context,R.style.DialogTheme);
         builder1.setMessage("Are your sure to delete this item?");
@@ -147,6 +127,7 @@ public class BoardDetailsFragment extends DialogFragment implements Response.Lis
 
         AlertDialog alert11 = builder1.create();
         alert11.show();
+*/
 
     }
 

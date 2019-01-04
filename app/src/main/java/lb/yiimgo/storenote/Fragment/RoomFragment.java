@@ -220,9 +220,11 @@ public class RoomFragment extends Fragment implements Response.Listener<JSONObje
                     }
 
                     if (newList.size() == 0){
-                        if(!newText.isEmpty())
-                            notFound.setText("Record not found with '"+newText+"'");
-                    }else
+                        if(!newText.isEmpty()) {
+                            notFound.setVisibility(View.VISIBLE);
+                            notFound.setText("Record not found with '" + newText + "'");
+                        }
+                        }else
                     {
                         notFound.setVisibility(View.GONE);
                     }

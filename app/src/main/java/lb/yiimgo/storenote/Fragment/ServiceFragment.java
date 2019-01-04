@@ -5,8 +5,6 @@ import android.app.ProgressDialog;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,6 +32,7 @@ import java.util.ArrayList;
 
 import lb.yiimgo.storenote.Entity.Services;
 import lb.yiimgo.storenote.Entity.VolleySingleton;
+import lb.yiimgo.storenote.Fragment.DialogFragment.AddServiceRoomFragment;
 import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.Utility;
 import lb.yiimgo.storenote.ViewPager.Service.ServiceAdapter;

@@ -29,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import lb.yiimgo.storenote.Entity.Boards;
+import lb.yiimgo.storenote.Fragment.DialogFragment.BoardDetailsFragment;
 import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.SessionManager;
 import lb.yiimgo.storenote.Utility.Utility;

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="lb.yiimgo.storenote.Fragment.BoardDetailsFragment">
+    tools:context="lb.yiimgo.storenote.Fragment.DialogFragment.BoardDetailsFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/id_recycle_board_details"

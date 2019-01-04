@@ -1,5 +1,6 @@
 package lb.yiimgo.storenote.ViewPager;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -125,7 +126,6 @@ public class BoardActivity extends AppCompatActivity implements NavigationView.O
         usFragment = new UserFragment();
         int idProfile = Integer.valueOf(sessionManager.getDataFromSession().get(0));
 
-
         adapter.addFragment(boardFragment,"BOARD");
         adapter.addFragment(ctFragment,"SERVICES");
         adapter.addFragment(rmFragment,"ROOMS");
@@ -148,7 +148,11 @@ public class BoardActivity extends AppCompatActivity implements NavigationView.O
 
     }
 
-
+    public void refresh()
+    {
+        android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.detach(boardFragment).attach(boardFragment).commit();
+    }
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item)
@@ -159,7 +163,7 @@ public class BoardActivity extends AppCompatActivity implements NavigationView.O
             switch (item.getItemId())
             {
                 case R.id.nav_home:
-                    viewPager.setCurrentItem(0,false);
+                    viewPager.setCurrentItem(0);
                     break;
                 case R.id.nav_services:
                     if(Integer.valueOf(sessionManager.getDataFromSession().get(0)) == 1)
@@ -203,16 +207,5 @@ public class BoardActivity extends AppCompatActivity implements NavigationView.O
         getMenuInflater().inflate(R.menu.menu_board_fragment, menu);
         return true;
     }
-/*  @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
-        switch (item.getItemId()) {
-            case R.id.refresh:
-                refresh();
-                return true;
 
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }*/
 }
