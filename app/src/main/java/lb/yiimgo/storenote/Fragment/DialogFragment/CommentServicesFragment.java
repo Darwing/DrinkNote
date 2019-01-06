@@ -50,6 +50,8 @@ public class CommentServicesFragment extends DialogFragment
     public int _position;
     public TextView description;
     public SessionManager sessionManager;
+    StringRequest stringRequest;
+
     public CommentServicesFragment(Context context, ArrayList<Boards> board, int p, BoardDetailAdapter adapter) {
         this._context = context;
         this._boarDetail = board;
@@ -108,7 +110,7 @@ public class CommentServicesFragment extends DialogFragment
         progressDialog.show();
         sessionManager = new SessionManager(_context);
 
-        StringRequest stringRequest;
+
         String url= Utility.BASE_URL +"Main/disableServices?id="+id+"&serCateId="+serCateId
                 +"&po="+po+"&desc="+desc+"&ub="+ub+"&usr="+sessionManager.getDataFromSession().get(4);
 

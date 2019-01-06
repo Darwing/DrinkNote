@@ -1,7 +1,10 @@
 package lb.yiimgo.storenote.Fragment;
 
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,13 +25,19 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
+
 import lb.yiimgo.storenote.Entity.Boards;
+import lb.yiimgo.storenote.Entity.VolleySingleton;
 import lb.yiimgo.storenote.Fragment.DialogFragment.BoardDetailsFragment;
 import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.SessionManager;
@@ -54,6 +63,8 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
     public boolean ifSearch = false;
     int spanCount = 2;
     int spacing = 50;
+    Boards value;
+    StringRequest stringRequest;
 
     public BoardFragment() { }
 
@@ -127,12 +138,71 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
             @Override
             public void onClickAddButton(View v) {
                 addDialog(v);
+
+            }
+
+            @Override
+            public void onClickPayButton(final int p) {
+
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext(), R.style.DialogTheme);
+                builder1.setMessage("Are you sure to collect this bill? "+
+                        listBoard.get(p).getUbication());
+                builder1.setCancelable(true);
+
+                builder1.setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int id) {
+
+                            payServices(p);
+                            }
+                        });
+
+                builder1.setNegativeButton(
+                        "No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
             }
         });
+
+    }
+    public void payServices(final int p)
+    {
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Cargando...");
+        progressDialog.show();
+
+        String ubication = listBoard.get(p).getUbication();
+
+        String url = Utility.BASE_URL +"Main/payServices?ub=" + ubication;
+        stringRequest =new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                progressDialog.hide();
+
+                listBoard.remove(p);
+                adapter.notifyDataSetChanged();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(),"Not connection",Toast.LENGTH_SHORT).show();
+                progressDialog.hide();
+            }
+        });
+        VolleySingleton.getIntanciaVolley(getContext()).addToRequestQueue(stringRequest);
     }
     public void addDialog(View v)
     {
-        Boards value;
+
         if(ifSearch)
             value = newList.get(recyclerBoard.getChildAdapterPosition(v));
         else
@@ -159,7 +229,7 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onPrepareOptionsMenu(menu);
-       MenuItem item = menu.findItem(R.id.search).setVisible(false);
+        MenuItem item = menu.findItem(R.id.search).setVisible(false);
         searchView = (SearchView) item.getActionView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -199,6 +269,7 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
             }
         });
     }
+
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
         private int halfSpace;

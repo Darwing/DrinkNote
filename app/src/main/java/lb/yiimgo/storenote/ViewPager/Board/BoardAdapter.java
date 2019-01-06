@@ -2,6 +2,7 @@ package lb.yiimgo.storenote.ViewPager.Board;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,8 +29,11 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
     private Context mContext;
     private ListAdapterListener mListener;
     View layoutInflater;
+    public Thread t;
+
     public interface ListAdapterListener {
         void onClickAddButton(View v);
+        void onClickPayButton(int p);
     }
     public BoardAdapter(Context context, ArrayList<Boards> listBoard, ListAdapterListener  mListener) {
         this.listBoard = listBoard;
@@ -44,8 +48,8 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
 
         RecyclerView.LayoutParams layoutParams =new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutInflater.setLayoutParams(layoutParams);
-
         return new BoardHolder(layoutInflater);
+
     }
 
     @Override
@@ -61,55 +65,71 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
                 mListener.onClickAddButton(view);
             }
         });
-
-        currentTime(holder,position);
+        holder.tx_pay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onClickPayButton(position);
+            }
+        });
+        String time = holder.tx_timer.getText().toString();
+        if (time == "") {
+            currentTime(holder,position);
+        }
     }
-
     public void currentTime(final BoardHolder holder,final int position)
     {
 
             final String strDate = listBoard.get(position).getDateCreate();
             final String tStart = strDate.substring(strDate.indexOf(' ') +1);
 
-            Thread t = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    while (!isInterrupted()) {
-                        Thread.sleep(1000);
-                        ((Activity)mContext).runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
+             t = new Thread() {
+                @Override
+                public void run() {
 
-                                long date = System.currentTimeMillis();
-                                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.US);
-                                String dateString = sdf.format(date);
-                                String tFinish = dateString;
+                    try {
+                        while (!isInterrupted()) {
 
-                                String[] sTimeHourMinSec = tStart.split(":");
-                                int sHour = Integer.valueOf(sTimeHourMinSec[0]);
-                                int sMin = Integer.valueOf(sTimeHourMinSec[1]);
-                                int sSec = Integer.valueOf(sTimeHourMinSec[2]);
+                            Thread.sleep(1000);
+                            ((Activity)mContext).runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
 
-                                String[] fTimeHourMinSec = tFinish.split(":");
-                                int fHour = Integer.valueOf(fTimeHourMinSec[0]);
-                                int fMin = Integer.valueOf(fTimeHourMinSec[1]);
-                                int fSec = Integer.valueOf(fTimeHourMinSec[2]);
+                                    long date = System.currentTimeMillis();
+                                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.US);
+                                    String dateString = sdf.format(date);
+                                    String tFinish = dateString;
 
-                                int diffTotSec = (fHour - sHour) * 3600 + (fMin - sMin) * 60 + (fSec - sSec);
-                                final int diffHours = diffTotSec / 3600;
-                                final int diffMins = (diffTotSec % 3600) / 60;
-                                final int diffSecs = (diffTotSec % 3600) % 60;
-                                holder.tx_timer.setText(diffHours+" h : "+diffMins+" m "+diffSecs +" s");
-                           }
-                        });
+                                    String[] sTimeHourMinSec = tStart.split(":");
+                                    int sHour = Integer.valueOf(sTimeHourMinSec[0]);
+                                    int sMin = Integer.valueOf(sTimeHourMinSec[1]);
+                                    int sSec = Integer.valueOf(sTimeHourMinSec[2]);
+
+                                    String[] fTimeHourMinSec = tFinish.split(":");
+                                    int fHour = Integer.valueOf(fTimeHourMinSec[0]);
+                                    int fMin = Integer.valueOf(fTimeHourMinSec[1]);
+                                    int fSec = Integer.valueOf(fTimeHourMinSec[2]);
+
+                                    int diffTotSec = (fHour - sHour) * 3600 + (fMin - sMin) * 60 + (fSec - sSec);
+                                    final int diffHours = diffTotSec / 3600;
+                                    final int diffMins = (diffTotSec % 3600) / 60;
+                                    final int diffSecs = (diffTotSec % 3600) % 60;
+
+                                    holder.tx_timer.setText(diffHours+" h : "+diffMins+" m "+diffSecs +" s");
+                                }
+                            });
+
+                        }
+
+
+                    } catch (InterruptedException e) {
                     }
-                } catch (InterruptedException e) {
                 }
-            }
-        };
-        t.start();
+
+            };
+
+            t.start();
     }
+
     public void updateList(ArrayList<Boards> newList)
     {
         listBoard = new ArrayList<>();
@@ -124,7 +144,8 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
 
     public class BoardHolder extends RecyclerView.ViewHolder
     {
-        TextView tx_id,tx_ubication,tx_total_amount,tx_waiter,tx_timer;
+        TextView tx_ubication,tx_total_amount,tx_waiter,tx_timer;
+        CardView tx_pay;
 
         public BoardHolder(View itemView)
         {   super(itemView);
@@ -133,7 +154,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
             tx_ubication = (TextView) itemView.findViewById(R.id.t_drinkroom);
             tx_total_amount = (TextView) itemView.findViewById(R.id.t_total_amount);
             tx_timer = layoutInflater.findViewById(R.id.t_timer);
-
+            tx_pay = (CardView) itemView.findViewById(R.id.pay_now);
         }
     }
 
