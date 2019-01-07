@@ -71,64 +71,10 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
                 mListener.onClickPayButton(position);
             }
         });
-        String time = holder.tx_timer.getText().toString();
-        if (time == "") {
-            currentTime(holder,position);
-        }
+        holder.tx_timer.setText(listBoard.get(position).getTotalHours());
+
     }
-    public void currentTime(final BoardHolder holder,final int position)
-    {
 
-            final String strDate = listBoard.get(position).getDateCreate();
-            final String tStart = strDate.substring(strDate.indexOf(' ') +1);
-
-             t = new Thread() {
-                @Override
-                public void run() {
-
-                    try {
-                        while (!isInterrupted()) {
-
-                            Thread.sleep(1000);
-                            ((Activity)mContext).runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-
-                                    long date = System.currentTimeMillis();
-                                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.US);
-                                    String dateString = sdf.format(date);
-                                    String tFinish = dateString;
-
-                                    String[] sTimeHourMinSec = tStart.split(":");
-                                    int sHour = Integer.valueOf(sTimeHourMinSec[0]);
-                                    int sMin = Integer.valueOf(sTimeHourMinSec[1]);
-                                    int sSec = Integer.valueOf(sTimeHourMinSec[2]);
-
-                                    String[] fTimeHourMinSec = tFinish.split(":");
-                                    int fHour = Integer.valueOf(fTimeHourMinSec[0]);
-                                    int fMin = Integer.valueOf(fTimeHourMinSec[1]);
-                                    int fSec = Integer.valueOf(fTimeHourMinSec[2]);
-
-                                    int diffTotSec = (fHour - sHour) * 3600 + (fMin - sMin) * 60 + (fSec - sSec);
-                                    final int diffHours = diffTotSec / 3600;
-                                    final int diffMins = (diffTotSec % 3600) / 60;
-                                    final int diffSecs = (diffTotSec % 3600) % 60;
-
-                                    holder.tx_timer.setText(diffHours+" h : "+diffMins+" m "+diffSecs +" s");
-                                }
-                            });
-
-                        }
-
-
-                    } catch (InterruptedException e) {
-                    }
-                }
-
-            };
-
-            t.start();
-    }
 
     public void updateList(ArrayList<Boards> newList)
     {

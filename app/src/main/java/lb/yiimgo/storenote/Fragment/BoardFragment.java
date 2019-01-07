@@ -1,13 +1,14 @@
 package lb.yiimgo.storenote.Fragment;
 
 
-import android.app.Activity;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -65,6 +66,7 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
     int spacing = 50;
     Boards value;
     StringRequest stringRequest;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public BoardFragment() { }
 
@@ -82,6 +84,7 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
         listBoard = new ArrayList<>();
 
         recyclerBoard = (RecyclerView) view.findViewById(R.id.id_recycle_board);
+
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this.getContext(), spanCount);
         recyclerBoard.setLayoutManager(mLayoutManager);
         recyclerBoard.addItemDecoration(new GridSpacingItemDecoration(spacing));
@@ -89,8 +92,19 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
         notFound = (TextView) view.findViewById(R.id.not_found);
         adapterOnClick();
         requestQueue = Volley.newRequestQueue(getContext());
-
         loadWebServices();
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                listBoard.clear();
+                loadWebServices();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+
         return view;
     }
 
@@ -116,7 +130,7 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
                 board.setFullName(jsonObject.getString("FullName"));
                 board.setUbication(jsonObject.optString("Ubication"));
                 board.setTotalAmount(jsonObject.getDouble("TotalAmount"));
-                board.setDateCreate(jsonObject.getString("DateCreate"));
+                board.setTotalHours(jsonObject.getString("TotalHours"));
 
                 listBoard.add(board);
 
@@ -145,8 +159,8 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
             public void onClickPayButton(final int p) {
 
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext(), R.style.DialogTheme);
-                builder1.setMessage("Are you sure to collect this bill? "+
-                        listBoard.get(p).getUbication());
+                builder1.setMessage("Are you sure to collect this bill in the ubication - "+
+                        listBoard.get(p).getUbication()+"?");
                 builder1.setCancelable(true);
 
                 builder1.setPositiveButton(
@@ -229,7 +243,7 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onPrepareOptionsMenu(menu);
-        MenuItem item = menu.findItem(R.id.search).setVisible(false);
+        MenuItem item = menu.findItem(R.id.search).setVisible(true);
         searchView = (SearchView) item.getActionView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

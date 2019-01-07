@@ -8,10 +8,19 @@ public class Boards
     private Integer CategoryId;
     private String Ubication;
     private String FullName;
-    private String DateCreate;
+    private String TotalHours;
     private String ServiceCategory;
     private String Service;
     private int SerCateId;
+    private String DateCreate;
+
+    public String getDateCreate() {
+        return DateCreate;
+    }
+
+    public void setDateCreate(String dateCreate) {
+        DateCreate = dateCreate;
+    }
 
     public int getSerCateId() {
         return SerCateId;
@@ -53,12 +62,12 @@ public class Boards
         FullName = fullName;
     }
 
-    public String getDateCreate() {
-        return DateCreate;
+    public String getTotalHours() {
+        return TotalHours;
     }
 
-    public void setDateCreate(String dateCreate) {
-        DateCreate = dateCreate;
+    public void setTotalHours(String totalHours) {
+        TotalHours = totalHours;
     }
 
     public String getIdServices() {
