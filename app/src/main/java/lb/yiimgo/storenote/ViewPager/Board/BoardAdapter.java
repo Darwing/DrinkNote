@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import java.util.Locale;
 
 import lb.yiimgo.storenote.Entity.Boards;
 import lb.yiimgo.storenote.R;
+import lb.yiimgo.storenote.Utility.AnimationUtil;
 import lb.yiimgo.storenote.Utility.Utility;
 
 /**
@@ -29,7 +32,8 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
     private Context mContext;
     private ListAdapterListener mListener;
     View layoutInflater;
-    public Thread t;
+    public Animation animation;
+    private int previousPosition = 0;
 
     public interface ListAdapterListener {
         void onClickAddButton(View v);
@@ -48,6 +52,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
 
         RecyclerView.LayoutParams layoutParams =new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutInflater.setLayoutParams(layoutParams);
+
         return new BoardHolder(layoutInflater);
 
     }
@@ -72,7 +77,15 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
             }
         });
         holder.tx_timer.setText(listBoard.get(position).getTotalHours());
+        layoutInflater.setTag(holder);
 
+        if(position > previousPosition){
+            animation = AnimationUtils.loadAnimation(mContext,R.anim.item_animation_fall_down);
+            layoutInflater.startAnimation(animation);
+        }else{
+        animation = AnimationUtils.loadAnimation(mContext,R.anim.item_animation_fall_down);
+        layoutInflater.startAnimation(animation);
+        }
     }
 
 

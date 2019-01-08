@@ -5,11 +5,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 import java.util.ArrayList;
 import lb.yiimgo.storenote.Entity.Rooms;
 import lb.yiimgo.storenote.R;
+import lb.yiimgo.storenote.Utility.AnimationUtil;
 
 /**
  * Created by Darwing on 16-Dec-18.
@@ -17,13 +20,13 @@ import lb.yiimgo.storenote.R;
 
 public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomDrinkHolder>
 {
-    Button testBh;
 
-    public boolean running;
     ArrayList<Rooms> listRoomDrink;
     private Context mContext;
     private ListAdapterListener mListener;
     View layoutInflater;
+    private int previousPosition = 0;
+
     public interface ListAdapterListener {
         void onClickAddButton(View v);
     }
@@ -60,25 +63,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomDrinkHolde
 
         return result;
     }
-/*    private int getCurrentMiliSecondsOfChronometer(final RoomDrinkHolder holder) {
-        int stoppedMilliseconds = 0;
-        String chronoText = holder.tx_chronometer.getText().toString();
-        String array[] = chronoText.split(":");
-        if (array.length == 2) {
-            stoppedMilliseconds = Integer.parseInt(array[0]) * 60 * 1000 + Integer.parseInt(array[1]) * 1000;
-        } else if (array.length == 3) {
-            stoppedMilliseconds =
-                    Integer.parseInt(array[0]) * 60 * 60 * 1000 + Integer.parseInt(array[1]) * 60 * 1000
-                            + Integer.parseInt(array[2]) * 1000;
-        }
-        return stoppedMilliseconds;
-    }
 
-    private void startChronometer(final RoomDrinkHolder holder) {
-         int stoppedMilliseconds = getCurrentMiliSecondsOfChronometer(holder);
-         holder.tx_chronometer.setBase(SystemClock.elapsedRealtime() - stoppedMilliseconds);
-         holder.tx_chronometer.start();
-    }*/
     @Override
     public void onBindViewHolder(final RoomDrinkHolder holder, final int position)
     {
@@ -94,24 +79,10 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomDrinkHolde
                 mListener.onClickAddButton(view);
              }
         });
-/*        holder.tx_testBh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startChronometer(holder);
-
-                holder.tx_chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.N)
-                    public void onChronometerTick(Chronometer cArg) {
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.set(Calendar.HOUR_OF_DAY, 0);
-                        calendar.set(Calendar.MINUTE, 0);
-                        calendar.set(Calendar.SECOND, 0);
-                        calendar.set(Calendar.MILLISECOND, getCurrentMiliSecondsOfChronometer(holder));
-                        holder.tx_chronometer.setText(DateFormat.format("HH:mm:ss", calendar.getTime()));
-                    }
-                });
-            }
-        });*/
+        if(position > previousPosition)
+            AnimationUtil.animate(holder, true);
+        else
+            AnimationUtil.animate(holder, false);
     }
     public void updateList(ArrayList<Rooms> newList)
     {
@@ -128,7 +99,6 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomDrinkHolde
     public class RoomDrinkHolder extends RecyclerView.ViewHolder
     {
             TextView tx_id,tx_drinkroom,tx_status,tx_waiter;
-            //Chronometer tx_chronometer;
 
             public RoomDrinkHolder(View itemView)
             {   super(itemView);
@@ -137,7 +107,6 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomDrinkHolde
                 tx_waiter = (TextView) itemView.findViewById(R.id.t_waiter);
                 tx_drinkroom = (TextView) itemView.findViewById(R.id.t_drinkroom);
                 tx_status = (TextView) itemView.findViewById(R.id.t_status);
-                //tx_chronometer = layoutInflater.findViewById(R.id.chronometer);
 
             }
      }

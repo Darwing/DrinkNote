@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 
 import lb.yiimgo.storenote.Entity.Services;
 import lb.yiimgo.storenote.R;
+import lb.yiimgo.storenote.Utility.AnimationUtil;
 import lb.yiimgo.storenote.Utility.Utility;
 
 /**
@@ -26,9 +29,12 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.Category
     private Context mContext;
     private ListAdapterListener mListener; 
     View layoutInflater;
+    private int previousPosition = 0;
+
     public interface ListAdapterListener {
         void onClickAddButton(View v);
     }
+
     public ServiceAdapter(Context context, ArrayList<Services> listServices, ListAdapterListener  mListener) {
        this.listServices = listServices;
        this.mContext = context;
@@ -103,12 +109,10 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.Category
             }
         });
 
-      /*  holder.deleteCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListener.onClickDeleteButton(position);
-            }
-        });*/
+        if(position > previousPosition)
+            AnimationUtil.animate(holder, true);
+        else
+            AnimationUtil.animate(holder, false);
 
     }
     public void updateList(ArrayList<Services> newList)
