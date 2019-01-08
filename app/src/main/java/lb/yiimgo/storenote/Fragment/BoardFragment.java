@@ -1,8 +1,10 @@
 package lb.yiimgo.storenote.Fragment;
 
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import android.view.ViewGroup;
 import android.support.v7.widget.SearchView;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.Request;
@@ -39,7 +42,9 @@ import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.SessionManager;
 import lb.yiimgo.storenote.Utility.Utility;
 import lb.yiimgo.storenote.ViewPager.Board.BoardAdapter;
+import lb.yiimgo.storenote.ViewPager.BoardActivity;
 
+@SuppressLint("ValidFragment")
 public class BoardFragment extends Fragment implements Response.Listener<JSONObject>,
         Response.ErrorListener
 {
@@ -61,9 +66,14 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
     int spacing = 50;
     Boards value;
     StringRequest stringRequest;
+    ImageView waiter_img;
+    BoardActivity boardFragment;
+    BoardActivity _context;
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    public BoardFragment() { }
+    public BoardFragment(BoardActivity boardActivity) {
+        this._context = boardActivity;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,7 +88,7 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
 
         view = inflater.inflate(R.layout.fragment_board, container, false);
         listBoard = new ArrayList<>();
-
+        boardFragment = new BoardActivity();
         recyclerBoard = (RecyclerView) view.findViewById(R.id.id_recycle_board);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this.getContext(), spanCount);
@@ -91,6 +101,9 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
         loadWebServices();
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,R.color.bgRowsGreen);
+        waiter_img = (ImageView) _context.findViewById(R.id.waiter_id);
+
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -138,7 +151,14 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
 
         progressDialog.hide();
         recyclerBoard.setAdapter(adapter);
+        int sizeList = adapter.getItemCount();
+        if(sizeList == 0 ){
 
+            waiter_img.setVisibility(View.VISIBLE);
+        }else
+        {
+            waiter_img.setVisibility(View.GONE);
+        }
     }
 
     public void adapterOnClick()

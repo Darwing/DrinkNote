@@ -1,6 +1,5 @@
 package lb.yiimgo.storenote.ViewPager;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -71,7 +70,6 @@ public class BoardActivity extends AppCompatActivity implements NavigationView.O
         tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
 
-
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -120,7 +118,7 @@ public class BoardActivity extends AppCompatActivity implements NavigationView.O
     {
         sessionManager = new SessionManager(this);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        boardFragment = new BoardFragment();
+        boardFragment = new BoardFragment(this);
         ctFragment = new ServiceFragment();
         rmFragment = new RoomFragment();
         usFragment = new UserFragment();
@@ -132,6 +130,7 @@ public class BoardActivity extends AppCompatActivity implements NavigationView.O
 
         if(idProfile == 1)
          adapter.addFragment(usFragment,"USERS");
+
 
         viewPager.setAdapter(adapter);
     }
