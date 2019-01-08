@@ -1,6 +1,8 @@
 package lb.yiimgo.storenote.Fragment;
 
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -24,6 +26,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.willowtreeapps.spruce.Spruce;
+import com.willowtreeapps.spruce.animation.DefaultAnimations;
+import com.willowtreeapps.spruce.sort.DefaultSort;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,7 +77,17 @@ public class ServiceFragment extends Fragment implements Response.Listener<JSONO
         view = inflater.inflate(R.layout.fragment_service, container, false);
         listServices = new ArrayList<>();
         recyclerService = (RecyclerView) view.findViewById(R.id.idRecycler);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this.getContext(), spanCount);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this.getContext(), spanCount){
+            @Override
+            public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+                super.onLayoutChildren(recycler, state);
+                  new Spruce.SpruceBuilder(recyclerService)
+                        .sortWith(new DefaultSort(100))
+                        .animateWith(DefaultAnimations.shrinkAnimator(recyclerService, 1000),
+                                ObjectAnimator.ofFloat(recyclerService, "translationX", -recyclerService.getWidth(), 0f).setDuration(1000))
+                        .start();
+            }
+        };
         recyclerService.setLayoutManager(mLayoutManager);
         recyclerService.addItemDecoration(new GridSpacingItemDecoration(spacing));
         recyclerService.setHasFixedSize(true);

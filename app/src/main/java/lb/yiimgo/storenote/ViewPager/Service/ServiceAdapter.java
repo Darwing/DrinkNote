@@ -114,6 +114,8 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.Category
         else
             AnimationUtil.animate(holder, false);
 
+        previousPosition = position;
+
     }
     public void updateList(ArrayList<Services> newList)
     {

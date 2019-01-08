@@ -83,6 +83,8 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomDrinkHolde
             AnimationUtil.animate(holder, true);
         else
             AnimationUtil.animate(holder, false);
+
+        previousPosition = position;
     }
     public void updateList(ArrayList<Rooms> newList)
     {

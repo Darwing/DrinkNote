@@ -1,5 +1,7 @@
 package lb.yiimgo.storenote.Fragment;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -22,6 +24,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.willowtreeapps.spruce.Spruce;
+import com.willowtreeapps.spruce.animation.DefaultAnimations;
+import com.willowtreeapps.spruce.sort.DefaultSort;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,6 +58,7 @@ public class RoomFragment extends Fragment implements Response.Listener<JSONObje
     public boolean ifSearch = false;
     int spanCount = 1;
     int spacing = 50;
+    private Animator spruceAnimator;
 
     public RoomFragment() { }
 
@@ -69,7 +76,17 @@ public class RoomFragment extends Fragment implements Response.Listener<JSONObje
         listRoomDrink = new ArrayList<>();
 
         recyclerRoomDrink = (RecyclerView) view.findViewById(R.id.display_room);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this.getContext(), spanCount);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this.getContext(), spanCount){
+            @Override
+            public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+                super.onLayoutChildren(recycler, state);
+                spruceAnimator = new Spruce.SpruceBuilder(recyclerRoomDrink)
+                        .sortWith(new DefaultSort(100))
+                        .animateWith(DefaultAnimations.shrinkAnimator(recyclerRoomDrink, 1000),
+                                ObjectAnimator.ofFloat(recyclerRoomDrink, "translationX", -recyclerRoomDrink.getWidth(), 0f).setDuration(1000))
+                        .start();
+            }
+        };
         recyclerRoomDrink.setLayoutManager(mLayoutManager);
         recyclerRoomDrink.addItemDecoration(new GridSpacingItemDecoration(spacing));
         recyclerRoomDrink.setHasFixedSize(true);
@@ -135,8 +152,12 @@ public class RoomFragment extends Fragment implements Response.Listener<JSONObje
         else
           listRoomDrink.get(recyclerRoomDrink.getChildAdapterPosition(v)).getRoomUbication();
 
+    }
+
+    private void initSpruce() {
 
     }
+
     public void loadWebServices()
     {
         sessionManager = new SessionManager(getContext());
