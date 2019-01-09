@@ -40,7 +40,7 @@ import lb.yiimgo.storenote.Utility.Utility;
 import lb.yiimgo.storenote.ViewPager.Room.RoomAdapter;
 
 public class RoomFragment extends Fragment implements Response.Listener<JSONObject>,
-        Response.ErrorListener
+        Response.ErrorListener, RoomAdapter.OnItemClickListener
 {
 
     public View view;
@@ -91,7 +91,7 @@ public class RoomFragment extends Fragment implements Response.Listener<JSONObje
         recyclerRoomDrink.addItemDecoration(new GridSpacingItemDecoration(spacing));
         recyclerRoomDrink.setHasFixedSize(true);
         notFound = (TextView) view.findViewById(R.id.not_found);
-        adapterOnClick();
+        adapter = new RoomAdapter(getActivity(), listRoomDrink);
         requestQueue = Volley.newRequestQueue(getContext());
 
         loadWebServices();
@@ -130,21 +130,12 @@ public class RoomFragment extends Fragment implements Response.Listener<JSONObje
         }
 
         progressDialog.hide();
-
+        adapter.setOnItemClickListener(this);
         recyclerRoomDrink.setAdapter(adapter);
 
     }
 
-    public void adapterOnClick()
-    {
-        adapter = new RoomAdapter(getActivity(), listRoomDrink, new RoomAdapter.ListAdapterListener() {
 
-            @Override
-            public void onClickAddButton(View v) {
-                addDialog(v);
-            }
-        });
-    }
     public void addDialog(View v)
     {
         if(ifSearch)
@@ -154,9 +145,6 @@ public class RoomFragment extends Fragment implements Response.Listener<JSONObje
 
     }
 
-    private void initSpruce() {
-
-    }
 
     public void loadWebServices()
     {
@@ -258,6 +246,11 @@ public class RoomFragment extends Fragment implements Response.Listener<JSONObje
                 }
             }
         });
+    }
+
+    @Override
+    public void onClickAddButton(View v) {
+        addDialog(v);
     }
 
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {

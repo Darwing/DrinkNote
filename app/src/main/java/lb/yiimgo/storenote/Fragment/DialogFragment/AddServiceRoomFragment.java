@@ -13,12 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -27,6 +29,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import lb.yiimgo.storenote.Entity.Rooms;
+import lb.yiimgo.storenote.Entity.VolleySingleton;
 import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.SessionManager;
 import lb.yiimgo.storenote.Entity.Services;
@@ -35,7 +38,7 @@ import lb.yiimgo.storenote.ViewPager.Room.RoomAdapter;
 
 @SuppressLint("ValidFragment")
 public class AddServiceRoomFragment extends DialogFragment implements Response.Listener<JSONObject>,
-        Response.ErrorListener
+        Response.ErrorListener, RoomAdapter.OnItemClickListener
 {
     public View view;
     public RecyclerView recyclerRoomDrink;
@@ -51,6 +54,7 @@ public class AddServiceRoomFragment extends DialogFragment implements Response.L
     TextView itemCost;
     int spanCount = 1;
     int spacing = 30;
+    StringRequest stringRequest;
 
     public AddServiceRoomFragment(Context context, Services services)
     {
@@ -70,7 +74,7 @@ public class AddServiceRoomFragment extends DialogFragment implements Response.L
     {
        view = inflater.inflate(R.layout.form_add_services,container,false);
        listRoomDrink = new ArrayList<>();
-       adapterOnClick();
+       adapter = new RoomAdapter(getActivity(), listRoomDrink);
        recyclerRoomDrink = (RecyclerView) view.findViewById(R.id.display_room_dialog);
        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(_context, spanCount);
        recyclerRoomDrink.setLayoutManager(mLayoutManager);
@@ -88,20 +92,10 @@ public class AddServiceRoomFragment extends DialogFragment implements Response.L
 
     @Override
     public void onErrorResponse(VolleyError error) {
+        Toast.makeText(_context,"Error " + error.toString(),Toast.LENGTH_LONG).show();
 
     }
 
-    public void adapterOnClick()
-    {
-        adapter = new RoomAdapter(getActivity(), listRoomDrink, new RoomAdapter.ListAdapterListener() {
-
-            @Override
-            public void onClickAddButton(View v) {
-
-                addServicesToRoom(v);
-            }
-        });
-    }
 
     public void addServicesToRoom(final View v)
     {
@@ -168,7 +162,7 @@ public class AddServiceRoomFragment extends DialogFragment implements Response.L
         }
 
         recyclerRoomDrink.setAdapter(adapter);
-
+        adapter.setOnItemClickListener(this);
     }
 
     public void saveDataBoard(View v)
@@ -183,8 +177,19 @@ public class AddServiceRoomFragment extends DialogFragment implements Response.L
                 +"&Ubication=" + ubication
                 +"&UserCreate=" + idUser;
 
-         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
-         requestQueue.add(jsonObjectRequest);
+        stringRequest =new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                adapter.notifyDataSetChanged();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(_context,"Not connection",Toast.LENGTH_SHORT).show();
+            }
+        });
+        VolleySingleton.getIntanciaVolley(_context).addToRequestQueue(stringRequest);
     }
 
     public void loadWebServices()
@@ -198,6 +203,12 @@ public class AddServiceRoomFragment extends DialogFragment implements Response.L
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
         requestQueue.add(jsonObjectRequest);
     }
+
+    @Override
+    public void onClickAddButton(View v) {
+        addServicesToRoom(v);
+    }
+
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
         private int halfSpace;

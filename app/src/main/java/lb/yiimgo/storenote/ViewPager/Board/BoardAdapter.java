@@ -1,24 +1,18 @@
 package lb.yiimgo.storenote.ViewPager.Board;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.TextView;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import lb.yiimgo.storenote.Entity.Boards;
 import lb.yiimgo.storenote.R;
-import lb.yiimgo.storenote.Utility.AnimationUtil;
 import lb.yiimgo.storenote.Utility.Utility;
 
 /**

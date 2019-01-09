@@ -38,7 +38,7 @@ import lb.yiimgo.storenote.ViewPager.Board.BoardDetailAdapter;
 
 @SuppressLint("ValidFragment")
 public class BoardDetailsFragment extends DialogFragment implements Response.Listener<JSONObject>,
-        Response.ErrorListener
+        Response.ErrorListener,BoardDetailAdapter.OnItemClickListener
 {
     public View view;
     public RecyclerView recyclerBoard;
@@ -80,22 +80,11 @@ public class BoardDetailsFragment extends DialogFragment implements Response.Lis
         recyclerBoard.addItemDecoration(new GridSpacingItemDecoration(spacing));
         recyclerBoard.setHasFixedSize(true);
         notFound = (TextView) view.findViewById(R.id.not_found);
-        adapterOnClick();
+        adapter = new BoardDetailAdapter(getActivity(), listBoard);
         requestQueue = Volley.newRequestQueue(_context);
         loadWebServices();
 
         return view;
-    }
-
-    public void adapterOnClick()
-    {
-        adapter = new BoardDetailAdapter(getActivity(), listBoard, new BoardDetailAdapter.ListAdapterListener() {
-
-            @Override
-            public void onClickDeleteButton(int position) {
-                addDialog(position);
-            }
-        });
     }
 
     public void addDialog(final int position)
@@ -141,7 +130,7 @@ public class BoardDetailsFragment extends DialogFragment implements Response.Lis
         }
 
         progressDialog.hide();
-
+        adapter.setOnItemClickListener(this);
         recyclerBoard.setAdapter(adapter);
     }
 
@@ -158,6 +147,11 @@ public class BoardDetailsFragment extends DialogFragment implements Response.Lis
         String url = Utility.BASE_URL +"Main/getDataBoardDetails?Id=" + idUser +"&Ub="+_boarDetail.getUbication()+"&profile="+p;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
         requestQueue.add(jsonObjectRequest);
+    }
+
+    @Override
+    public void onClickDeleteButton(int position) {
+        addDialog(position);
     }
 
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {

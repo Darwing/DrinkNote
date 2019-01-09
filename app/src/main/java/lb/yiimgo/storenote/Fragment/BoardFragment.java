@@ -39,7 +39,6 @@ import lb.yiimgo.storenote.Entity.Boards;
 import lb.yiimgo.storenote.Entity.VolleySingleton;
 import lb.yiimgo.storenote.Fragment.DialogFragment.BoardDetailsFragment;
 import lb.yiimgo.storenote.R;
-import lb.yiimgo.storenote.Utility.AnimationUtil;
 import lb.yiimgo.storenote.Utility.SessionManager;
 import lb.yiimgo.storenote.Utility.Utility;
 import lb.yiimgo.storenote.ViewPager.Board.BoardAdapter;

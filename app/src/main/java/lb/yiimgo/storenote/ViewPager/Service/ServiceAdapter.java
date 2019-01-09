@@ -27,19 +27,21 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.Category
 
     ArrayList<Services> listServices;
     private Context mContext;
-    private ListAdapterListener mListener; 
+    private OnItemClickListener mListener;
     View layoutInflater;
     private int previousPosition = 0;
 
-    public interface ListAdapterListener {
+    public interface OnItemClickListener {
         void onClickAddButton(View v);
     }
 
-    public ServiceAdapter(Context context, ArrayList<Services> listServices, ListAdapterListener  mListener) {
+    public void setOnItemClickListener(OnItemClickListener listener)
+    {
+        this.mListener = listener;
+    }
+    public ServiceAdapter(Context context, ArrayList<Services> listServices) {
        this.listServices = listServices;
        this.mContext = context;
-       this.mListener = mListener;
-
     }
 
     @Override

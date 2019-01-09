@@ -1,7 +1,6 @@
 package lb.yiimgo.storenote.Fragment;
 
 
-import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
 import android.graphics.Rect;
@@ -18,7 +17,6 @@ import android.view.ViewGroup;
 import android.support.v7.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -29,12 +27,10 @@ import com.android.volley.toolbox.Volley;
 import com.willowtreeapps.spruce.Spruce;
 import com.willowtreeapps.spruce.animation.DefaultAnimations;
 import com.willowtreeapps.spruce.sort.DefaultSort;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
-
 import lb.yiimgo.storenote.Entity.Services;
 import lb.yiimgo.storenote.Entity.VolleySingleton;
 import lb.yiimgo.storenote.Fragment.DialogFragment.AddServiceRoomFragment;
@@ -43,7 +39,7 @@ import lb.yiimgo.storenote.Utility.Utility;
 import lb.yiimgo.storenote.ViewPager.Service.ServiceAdapter;
 
 public class ServiceFragment extends Fragment implements Response.Listener<JSONObject>,
-        Response.ErrorListener
+        Response.ErrorListener,ServiceAdapter.OnItemClickListener
 {
     public View view;
     public RecyclerView recyclerService;
@@ -92,7 +88,8 @@ public class ServiceFragment extends Fragment implements Response.Listener<JSONO
         recyclerService.addItemDecoration(new GridSpacingItemDecoration(spacing));
         recyclerService.setHasFixedSize(true);
         notFound = (TextView) view.findViewById(R.id.not_found);
-        adapterOnClick();
+
+        adapter = new ServiceAdapter(getActivity(), listServices);
         requestQueue = Volley.newRequestQueue(getContext());
         loadWebServices();
 
@@ -132,30 +129,9 @@ public class ServiceFragment extends Fragment implements Response.Listener<JSONO
 
         progressDialog.hide();
         recyclerService.setAdapter(adapter);
-
+        adapter.setOnItemClickListener(this);
     }
 
-    public void adapterOnClick()
-    {
-        adapter = new ServiceAdapter(getActivity(), listServices, new ServiceAdapter.ListAdapterListener() {
-
-            @Override
-            public void onClickAddButton(View v) {
-                if(listServices.get(recyclerService.getChildAdapterPosition(v)).getNumStatus() == 1)
-                {
-                    addDialog(v);
-
-                }else
-                {
-                    String message = listServices.get(recyclerService.getChildAdapterPosition(v)).getName();
-                    utility = new Utility(getContext());
-                    utility.showDialogAnimation(R.style.DialogSlide,
-                            "This item: "+ message
-                                    +", is not available.","Not Available");
-                }
-            }
-        });
-    }
 
     public void addDialog(View v)
     {
@@ -270,6 +246,23 @@ public class ServiceFragment extends Fragment implements Response.Listener<JSONO
                 }
             }
         });
+    }
+
+    @Override
+    public void onClickAddButton(View v) {
+
+        if(listServices.get(recyclerService.getChildAdapterPosition(v)).getNumStatus() == 1)
+        {
+            addDialog(v);
+
+        }else
+        {
+            String message = listServices.get(recyclerService.getChildAdapterPosition(v)).getName();
+            utility = new Utility(getContext());
+            utility.showDialogAnimation(R.style.DialogSlide,
+                    "This item: "+ message
+                            +", is not available.","Not Available");
+        }
     }
 
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {

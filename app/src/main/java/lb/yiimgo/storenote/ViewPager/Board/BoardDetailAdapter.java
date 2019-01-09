@@ -24,17 +24,20 @@ public class BoardDetailAdapter extends RecyclerView.Adapter<BoardDetailAdapter.
 
     ArrayList<Boards> listBoard;
     private Context mContext;
-    private ListAdapterListener mListener;
+    private OnItemClickListener mListener;
     View layoutInflater;
 
 
-    public interface ListAdapterListener {
+    public interface OnItemClickListener {
         void onClickDeleteButton(int position);
     }
-    public BoardDetailAdapter(Context context, ArrayList<Boards> listBoard, ListAdapterListener  mListener) {
+    public void setOnItemClickListener(OnItemClickListener listener)
+    {
+        this.mListener = listener;
+    }
+    public BoardDetailAdapter(Context context, ArrayList<Boards> listBoard) {
         this.listBoard = listBoard;
         this.mContext = context;
-        this.mListener = mListener;
 
     }
 
