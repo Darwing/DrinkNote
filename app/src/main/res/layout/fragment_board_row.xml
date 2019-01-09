@@ -123,7 +123,7 @@
             android:layout_marginBottom="31dp"
             android:clickable="true"
             android:focusable="true"
-            app:cardBackgroundColor="#FF2955F1"
+            app:cardBackgroundColor="@color/colorPrimary"
             app:cardCornerRadius="20dp"
             app:cardElevation="3dp">
 

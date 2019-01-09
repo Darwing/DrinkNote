@@ -210,7 +210,7 @@ public class ServiceFragment extends Fragment implements Response.Listener<JSONO
             public boolean onQueryTextSubmit(String s) {
                 searchView.clearFocus();
                 return false;
-            }
+        }
 
             @Override
             public boolean onQueryTextChange(String newText) {

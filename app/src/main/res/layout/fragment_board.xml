@@ -17,16 +17,25 @@
             android:orientation="vertical"
             tools:ignore="UselessParent">
 
+            <TextView
+                android:id="@+id/not_found"
+                style="@style/body_style"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="18sp" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/id_recycle_board"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/scrollbar_style"
+                android:scrollbars="vertical"
                 android:layout_marginEnd="5dp"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp">
-
-            </android.support.v7.widget.RecyclerView>
+                android:layout_marginTop="10dp" />
 
             <ImageView
                 android:id="@+id/waiter_id"

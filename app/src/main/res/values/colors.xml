@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#021ad6</color>
-    <color name="colorPrimaryDark">#00108e</color>
+    <color name="colorPrimary">#0078D7</color>
+    <color name="colorPrimaryDark">#636363</color>
     <color name="colorAccent">#ffffff</color>
 
-    <color name="colorTextPrimary">#ffffff</color>
+    <color name="colorTextPrimary">#fcfbfb</color>
     <color name="colorTextDisable">#66FFFFFF</color>
-
     <color name="bgRowsGreen">#227c3f</color>
     <color name="bgRowsRed">#eb5656</color>
 </resources>

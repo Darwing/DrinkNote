@@ -231,7 +231,23 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
         MenuItem item = menu.findItem(R.id.search).setVisible(true);
         searchView = (SearchView) item.getActionView();
 
+        item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                //Toast.makeText(getContext(), "onMenuItemActionExpand called", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                notFound.setVisibility(View.GONE);
+                return true;
+            }
+        });
+
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
             @Override
             public boolean onQueryTextSubmit(String s) {
                 searchView.clearFocus();
@@ -255,8 +271,13 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
                     }
 
                     if (newList.size() == 0){
-                        if(!newText.isEmpty())
+                        if(!newText.isEmpty()){
+                            notFound.setVisibility(View.VISIBLE);
                             notFound.setText("Record not found with '"+newText+"'");
+                        }
+                    }else
+                    {
+                        notFound.setVisibility(View.GONE);
                     }
 
                     adapter.updateList(newList);

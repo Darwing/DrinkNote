@@ -23,6 +23,8 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/display_room"
+        android:scrollbars="vertical"
+        style="@style/scrollbar_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp" />
