@@ -118,7 +118,7 @@ public class BoardActivity extends AppCompatActivity implements NavigationView.O
     {
         sessionManager = new SessionManager(this);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        boardFragment = new BoardFragment(this);
+        boardFragment = new BoardFragment();
         ctFragment = new ServiceFragment();
         rmFragment = new RoomFragment();
         usFragment = new UserFragment();

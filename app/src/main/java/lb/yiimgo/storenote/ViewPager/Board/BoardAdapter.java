@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,20 +31,23 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
 
     ArrayList<Boards> listBoard;
     private Context mContext;
-    private ListAdapterListener mListener;
     View layoutInflater;
     public Animation animation;
     private int previousPosition = 0;
+    public OnItemClickListener mListener;
 
-    public interface ListAdapterListener {
+    public interface OnItemClickListener {
         void onClickAddButton(View v);
         void onClickPayButton(int p);
     }
-    public BoardAdapter(Context context, ArrayList<Boards> listBoard, ListAdapterListener  mListener) {
+
+    public void setOnItemClickListener(OnItemClickListener listener)
+    {
+        this.mListener = listener;
+    }
+    public BoardAdapter(Context context, ArrayList<Boards> listBoard) {
         this.listBoard = listBoard;
         this.mContext = context;
-        this.mListener = mListener;
-
     }
 
     @Override
@@ -70,12 +74,14 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
                 mListener.onClickAddButton(view);
             }
         });
+
         holder.tx_pay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mListener.onClickPayButton(position);
             }
         });
+
         holder.tx_timer.setText(listBoard.get(position).getTotalHours());
         layoutInflater.setTag(holder);
 
@@ -83,8 +89,8 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
             animation = AnimationUtils.loadAnimation(mContext,R.anim.item_animation_fall_down);
             layoutInflater.startAnimation(animation);
         }else{
-        animation = AnimationUtils.loadAnimation(mContext,R.anim.item_animation_fall_down);
-        layoutInflater.startAnimation(animation);
+            animation = AnimationUtils.loadAnimation(mContext,R.anim.item_animation_fall_down);
+            layoutInflater.startAnimation(animation);
         }
     }
 

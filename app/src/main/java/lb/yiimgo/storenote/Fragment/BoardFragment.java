@@ -39,6 +39,7 @@ import lb.yiimgo.storenote.Entity.Boards;
 import lb.yiimgo.storenote.Entity.VolleySingleton;
 import lb.yiimgo.storenote.Fragment.DialogFragment.BoardDetailsFragment;
 import lb.yiimgo.storenote.R;
+import lb.yiimgo.storenote.Utility.AnimationUtil;
 import lb.yiimgo.storenote.Utility.SessionManager;
 import lb.yiimgo.storenote.Utility.Utility;
 import lb.yiimgo.storenote.ViewPager.Board.BoardAdapter;
@@ -46,7 +47,7 @@ import lb.yiimgo.storenote.ViewPager.BoardActivity;
 
 @SuppressLint("ValidFragment")
 public class BoardFragment extends Fragment implements Response.Listener<JSONObject>,
-        Response.ErrorListener
+        Response.ErrorListener, BoardAdapter.OnItemClickListener
 {
 
     public View view;
@@ -69,10 +70,12 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
     ImageView waiter_img;
     BoardActivity boardFragment;
     BoardActivity _context;
+
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    public BoardFragment(BoardActivity boardActivity) {
-        this._context = boardActivity;
+
+    public BoardFragment() {
+
     }
 
     @Override
@@ -96,13 +99,15 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
         recyclerBoard.addItemDecoration(new GridSpacingItemDecoration(spacing));
         recyclerBoard.setHasFixedSize(true);
         notFound = (TextView) view.findViewById(R.id.not_found);
-        adapterOnClick();
+
         requestQueue = Volley.newRequestQueue(getContext());
         loadWebServices();
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,R.color.bgRowsGreen);
-        waiter_img = (ImageView) _context.findViewById(R.id.waiter_id);
+        waiter_img = (ImageView) view.findViewById(R.id.waiter_id);
+        waiter_img.setVisibility(View.GONE);
 
+        adapter = new BoardAdapter(getActivity(), listBoard);
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -151,58 +156,10 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
 
         progressDialog.hide();
         recyclerBoard.setAdapter(adapter);
-        int sizeList = adapter.getItemCount();
-        if(sizeList == 0 ){
-
-            waiter_img.setVisibility(View.VISIBLE);
-        }else
-        {
-            waiter_img.setVisibility(View.GONE);
-        }
+        adapter.setOnItemClickListener(this);
+        this.emptyBoard();
     }
 
-    public void adapterOnClick()
-    {
-        adapter = new BoardAdapter(getActivity(), listBoard, new BoardAdapter.ListAdapterListener() {
-
-            @Override
-            public void onClickAddButton(View v) {
-                addDialog(v);
-
-            }
-
-            @Override
-            public void onClickPayButton(final int p) {
-
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext(), R.style.DialogTheme);
-                builder1.setMessage("Are you sure to collect this bill in the ubication - "+
-                        listBoard.get(p).getUbication()+"?");
-                builder1.setCancelable(true);
-
-                builder1.setPositiveButton(
-                        "Yes",
-                        new DialogInterface.OnClickListener() {
-
-                            public void onClick(DialogInterface dialog, int id) {
-
-                            payServices(p);
-                            }
-                        });
-
-                builder1.setNegativeButton(
-                        "No",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-                AlertDialog alert11 = builder1.create();
-                alert11.show();
-            }
-        });
-
-    }
     public void payServices(final int p)
     {
         progressDialog = new ProgressDialog(getContext());
@@ -256,6 +213,19 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
 
     }
 
+    public void emptyBoard()
+    {
+        if(adapter.getItemCount() == 0) {
+            Animation anim = AnimationUtils.loadAnimation(getContext(),R.anim.slide_left);
+            waiter_img.setVisibility(View.VISIBLE);
+            waiter_img.setAnimation(anim);
+        }else{
+            Animation anim = AnimationUtils.loadAnimation(getContext(),R.anim.slide_right);
+            waiter_img.setVisibility(View.GONE);
+            waiter_img.setAnimation(anim);
+        }
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onPrepareOptionsMenu(menu);
@@ -300,7 +270,43 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
         });
     }
 
-    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+    @Override
+    public void onClickAddButton(View v) {
+        addDialog(v);
+    }
+
+    @Override
+    public void onClickPayButton(final int p)
+    {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext(), R.style.DialogTheme);
+        builder1.setMessage("Are you sure to collect this bill in the ubication - "+
+                listBoard.get(p).getUbication()+"?");
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        payServices(p);
+                    }
+                });
+
+        builder1.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+
+  }
+
+public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
         private int halfSpace;
 
