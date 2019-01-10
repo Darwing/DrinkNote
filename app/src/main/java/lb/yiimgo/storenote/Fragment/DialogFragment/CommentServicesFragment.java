@@ -1,6 +1,7 @@
 package lb.yiimgo.storenote.Fragment.DialogFragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -51,12 +52,14 @@ public class CommentServicesFragment extends DialogFragment
     public TextView description;
     public SessionManager sessionManager;
     StringRequest stringRequest;
+    public BoardAdapter _boardAdapter;
 
-    public CommentServicesFragment(Context context, ArrayList<Boards> board, int p, BoardDetailAdapter adapter) {
+    public CommentServicesFragment(Context context, ArrayList<Boards> board, int p, BoardDetailAdapter adapter,BoardAdapter boardAdapter) {
         this._context = context;
         this._boarDetail = board;
         this._position = p;
         this._adapter =adapter;
+        this._boardAdapter= boardAdapter;
     }
 
 
@@ -121,6 +124,10 @@ public class CommentServicesFragment extends DialogFragment
 
                 _boarDetail.remove(_position);
                 _adapter.notifyDataSetChanged();
+
+                BoardFragment.getInstance().listBoard.clear();
+                BoardFragment.getInstance().loadWebServices();
+
 
             }
         }, new Response.ErrorListener() {

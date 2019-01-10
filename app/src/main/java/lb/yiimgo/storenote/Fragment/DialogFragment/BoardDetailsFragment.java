@@ -1,6 +1,7 @@
 package lb.yiimgo.storenote.Fragment.DialogFragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
@@ -44,6 +45,7 @@ public class BoardDetailsFragment extends DialogFragment implements Response.Lis
     public RecyclerView recyclerBoard;
     public ArrayList<Boards> listBoard;
     public ProgressDialog progressDialog;
+    public BoardAdapter _boardAdapter;
     public BoardDetailAdapter adapter;
     public Boards board = null;
     public RequestQueue requestQueue;
@@ -55,9 +57,11 @@ public class BoardDetailsFragment extends DialogFragment implements Response.Lis
     public Context _context;
     public Boards _boarDetail;
 
-    public BoardDetailsFragment(Context context, Boards board) {
+    public BoardDetailsFragment(Context context, Boards board, BoardAdapter boardAdapter) {
         this._context = context;
         this._boarDetail = board;
+        this._boardAdapter =boardAdapter;
+
     }
 
     @Override
@@ -89,7 +93,7 @@ public class BoardDetailsFragment extends DialogFragment implements Response.Lis
 
     public void addDialog(final int position)
     {
-        CommentServicesFragment commentServicesFragment = new CommentServicesFragment(_context,listBoard,position,adapter);
+        CommentServicesFragment commentServicesFragment = new CommentServicesFragment(_context,listBoard,position,adapter,_boardAdapter);
         commentServicesFragment.show(((FragmentActivity)getActivity()).getSupportFragmentManager().beginTransaction(),"commentDialog");
 
     }

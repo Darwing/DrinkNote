@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import lb.yiimgo.storenote.Entity.Boards;
 import lb.yiimgo.storenote.Entity.VolleySingleton;
 import lb.yiimgo.storenote.Fragment.DialogFragment.BoardDetailsFragment;
+import lb.yiimgo.storenote.Fragment.DialogFragment.CommentServicesFragment;
 import lb.yiimgo.storenote.R;
 import lb.yiimgo.storenote.Utility.SessionManager;
 import lb.yiimgo.storenote.Utility.Utility;
@@ -67,30 +68,26 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
     Boards value;
     StringRequest stringRequest;
     ImageView waiter_img;
-    BoardActivity boardFragment;
-    BoardActivity _context;
-
+    public static BoardFragment instance = null;
     private SwipeRefreshLayout swipeRefreshLayout;
 
-
-    public BoardFragment() {
-
-    }
+    public BoardFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        instance = this;
     }
-
-
+    public static BoardFragment getInstance() {
+        return instance;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_board, container, false);
         listBoard = new ArrayList<>();
-        boardFragment = new BoardActivity();
         recyclerBoard = (RecyclerView) view.findViewById(R.id.id_recycle_board);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this.getContext(), spanCount);
@@ -176,6 +173,11 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
                 listBoard.remove(p);
                 adapter.notifyDataSetChanged();
 
+                if(adapter.getItemCount() == 0)
+                {
+                     listBoard.clear();
+                     loadWebServices();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -186,6 +188,7 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
         });
         VolleySingleton.getIntanciaVolley(getContext()).addToRequestQueue(stringRequest);
     }
+
     public void addDialog(View v)
     {
 
@@ -194,9 +197,10 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
         else
             value = listBoard.get(recyclerBoard.getChildAdapterPosition(v));
 
-        BoardDetailsFragment baordDetailsaordFragment = new BoardDetailsFragment(getContext(),value);
+        BoardDetailsFragment baordDetailsaordFragment = new BoardDetailsFragment(getContext(),value,adapter);
         baordDetailsaordFragment.show(getActivity().getFragmentManager(),"roomDialog");
     }
+
     public void loadWebServices()
     {
         sessionManager = new SessionManager(getContext());
@@ -324,9 +328,9 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
         AlertDialog alert11 = builder1.create();
         alert11.show();
 
-  }
+    }
 
-public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
         private int halfSpace;
 

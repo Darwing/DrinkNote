@@ -21,26 +21,22 @@
                 android:id="@+id/not_found"
                 style="@style/body_style"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textColor="@color/cardview_light_background"
                 android:textSize="18sp" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/id_recycle_board"
+                style="@style/scrollbar_style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/scrollbar_style"
-                android:scrollbars="vertical"
-                android:layout_marginEnd="5dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp" />
+                android:scrollbars="vertical" />
 
             <ImageView
                 android:id="@+id/waiter_id"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:contentDescription="@string/waiter"
                 app:srcCompat="@drawable/welcome" />
         </LinearLayout>
