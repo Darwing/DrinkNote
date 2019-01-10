@@ -64,5 +64,6 @@
     <string name="rooms_nav">Rooms</string>
     <string name="setting_nav">Setting</string>
     <string name="log_out_nav">Log out</string>
+    <string name="communicate">Communicate</string>
 
 </resources>

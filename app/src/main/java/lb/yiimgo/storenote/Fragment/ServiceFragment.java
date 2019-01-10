@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -56,6 +57,7 @@ public class ServiceFragment extends Fragment implements Response.Listener<JSONO
     public Utility utility;
     int spanCount = 1;
     int spacing = 50;
+    private Vibrator vibrator;
 
     public ServiceFragment() { }
 
@@ -88,7 +90,7 @@ public class ServiceFragment extends Fragment implements Response.Listener<JSONO
         recyclerService.addItemDecoration(new GridSpacingItemDecoration(spacing));
         recyclerService.setHasFixedSize(true);
         notFound = (TextView) view.findViewById(R.id.not_found);
-
+        vibrator = (Vibrator) getContext().getSystemService(getContext().VIBRATOR_SERVICE);
         adapter = new ServiceAdapter(getActivity(), listServices);
         requestQueue = Volley.newRequestQueue(getContext());
         loadWebServices();
@@ -133,7 +135,7 @@ public class ServiceFragment extends Fragment implements Response.Listener<JSONO
     }
 
 
-    public void addDialog(View v)
+    public void addServices(View v)
     {
         Services value;
         if(ifSearch)
@@ -250,10 +252,10 @@ public class ServiceFragment extends Fragment implements Response.Listener<JSONO
 
     @Override
     public void onClickAddButton(View v) {
-
+        vibrator.vibrate(100);
         if(listServices.get(recyclerService.getChildAdapterPosition(v)).getNumStatus() == 1)
         {
-            addDialog(v);
+            addServices(v);
 
         }else
         {

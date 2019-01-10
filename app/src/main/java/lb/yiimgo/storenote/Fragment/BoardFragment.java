@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -70,6 +71,7 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
     ImageView waiter_img;
     public static BoardFragment instance = null;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private Vibrator vibrator;
 
     public BoardFragment() { }
 
@@ -89,6 +91,7 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
         view = inflater.inflate(R.layout.fragment_board, container, false);
         listBoard = new ArrayList<>();
         recyclerBoard = (RecyclerView) view.findViewById(R.id.id_recycle_board);
+        vibrator = (Vibrator) getContext().getSystemService(getContext().VIBRATOR_SERVICE);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this.getContext(), spanCount);
         recyclerBoard.setLayoutManager(mLayoutManager);
@@ -189,7 +192,7 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
         VolleySingleton.getIntanciaVolley(getContext()).addToRequestQueue(stringRequest);
     }
 
-    public void addDialog(View v)
+    public void getDetailBoardDialog(View v)
     {
 
         if(ifSearch)
@@ -295,13 +298,12 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
     }
 
     @Override
-    public void onClickAddButton(View v) {
-        addDialog(v);
-    }
+    public void onClickAddButton(View v) { getDetailBoardDialog(v); }
 
     @Override
     public void onClickPayButton(final int p)
     {
+        vibrator.vibrate(100);
         AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext(), R.style.DialogTheme);
         builder1.setMessage("Are you sure to collect this bill in the ubication - "+
                 listBoard.get(p).getUbication()+"?");

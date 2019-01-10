@@ -22,7 +22,7 @@
     </group>
 
     <item
-        android:title="Communicate"
+        android:title="@string/communicate"
         android:visible="true">
         <menu>
             <item

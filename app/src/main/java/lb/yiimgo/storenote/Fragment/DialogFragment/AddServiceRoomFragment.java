@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -55,6 +56,7 @@ public class AddServiceRoomFragment extends DialogFragment implements Response.L
     int spanCount = 1;
     int spacing = 30;
     StringRequest stringRequest;
+    private Vibrator vibrator;
 
     public AddServiceRoomFragment(Context context, Services services)
     {
@@ -85,6 +87,7 @@ public class AddServiceRoomFragment extends DialogFragment implements Response.L
        itemSelected.setText(_services.getName());
        itemCost.setText(Utility.getFormatedAmount(_services.getAmount()));
        requestQueue = Volley.newRequestQueue(_context);
+        vibrator = (Vibrator) _context.getSystemService(_context.VIBRATOR_SERVICE);
 
        loadWebServices();
        return view;
@@ -206,6 +209,7 @@ public class AddServiceRoomFragment extends DialogFragment implements Response.L
 
     @Override
     public void onClickAddButton(View v) {
+        vibrator.vibrate(100);
         addServicesToRoom(v);
     }
 

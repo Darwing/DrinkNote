@@ -2,11 +2,11 @@
 <resources>
     <style name="title_style">
         <item name="android:textSize">15dp</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textStyle">bold</item>
     </style>
     <style name="body_style">
         <item name="android:textSize">15dp</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorPrimary</item>
     </style>
 </resources>

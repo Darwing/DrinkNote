@@ -14,9 +14,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="55dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorPrimaryDark"
             app:tabGravity="fill"
-            app:tabIndicatorColor="@color/colorPrimary"
+            app:tabIndicatorColor="@color/colorPrimaryDark"
             app:tabMode="fixed"
             app:tabSelectedTextColor="#ffff"
             app:tabTextColor="@color/colorTextDisable" />
@@ -45,8 +45,8 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
-        app:itemIconTint="@color/colorPrimaryDark"
-        app:itemTextColor="@color/colorPrimaryDark"
+        app:itemIconTint="@color/colorPrimary"
+        app:itemTextColor="@color/colorPrimary"
         app:menu="@menu/menu_navigation" />
 
 </android.support.v4.widget.DrawerLayout>
