@@ -100,6 +100,8 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
         notFound = (TextView) view.findViewById(R.id.not_found);
 
         requestQueue = Volley.newRequestQueue(getContext());
+
+
         loadWebServices();
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,R.color.bgRowsGreen);
@@ -206,10 +208,10 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
 
     public void loadWebServices()
     {
-        sessionManager = new SessionManager(getContext());
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("Cargando...");
-        progressDialog.show();
+         sessionManager = new SessionManager(getContext());
+         progressDialog = new ProgressDialog(getContext());
+         progressDialog.setMessage("Cargando...");
+         progressDialog.show();
         String idUser = sessionManager.getDataFromSession().get(4);
         String p = sessionManager.getDataFromSession().get(0);
 
