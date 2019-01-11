@@ -53,24 +53,6 @@ public class UserAdapter extends RecyclerView.Adapter<lb.yiimgo.storenote.ViewPa
 
         return new lb.yiimgo.storenote.ViewPager.User.UserAdapter.UserHolder(layoutInflater);
     }
-    private int drinkType(String cat)
-    {
-        int result = 0;
-        switch (cat)
-        {
-            case "Cerveza" :
-                result = R.drawable.bg_presidente_light;
-                break;
-            case "Wisky" :
-                result = R.drawable.bg_wisky;
-                break;
-            case "Ron" :
-                result = R.drawable.bg_romo;
-                break;
-        }
-
-        return result;
-    }
 
     private int statusType(String s)
     {

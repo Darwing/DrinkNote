@@ -65,5 +65,6 @@
     <string name="setting_nav">Setting</string>
     <string name="log_out_nav">Log out</string>
     <string name="communicate">Communicate</string>
-
+    <string name="cent">00.0</string>
+    <string name="save">Save</string>
 </resources>

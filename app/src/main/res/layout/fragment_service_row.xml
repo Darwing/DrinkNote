@@ -16,7 +16,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/typeDrink"
+            android:id="@+id/image_service"
             android:layout_width="88dp"
             android:layout_height="104dp"
             android:contentDescription="@string/cerveza"

@@ -101,7 +101,6 @@ public class BoardFragment extends Fragment implements Response.Listener<JSONObj
 
         requestQueue = Volley.newRequestQueue(getContext());
 
-
         loadWebServices();
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,R.color.bgRowsGreen);

@@ -77,15 +77,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardHolder>
         });
 
         holder.tx_timer.setText(listBoard.get(position).getTotalHours());
-        layoutInflater.setTag(holder);
 
-        if(position > previousPosition){
-            animation = AnimationUtils.loadAnimation(mContext,R.anim.item_animation_fall_down);
-            layoutInflater.startAnimation(animation);
-        }else{
-            animation = AnimationUtils.loadAnimation(mContext,R.anim.item_animation_fall_down);
-            layoutInflater.startAnimation(animation);
-        }
     }
 
 

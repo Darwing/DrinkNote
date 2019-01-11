@@ -75,17 +75,7 @@ public class ServiceFragment extends Fragment implements Response.Listener<JSONO
         view = inflater.inflate(R.layout.fragment_service, container, false);
         listServices = new ArrayList<>();
         recyclerService = (RecyclerView) view.findViewById(R.id.idRecycler);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this.getContext(), spanCount){
-            @Override
-            public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
-                super.onLayoutChildren(recycler, state);
-                  new Spruce.SpruceBuilder(recyclerService)
-                        .sortWith(new DefaultSort(100))
-                        .animateWith(DefaultAnimations.shrinkAnimator(recyclerService, 1000),
-                                ObjectAnimator.ofFloat(recyclerService, "translationX", -recyclerService.getWidth(), 0f).setDuration(1000))
-                        .start();
-            }
-        };
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this.getContext(), spanCount);
         recyclerService.setLayoutManager(mLayoutManager);
         recyclerService.addItemDecoration(new GridSpacingItemDecoration(spacing));
         recyclerService.setHasFixedSize(true);
@@ -121,6 +111,7 @@ public class ServiceFragment extends Fragment implements Response.Listener<JSONO
                 services.setStatus(jsonObject.optString("Status"));
                 services.setNumStatus(jsonObject.optInt("StatusId"));
                 services.setServiceId(jsonObject.getInt("ServiceId"));
+                services.setImages(jsonObject.optString("Images"));
                 listServices.add(services);
 
             }

@@ -49,12 +49,12 @@ public class ServiceBase extends AppCompatActivity implements AdapterView.OnItem
         name = (EditText) findViewById(R.id.store_name);
         amount = (EditText) findViewById(R.id.amount);
 
-        final Button button = findViewById(R.id.send_data);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                regiterCategory();
-            }
-        });
+        //final Button button = findViewById(R.id.send_data);
+       //button.setOnClickListener(new View.OnClickListener() {
+        //public void onClick(View v) {
+        // regiterCategory();
+        // }
+        //});
     }
 
 
@@ -69,7 +69,7 @@ public class ServiceBase extends AppCompatActivity implements AdapterView.OnItem
         values.put(Utility.FIELD_AMOUNT, amount.getText().toString());
         values.put(Utility.FIELD_CATEGORY, categorySelected);
 
-         db.insert(Utility.TABLE_CATEGORY,Utility.FIELD_ID,values);
+         //db.insert(Utility.TABLE_CATEGORY,Utility.FIELD_ID,values);
 
        // Toast.makeText(getApplicationContext(),"id result: "+ idResult,Toast.LENGTH_SHORT).show();
         db.close();

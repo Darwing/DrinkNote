@@ -15,6 +15,15 @@ public class Services
     private String Status;
     private Integer numStatus;
     private Integer ServiceId;
+    private String Images;
+
+    public String getImages() {
+        return Images;
+    }
+
+    public void setImages(String images) {
+        Images = images;
+    }
 
     public Integer getNumStatus() {
         return numStatus;

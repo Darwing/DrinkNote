@@ -76,17 +76,7 @@ public class RoomFragment extends Fragment implements Response.Listener<JSONObje
         listRoomDrink = new ArrayList<>();
 
         recyclerRoomDrink = (RecyclerView) view.findViewById(R.id.display_room);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this.getContext(), spanCount){
-            @Override
-            public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
-                super.onLayoutChildren(recycler, state);
-                spruceAnimator = new Spruce.SpruceBuilder(recyclerRoomDrink)
-                        .sortWith(new DefaultSort(100))
-                        .animateWith(DefaultAnimations.shrinkAnimator(recyclerRoomDrink, 1000),
-                                ObjectAnimator.ofFloat(recyclerRoomDrink, "translationX", -recyclerRoomDrink.getWidth(), 0f).setDuration(1000))
-                        .start();
-            }
-        };
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this.getContext(), spanCount);
         recyclerRoomDrink.setLayoutManager(mLayoutManager);
         recyclerRoomDrink.addItemDecoration(new GridSpacingItemDecoration(spacing));
         recyclerRoomDrink.setHasFixedSize(true);
